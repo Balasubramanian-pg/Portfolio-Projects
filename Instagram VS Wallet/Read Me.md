@@ -1,4 +1,10 @@
-Let’s refine and expand the project by focusing on **key questions to ask**, **problems to solve**, and the **approach to take**. This will help ensure the project is comprehensive, actionable, and aligned with the needs of both consumers and businesses.
+We are all guilty of buying some random products after seeing an advertisement in social media which can or can not be influenced by your favourite influcers.
+Hence in this project we decided to create a model which analyses and predicts how satisfied | unsatisfied certain shoppers are with their social media influenced purchase
+The data set is scraped from various sites and the approach I have taken to document my steps are below
+
+**key questions to ask**, **problems to solve**, and the **approach to take**. 
+
+This framework will help ensure the project is comprehensive, actionable, and aligned with the needs of both consumers and businesses.
 
 ---
 
@@ -70,14 +76,14 @@ Let’s refine and expand the project by focusing on **key questions to ask**, *
 ## **Approach to Take**
 
 ### **1. Data Collection and Integration**
-   - **TikTok Data**: Use TikTok’s API to collect data on trending products, hashtags, and engagement metrics.
+   - **Facebook Data**: Use TikTok’s API to collect data on trending products, hashtags, and engagement metrics.
    - **Transaction Data**: Partner with banks or payment platforms to access anonymized purchase data.
    - **Resale and Return Data**: Scrape or integrate with platforms like eBay, Poshmark, and Shopify for resale and return data.
    - **User Surveys**: Conduct surveys to gather qualitative data on purchase motivations and regret.
 
 ### **2. Data Analysis**
    - **Trend Analysis**:
-     - Identify patterns in TikTok trends (e.g., peak popularity, decline).
+     - Identify patterns in Facebook trends (e.g., peak popularity, decline).
      - Correlate trends with purchase and regret data.
    - **Regret Analysis**:
      - Use machine learning to predict regret based on factors like price, trend longevity, and sentiment.
