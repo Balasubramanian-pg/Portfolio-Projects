@@ -113,14 +113,14 @@ This framework will help ensure the project is comprehensive, actionable, and al
 
 ---
 
-## **Example Workflow**
+## **How does the Workflow Look?**
 
 1. **Data Collection**:
-   - Collect TikTok trend data, purchase data, and resale/return data.
-   - Conduct user surveys to gather qualitative insights.
+   - Collect Facebook trend data, purchase data, and resale/return data.
+   - Scrape user surveys to gather qualitative insights.
 
 2. **Data Processing**:
-   - Clean and preprocess data to remove duplicates and inconsistencies.
+   - Clean and preprocess data to remove duplicates and inconsistencies (In this specific case we are narrowing down to certain categories of product and narrowing down on the timeline).
    - Anonymize sensitive data to ensure privacy.
 
 3. **Analysis**:
