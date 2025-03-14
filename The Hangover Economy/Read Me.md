@@ -1,3 +1,4 @@
+
 ---
 
 # **Hyper-Realistic Case Study: The Hangover Economy - Post-Party Purchase Analyzer**  
