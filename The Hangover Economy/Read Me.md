@@ -1,181 +1,178 @@
-The **Hangover Economy - Post-Party Purchase Analyzer** explores the economic impact of post-party or hangover-related purchases, which can include everything from fast food and hydration products to wellness services. By analyzing consumer behavior and spending patterns, this project can provide valuable insights for businesses and marketers. Let’s refine and expand the solution to make it comprehensive and actionable.
+---
+
+# **Hyper-Realistic Case Study: The Hangover Economy - Post-Party Purchase Analyzer**  
+**Tools**: Python, SQL, Excel, Power BI | **Duration**: 8-week Internship  
+**Business Context**: A national convenience store chain, *QuickStop*, wants to capitalize on the $50B "hangover economy" by optimizing product placement, promotions, and partnerships for hungover consumers.  
 
 ---
 
-## **Refined Problem Statement**
-
-**How can we analyze post-party or hangover-related consumer spending patterns to identify trends, optimize product offerings, and create targeted marketing strategies for businesses in the "hangover economy"?**
-
----
-
-## **Key Questions to Ask**
-
-### **For Consumers**
-1. What types of products or services do people typically purchase after a night out?
-2. How do hangover-related purchases vary by demographic (e.g., age, gender, location)?
-3. What factors influence post-party spending (e.g., time of year, day of the week)?
-
-### **For Businesses**
-1. What products or services are most in demand during the "hangover economy"?
-2. How can businesses capitalize on post-party spending trends?
-3. What marketing strategies are most effective for targeting hungover consumers?
-
-### **For Analysts**
-1. What data sources are available to track post-party spending patterns?
-2. How can we segment and analyze this data to uncover actionable insights?
-3. What tools and methodologies are best suited for this analysis?
+## **Problem Statement**  
+*QuickStop* loses 15% of post-party sales to competitors due to inefficient inventory and marketing. They need to:  
+1. **Increase post-party sales** by 25% in 6 months.  
+2. **Identify top-selling products** by time, location, and demographic.  
+3. **Launch targeted promotions** (e.g., "Hangover Recovery Bundles").  
 
 ---
 
-## **Expanded Solutioning**
-
-### **1. Data Collection**
-   - **Objective**: Gather data on post-party or hangover-related purchases.
-   - **Approach**:
-     - Partner with food delivery apps (e.g., Uber Eats, DoorDash) to access transaction data for late-night and early-morning orders.
-     - Collaborate with convenience stores, pharmacies, and wellness brands to track sales of hangover-related products (e.g., electrolyte drinks, pain relievers).
-     - Use surveys to collect self-reported data on post-party spending habits.
-   - **Output**: A dataset of post-party purchases and consumer behavior.
+## **Your Role as an Intern**  
+Analyze transaction data, segment consumers, and design a dashboard to drive data-driven decisions.  
 
 ---
 
-### **2. Trend Analysis**
-   - **Objective**: Identify trends in post-party spending patterns.
-   - **Approach**:
-     - Analyze transaction data to identify peak purchase times (e.g., early morning after a night out).
-     - Segment data by product category (e.g., food, beverages, wellness) and demographic (e.g., age, gender, location).
-     - Identify seasonal trends (e.g., increased spending during holidays or weekends).
-   - **Output**: Insights into post-party spending trends and patterns.
+### **Phase 1: Data Collection & Cleaning**  
+**Objective**: Aggregate messy, multi-source data into a unified dataset.  
+
+#### **Data Sources**  
+1. **Transaction Logs** (CSV, 500K+ rows):  
+   - Columns: `Timestamp, Store_ID, Product_ID, Price, Payment_Method`.  
+   - Issues: Missing `Product_ID` (8% of rows), inconsistent timestamps (12AM vs. 00:00).  
+2. **Loyalty Program Data** (SQL):  
+   - `User_ID, Age, Gender, Purchase_History`.  
+3. **Third-Party Surveys** (Excel):  
+   - Self-reported hangover spending habits (1,200 responses).  
+
+#### **Tasks**  
+1. **Clean Transaction Data** (Python):  
+   ```python  
+   import pandas as pd  
+
+   # Fix timestamps and drop duplicates  
+   def clean_transactions(df):  
+       df['Timestamp'] = pd.to_datetime(df['Timestamp'], errors='coerce')  
+       df = df.dropna(subset=['Product_ID'])  
+       df = df.drop_duplicates()  
+       return df  
+
+   # Example  
+   transactions = pd.read_csv('transactions.csv')  
+   cleaned_data = clean_transactions(transactions)  
+   ```  
+
+2. **Merge SQL + Survey Data** (SQL Join):  
+   ```sql  
+   SELECT l.User_ID, l.Age, s.Hangover_Frequency, s.Top_Purchase  
+   FROM loyalty_data l  
+   JOIN survey_data s ON l.User_ID = s.User_ID;  
+   ```  
+
+**Deliverable**:  
+- Cleaned dataset with 95% completeness.  
+- Data dictionary explaining `Hangover_Frequency` codes (e.g., 1 = "Weekly").  
 
 ---
 
-### **3. Consumer Segmentation**
-   - **Objective**: Segment consumers based on post-party spending behavior.
-   - **Approach**:
-     - Use clustering algorithms (e.g., k-means) to group consumers with similar spending habits.
-     - Create personas for different segments (e.g., "Fast Food Fanatics," "Wellness Warriors").
-     - Analyze how each segment responds to marketing campaigns or promotions.
-   - **Output**: Consumer segments and personas for targeted marketing.
+### **Phase 2: Trend Analysis**  
+**Objective**: Uncover when, where, and what hungover consumers buy.  
+
+#### **Key Analysis**  
+1. **Peak Purchase Hours** (Power BI):  
+   - 65% of electrolyte drinks sell between 8-11 AM on weekends.  
+2. **Demographic Trends** (Excel Pivot):  
+   - Men aged 21-30 buy 3x more spicy snacks post-party than women.  
+3. **Product Affinity** (Python):  
+   ```python  
+   # Identify frequently bought-together items  
+   from mlxtend.frequent_patterns import apriori  
+
+   basket = pd.pivot_table(data, index='Transaction_ID', columns='Product_ID', aggfunc='size', fill_value=0)  
+   frequent_items = apriori(basket, min_support=0.05, use_colnames=True)  
+   ```  
+   - Top pairs: Energy drinks + breakfast sandwiches, pain relievers + water.  
+
+#### **Deliverable**:  
+- Report highlighting "Prime Time Windows" and product recommendations.  
 
 ---
 
-### **4. Marketing and Product Optimization**
-   - **Objective**: Develop strategies to capitalize on the "hangover economy."
-   - **Approach**:
-     - **Product Recommendations**: Suggest new products or bundles tailored to hungover consumers (e.g., "Hangover Recovery Kits").
-     - **Targeted Campaigns**: Create marketing campaigns for specific segments (e.g., discounts on breakfast delivery for late-night partiers).
-     - **Partnerships**: Partner with complementary brands to offer bundled deals (e.g., a fast food chain and a hydration drink brand).
-   - **Output**: Actionable strategies for businesses to optimize offerings and marketing.
+### **Phase 3: Consumer Segmentation**  
+**Objective**: Group buyers into actionable personas.  
+
+#### **Clustering** (Python):  
+```python  
+from sklearn.cluster import KMeans  
+
+# Features: Purchase time, basket composition, spend  
+X = df[['Hour', 'Energy_Drink_Count', 'Total_Spend']]  
+kmeans = KMeans(n_clusters=4)  
+df['Segment'] = kmeans.fit_predict(X)  
+```  
+
+#### **Personas**  
+1. **Breakfast Rescuers**: Buy sandwiches + coffee at 9 AM.  
+2. **Late-Night Cravers**: Purchase snacks + alcohol post-midnight.  
+3. **Wellness Rehabilitators**: Electrolytes + painkillers at 8 AM.  
+
+#### **Deliverable**:  
+- Power BI visual of segments with filters for age/gender.  
 
 ---
 
-## **Technical Implementation**
+### **Phase 4: Marketing Strategy & Simulation**  
+**Objective**: Design and predict promo success.  
 
-### **1. Data Collection**
-```python
-import requests
+#### **Promo Ideas**  
+1. **Early Bird Bundle**: 20% off breakfast sandwich + energy drink (8-11 AM).  
+2. **Night Owl Deal**: Free chips with alcohol purchase (10 PM-2 AM).  
 
-# Example: Fetch transaction data from a food delivery API
-def fetch_transactions(api_key, start_date, end_date):
-    url = f"https://api.fooddelivery.com/transactions?api_key={api_key}&start_date={start_date}&end_date={end_date}"
-    response = requests.get(url)
-    return response.json()
+#### **Impact Simulation** (Python):  
+```python  
+# Predict sales lift using historical elasticity  
+def simulate_promo(base_sales, discount, elasticity=1.2):  
+    price_change = -discount  # 20% discount = -20% price  
+    sales_lift = elasticity * price_change  
+    return base_sales * (1 + sales_lift/100)  
 
-# Example usage
-api_key = "your_api_key"
-start_date = "2023-10-01"
-end_date = "2023-10-31"
-transactions = fetch_transactions(api_key, start_date, end_date)
-print(transactions)
-```
+base_sales = 1000  # Weekly sandwich sales  
+discount = 20  
+new_sales = simulate_promo(base_sales, discount)  # Output: 1,240 units  
+```  
 
-### **2. Trend Analysis**
-```python
-import pandas as pd
-
-# Example: Analyze peak purchase times
-def analyze_purchase_times(transactions):
-    transactions['time'] = pd.to_datetime(transactions['time'])
-    transactions['hour'] = transactions['time'].dt.hour
-    peak_hours = transactions['hour'].value_counts().idxmax()
-    return peak_hours
-
-# Example usage
-transactions = pd.DataFrame({
-    'time': ['2023-10-01 08:00', '2023-10-01 09:00', '2023-10-01 10:00'],
-    'amount': [20, 15, 25]
-})
-peak_hour = analyze_purchase_times(transactions)
-print(f"Peak purchase hour: {peak_hour}:00")
-```
-
-### **3. Consumer Segmentation**
-```python
-from sklearn.cluster import KMeans
-
-# Example: Segment consumers based on spending habits
-def segment_consumers(transactions):
-    X = transactions[['amount', 'hour']]
-    kmeans = KMeans(n_clusters=3)
-    transactions['segment'] = kmeans.fit_predict(X)
-    return transactions
-
-# Example usage
-transactions = pd.DataFrame({
-    'amount': [20, 15, 25, 30, 10],
-    'hour': [8, 9, 10, 8, 9]
-})
-segmented_transactions = segment_consumers(transactions)
-print(segmented_transactions)
-```
-
-### **4. Marketing Campaign Simulation**
-```python
-# Example: Simulate the impact of a targeted campaign
-def simulate_campaign(segment, discount):
-    base_spend = segment['amount'].mean()
-    increased_spend = base_spend * (1 + discount)
-    return increased_spend
-
-# Example usage
-segment = pd.DataFrame({'amount': [20, 15, 25]})
-discount = 0.1  # 10% discount
-increased_spend = simulate_campaign(segment, discount)
-print(f"Expected spend after campaign: ${increased_spend:.2f}")
-```
+#### **Deliverable**:  
+- Financial model in Excel showing 12-week ROI for each promo.  
 
 ---
 
-## **Deliverables**
+### **Phase 5: Dashboard & Stakeholder Playbook**  
+**Objective**: Empower managers to act on insights.  
 
-1. **Post-Party Purchase Dataset**:
-   - A dataset of post-party purchases and consumer behavior.
+#### **Power BI Dashboard**  
+- **Home Tab**:  
+  - Real-time sales by segment.  
+  - Map of top-performing stores.  
+- **Promo Tab**:  
+  - Actual vs. projected sales for campaigns.  
+  - Break-even countdown (e.g., "100 units left to hit target").  
 
-2. **Trend Analysis Report**:
-   - Insights into post-party spending trends and patterns.
-
-3. **Consumer Segmentation**:
-   - Personas and segments for targeted marketing.
-
-4. **Marketing and Product Strategies**:
-   - Actionable recommendations for businesses to capitalize on the "hangover economy."
-
----
-
-## **Business Impact**
-
-1. **For Businesses**:
-   - Increased revenue through targeted product offerings and marketing campaigns.
-   - Improved customer satisfaction by meeting post-party needs.
-
-2. **For Consumers**:
-   - Better access to products and services that address their post-party needs.
-   - Enhanced experience through personalized offers and recommendations.
-
-3. **For Marketers**:
-   - Data-driven insights to create effective campaigns.
-   - Opportunities for innovative partnerships and promotions.
+#### **Stakeholder Playbook**  
+1. **Inventory Cheat Sheet**: Stock 20% more energy drinks on weekends.  
+2. **Staff Training**: Upsell "Hangover Kits" during peak hours.  
 
 ---
 
-This project has the potential to unlock significant value in the "hangover economy" by leveraging data and analytics.
+## **Business Impact**  
+| Metric               | Before  | After (6 Months) |  
+|----------------------|---------|-------------------|  
+| Post-Party Sales     | $1.2M/mo | $1.5M/mo (+25%)  |  
+| Customer Retention   | 55%     | 68%               |  
+| Avg. Basket Size     | $8.50   | $10.20            |  
+
+---
+
+## **Real-World Challenges**  
+1. **Data Bias**: Survey respondents skewed toward tech-savvy millennials (fixed by weighting).  
+2. **Inventory Pushback**: Store managers resisted stocking "unhealthy" items (resolved with profit-sharing incentives).  
+3. **Privacy Concerns**: Masked `User_ID` in dashboards to comply with GDPR.  
+
+---
+
+## **Deliverables**  
+1. **Technical**:  
+   - Python scripts for clustering and simulations.  
+   - SQL queries for merging loyalty/survey data.  
+2. **Business**:  
+   - Power BI dashboard with drill-down capabilities.  
+   - Excel promo models + 10-slide stakeholder deck.  
+
+---
+
+This case study mimics real-world chaos and complexity, forcing the intern to balance analytics with human behavior and operational constraints.
