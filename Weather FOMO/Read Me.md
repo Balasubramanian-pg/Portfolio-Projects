@@ -1,3 +1,4 @@
+
 ---
 
 # **Hyper-Realistic Case Study: Weather FOMO - Lost Revenue Weather Tracker**  
