@@ -1,140 +1,198 @@
-We are all guilty of buying some random products after seeing an advertisement in social media which can or can not be influenced by your favourite influcers.
-Hence in this project we decided to create a model which analyses and predicts how satisfied | unsatisfied certain shoppers are with their social media influenced purchase
-The data set is scraped from various sites and the approach I have taken to document my steps are below
-
-**key questions to ask**, **problems to solve**, and the **approach to take**. 
-
-This framework will help ensure the project is comprehensive, actionable, and aligned with the needs of both consumers and businesses.
 
 ---
 
-## **Key Questions to Ask**
-
-### **For Consumers**
-1. **Behavioral Insights**:
-   - What drives consumers to purchase products they see on TikTok?
-   - How often do consumers regret purchases influenced by social media trends?
-   - What factors (e.g., price, product category, trend longevity) influence regret the most?
-
-2. **Decision-Making**:
-   - Are consumers aware of the potential for regret when making impulse purchases?
-   - What tools or information could help consumers make more informed decisions?
-
-3. **Post-Purchase Behavior**:
-   - How do consumers dispose of regretted purchases (e.g., resale, return, discard)?
-   - What role do product reviews and ratings play in post-purchase satisfaction?
+# **Hyper-Realistic Case Study: TikTok Purchase Regret Predictor**  
+**Tools**: Python, SQL, Power BI, Google Cloud | **Duration**: 12-week Internship  
+**Business Context**: *TrendBuy Inc.*, a fast-fashion retailer, sees 30% returns on TikTok-driven purchases ($10M/year loss). Viral products like "TikTok Leggings" and "Viral Blushes" spike sales but lead to buyer remorse. Their goals:  
+1. Predict regret likelihood for TikTok-influenced purchases with 85% accuracy.  
+2. Reduce return rates by 25% in 6 months.  
+3. Build a consumer app to nudge smarter purchases.  
 
 ---
 
-### **For Businesses**
-1. **Trend Impact**:
-   - How do TikTok trends impact sales and return rates?
-   - Which product categories are most affected by TikTok-driven purchases?
-
-2. **Inventory and Marketing**:
-   - How can businesses better predict and capitalize on TikTok trends?
-   - What strategies can reduce return rates and improve customer satisfaction?
-
-3. **Customer Insights**:
-   - Who are the most impulsive buyers, and how can businesses target them effectively?
-   - How can businesses use TikTok trends to build long-term customer loyalty?
+## **Problem Statement**  
+*TrendBuy* struggles with impulsive buyers who return items after trends fade. Manual trend tracking and generic reviews fail to address regret drivers like poor quality or "trend fatigue."  
 
 ---
 
-## **Key Problems to Solve**
-
-### **For Consumers**
-1. **Impulse Buying**:
-   - Help consumers recognize and avoid impulsive purchases driven by social media trends.
-   - Provide tools to evaluate the long-term value of a product before purchasing.
-
-2. **Post-Purchase Regret**:
-   - Reduce the likelihood of regret by offering insights into product sustainability, quality, and usability.
-   - Create a platform for consumers to share and learn from others’ experiences.
-
-3. **Resale and Returns**:
-   - Simplify the process of reselling or returning regretted purchases.
-   - Provide data-driven recommendations on the best resale platforms for specific products.
+## **Your Role as an Intern**  
+Analyze TikTok trends, purchase behavior, and regret signals to build a predictive model and intervention engine.  
 
 ---
 
-### **For Businesses**
-1. **Trend-Driven Sales**:
-   - Help businesses identify and capitalize on TikTok trends without overstocking or misaligning inventory.
-   - Predict the longevity of trends to avoid investing in short-lived fads.
+### **Phase 1: Data Aggregation & Cleaning**  
+**Objective**: Merge TikTok trend data with purchase/return logs.  
 
-2. **Return Rate Reduction**:
-   - Identify products with high regret rates and improve their quality, marketing, or pricing.
-   - Develop targeted campaigns to reduce impulse buying and improve customer satisfaction.
+#### **Data Sources**  
+1. **TikTok API**:  
+   - Trending hashtags (#TikTokMadeMeBuyIt), product videos, engagement spikes.  
+2. **Transaction Data** (SQL):  
+   - `Order_ID, Product_ID, Purchase_Date, Return_Status, Customer_Age`.  
+   - Issues: 15% of returns lack reason codes.  
+3. **Resale Platforms**:  
+   - Scrape eBay/Poshmark for price drops on viral items (e.g., $50 leggings resold for $15).  
 
-3. **Customer Retention**:
-   - Use insights from regret analysis to improve product offerings and customer experiences.
-   - Build trust by being transparent about the risks of trend-driven purchases.
+#### **Tasks**  
+1. **Clean TikTok Data** (Python):  
+   ```python  
+   def detect_fake_trends(df):  
+       # Filter out bots using engagement patterns  
+       df = df[df['views'] / df['likes'] < 100]  # Authentic videos have <100:1 view:like ratio  
+       return df  
 
----
+   # Merge trend dates with purchase dates  
+   merged_data = pd.merge(trends, purchases, left_on='trend_date', right_on='purchase_date')  
+   ```  
 
-## **Approach to Take**
+2. **Impute Return Reasons** (SQL):  
+   ```sql  
+   -- Label returns during trend decline as "regret"  
+   UPDATE returns  
+   SET reason = 'Regret'  
+   WHERE return_date BETWEEN (  
+       SELECT trend_peak_date + INTERVAL 7 DAY  
+       FROM tiktok_trends  
+       WHERE product_id = returns.product_id  
+   ) AND (  
+       SELECT trend_end_date  
+       FROM tiktok_trends  
+       WHERE product_id = returns.product_id  
+   );  
+   ```  
 
-### **1. Data Collection and Integration**
-   - **Facebook Data**: Use TikTok’s API to collect data on trending products, hashtags, and engagement metrics.
-   - **Transaction Data**: Partner with banks or payment platforms to access anonymized purchase data.
-   - **Resale and Return Data**: Scrape or integrate with platforms like eBay, Poshmark, and Shopify for resale and return data.
-   - **User Surveys**: Conduct surveys to gather qualitative data on purchase motivations and regret.
-
-### **2. Data Analysis**
-   - **Trend Analysis**:
-     - Identify patterns in Facebook trends (e.g., peak popularity, decline).
-     - Correlate trends with purchase and regret data.
-   - **Regret Analysis**:
-     - Use machine learning to predict regret based on factors like price, trend longevity, and sentiment.
-     - Segment regret rates by product category, demographic, and region.
-   - **Sentiment Analysis**:
-     - Analyze product reviews and survey responses to gauge satisfaction and identify common pain points.
-
-### **3. Tool Development**
-   - **Consumer-Facing App**:
-     - Provide real-time insights into TikTok trends and their potential for regret.
-     - Offer personalized recommendations based on user behavior and preferences.
-   - **Business Dashboard**:
-     - Visualize trend impact, regret rates, and return data.
-     - Provide actionable insights for inventory planning and marketing strategies.
-
-### **4. Testing and Validation**
-   - **A/B Testing**:
-     - Test different interventions (e.g., product recommendations, trend warnings) to reduce regret.
-   - **User Feedback**:
-     - Continuously gather feedback from consumers and businesses to refine the tool.
-
-### **5. Scaling and Deployment**
-   - **Cloud Infrastructure**:
-     - Use cloud platforms (e.g., AWS, Google Cloud) for scalable data storage and processing.
-   - **API Integration**:
-     - Integrate with e-commerce platforms, resale platforms, and social media APIs for real-time data.
+**Deliverable**:  
+- Dataset linking TikTok trends to purchases/returns (500K+ rows).  
+- Data dictionary: Trend lifecycle stages (Peak, Decline, Death).  
 
 ---
 
-## **How does the Workflow Look?**
+### **Phase 2: Exploratory Analysis**  
+**Objective**: Identify regret drivers like quality issues or trend decay.  
 
-1. **Data Collection**:
-   - Collect Facebook trend data, purchase data, and resale/return data.
-   - Scrape user surveys to gather qualitative insights.
+#### **Key Insights**  
+1. **Trend Longevity** (Power BI):  
+   - Products with >1M TikTok views sell 5x faster but have 40% regret rates.  
+   - 72% of returns occur within 14 days of a trend’s peak.  
+2. **Quality vs. Hype** (Python):  
+   ```python  
+   # Sentiment analysis of reviews  
+   from textblob import TextBlob  
+   df['sentiment'] = df['review'].apply(lambda x: TextBlob(x).sentiment.polarity)  
+   regret_correlation = df[['sentiment', 'returned']].corr()  # Output: -0.65  
+   ```  
 
-2. **Data Processing**:
-   - Clean and preprocess data to remove duplicates and inconsistencies (In this specific case we are narrowing down to certain categories of product and narrowing down on the timeline).
-   - Anonymize sensitive data to ensure privacy.
-
-3. **Analysis**:
-   - Perform trend analysis, regret analysis, and sentiment analysis.
-   - Build predictive models to estimate regret probability.
-
-4. **Visualization**:
-   - Create dashboards for consumers and businesses using Power BI or Tableau.
-   - Provide actionable insights and recommendations.
-
-5. **Deployment**:
-   - Launch the consumer-facing app and business dashboard.
-   - Continuously monitor performance and gather feedback for improvements.
+**Deliverable**:  
+- Power BI report: "Top 5 Regret Drivers: Hype-Quantity Ratio, Price Drops, Negative Reviews."  
 
 ---
 
-By addressing these questions, solving the identified problems, and following a structured approach, you can create a powerful tool that helps consumers make smarter purchases and businesses optimize their strategies in the age of social media-driven commerce.
+### **Phase 3: Predictive Modeling**  
+**Objective**: Flag high-regret-risk purchases in real time.  
+
+#### **Model Development**  
+1. **Algorithm**: XGBoost (handles imbalanced data).  
+2. **Features**:  
+   - `Days_Since_Trend_Peak`, `Resale_Price_Drop`, `Sentiment_Score`, `Customer_Age`.  
+3. **Validation**:  
+   - AUC-ROC: 0.88 | Precision: 82% | Recall: 79%.  
+
+#### **Code Snippet** (Python):  
+```python  
+from xgboost import XGBClassifier  
+import joblib  
+
+# Train model  
+model = XGBClassifier(scale_pos_weight=3)  # 25% regret class  
+model.fit(X_train, y_train)  
+
+# Save for real-time scoring  
+joblib.dump(model, 'regret_model.pkl')  
+
+# Predict for a viral hair tool  
+sample = [[7, 0.65, -0.4, 19]]  # 7 days post-peak, 65% resale drop, negative reviews, teen buyer  
+risk = model.predict_proba(sample)[0][1]  # Output: 91% regret risk  
+```  
+
+**Challenge**: Model initially flagged luxury buyers as low-risk but missed their high regret rates (fixed by adding income estimates via ZIP code).  
+
+---
+
+### **Phase 4: Intervention Engine**  
+**Objective**: Reduce regret via real-time nudges and offers.  
+
+#### **Strategies**  
+1. **Pre-Purchase Pop-up**:  
+   - "Trend Alert: 68% buyers keep this >6 months. Still want it?"  
+2. **Post-Purchase Offer**:  
+   - "Keep this jacket 30 days, get $10 credit!"  
+3. **Resale Integration**:  
+   - Auto-list returns on Poshmark if regret risk >70%.  
+
+#### **SQL Automation**:  
+```sql  
+-- Nightly batch of high-risk customers  
+INSERT INTO interventions (customer_id, intervention_type)  
+SELECT customer_id,  
+    CASE  
+        WHEN regret_risk >= 0.8 THEN 'Email + $15 Offer'  
+        WHEN regret_risk >= 0.6 THEN 'SMS Reminder'  
+    END  
+FROM predictions  
+WHERE created_at = CURDATE() - INTERVAL 2 DAY;  # 48-hour post-purchase window  
+```  
+
+---
+
+### **Phase 5: Consumer App & Dashboard**  
+**Objective**: Empower users and managers to act.  
+
+#### **Consumer App Features**  
+1. **Trend Lifespan Tracker**:  
+   - "This dress trended for 18 days. 60% of buyers kept it."  
+2. **Personalized Nudges**:  
+   - "You’re buying 3 trending items. 2 have 50%+ regret rates. Proceed?"  
+
+#### **Power BI Dashboard**  
+- **Manager View**:  
+  - Real-time regret risk by product category.  
+  - ROI of interventions: SMS nudges cut returns by 18%.  
+- **Supply Chain Alerts**:  
+  - "Cancel reorder: #TikTokSweaters regret risk spiked to 88%."  
+
+---
+
+## **Business Impact**  
+| Metric               | Before  | After (6 Months) |  
+|----------------------|---------|-------------------|  
+| Return Rate          | 30%     | 22.5% (-25%)      |  
+| Customer Satisfaction| 3.2/5   | 4.1/5 (+28%)      |  
+| Resale Recovery      | $0      | $2.1M             |  
+
+---
+
+## **Real-World Challenges**  
+1. **Ethical Dilemmas**:  
+   - Pop-ups annoyed 12% of customers (fixed with opt-out toggle).  
+2. **Data Bias**:  
+   - Gen Z buyers underrepresented in surveys (added TikTok poll integration).  
+3. **Legal Hurdles**:  
+   - GDPR compliance for real-time data (implemented anonymization pipeline).  
+
+---
+
+## **Deliverables**  
+1. **Technical**:  
+   - Python scripts for trend scraping and model training.  
+   - SQL pipelines for intervention triggers.  
+2. **Business**:  
+   - Power BI dashboard with regret risk analytics.  
+   - Prototype of "TrendGuard" consumer app (Figma).  
+
+---
+
+## **Executive Summary**  
+*By treating TikTok trends as perishable inventory, TrendBuy turned a $10M problem into a $2.1M recovery engine. The intern’s work proves that in the age of virality, data isn’t just king—it’s the antidote to regret.*  
+
+---
+
+This case study mirrors the chaos of social media-driven retail, challenging the intern to balance hype with hard data—and turn buyer remorse into actionable insights.
