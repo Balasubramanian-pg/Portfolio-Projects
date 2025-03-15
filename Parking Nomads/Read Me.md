@@ -1,3 +1,4 @@
+
 ---
 # **Hyper-Realistic Case Study: Urban Parking Optimization System**  
 **Tools**: Python, SQL, GIS (ArcGIS), Power BI, IoT | **Duration**: 14-week Internship  
