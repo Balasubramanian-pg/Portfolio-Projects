@@ -1,172 +1,175 @@
-This is a fantastic project idea! The **Menu Price Evolution Tracker** can provide restaurants and analysts with valuable insights into pricing trends, helping them optimize their strategies and stay competitive. Let’s refine and expand the solution to make it comprehensive and actionable.
+
+---
+# **Hyper-Realistic Case Study: Menu Price Evolution Tracker**  
+**Tools**: Python, SQL, Power BI, Tesseract OCR, AWS | **Duration**: 10-week Internship  
+**Business Context**: *UrbanEats Diner Chain* (12 locations) faces shrinking margins due to inconsistent pricing. A 2023 audit revealed:  
+- **20% menu items** priced below ingredient cost post-inflation.  
+- **15% price disparity** for identical dishes across locations.  
+- **30% customer complaints** on "overpriced" seasonal specials.  
+
+**Goals**:  
+1. Identify **$500K/year in cost-saving opportunities** via price optimization.  
+2. Align prices with local competitor benchmarks.  
+3. Reduce customer price complaints by 25% in 6 months.  
 
 ---
 
-## **Refined Problem Statement**
-
-**How can restaurants and analysts track and analyze the evolution of menu prices over time, using historical data and comparative insights, to optimize pricing strategies and predict customer reactions?**
-
----
-
-## **Key Questions to Ask**
-
-### **For Restaurants**
-1. How have menu prices changed over time, and what factors (e.g., ingredient costs, economic conditions) drove these changes?
-2. How do current prices compare to competitors, and are there opportunities to adjust pricing for better profitability or customer appeal?
-3. How do customers react to price changes, and what is the optimal price point for key items?
-
-### **For Analysts**
-1. What historical data is available to analyze menu price trends?
-2. How can we identify patterns in price evolution across different categories (e.g., appetizers, entrees, desserts)?
-3. What tools and methodologies are best suited for analyzing and visualizing menu price data?
-
-### **For Customers**
-1. How do price changes influence customer satisfaction and purchasing behavior?
-2. What pricing strategies (e.g., value meals, premium pricing) are most appealing to different customer segments?
+## **Problem Statement**  
+*UrbanEats* uses Excel for menu pricing, leading to reactive decisions. Managers lack tools to track historical trends or competitor moves, resulting in lost revenue and brand inconsistency.  
 
 ---
 
-## **Expanded Solutioning**
-
-### **1. Data Collection**
-   - **Objective**: Digitize and organize historical menu data for analysis.
-   - **Approach**:
-     - Use Optical Character Recognition (OCR) tools (e.g., Tesseract, Google Vision API) to extract text from scanned or photographed menus.
-     - Store the digitized data in a SQL database for easy querying and analysis.
-     - Include metadata such as date, location, and menu category for each item.
-   - **Output**: A structured database of historical menu prices.
+## **Your Role as an Intern**  
+Build a system to analyze 5 years of menu data, benchmark competitors, and recommend pricing strategies.  
 
 ---
 
-### **2. Time-Series Analysis**
-   - **Objective**: Analyze price trends over time for key menu items.
-   - **Approach**:
-     - Use time-series analysis techniques to track price changes for individual items and categories.
-     - Identify trends, seasonality, and anomalies in pricing data.
-     - Correlate price changes with external factors (e.g., inflation, ingredient costs, economic conditions).
-   - **Output**: Visualizations and insights into menu price evolution.
+### **Phase 1: Data Extraction Chaos**  
+**Objective**: Digitize 800+ legacy menus (PDFs, photos, handwritten notes).  
+
+#### **Challenges**  
+1. **OCR Failures**:  
+   - Faded 2018 menus misread "$14" as "$44" (fixed with OpenCV contrast adjustment).  
+   - Cursive specials unreadable by Tesseract (used AWS Textract + manual validation).  
+
+#### **Code Snippet** (Python):  
+```python  
+from PIL import Image  
+import cv2  
+import pytesseract  
+
+def preprocess_image(img_path):  
+    img = cv2.imread(img_path)  
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  
+    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))  
+    enhanced = clahe.apply(gray)  
+    return enhanced  
+
+menu_text = pytesseract.image_to_string(preprocess_image('old_menu.jpg'))  
+```  
+
+**Deliverable**:  
+- Clean SQL database of 25K+ menu items with 98% accuracy.  
 
 ---
 
-### **3. Comparative Insights**
-   - **Objective**: Compare menu prices with competitors to identify opportunities for optimization.
-   - **Approach**:
-     - Collect competitor menu data using similar OCR and database techniques.
-     - Perform comparative analysis to identify underpriced or overpriced items.
-     - Segment analysis by geographic region, cuisine type, and customer demographics.
-   - **Output**: A report highlighting competitive pricing opportunities.
+### **Phase 2: Time-Series Analysis & Cost Correlation**  
+**Objective**: Link price changes to ingredient costs and local wages.  
+
+#### **Data Sources**  
+1. **USDA API**: Historical beef/poultry prices.  
+2. **BLS Data**: City-specific minimum wage changes.  
+
+#### **Key Insight** (Power BI):  
+- **New York Location**: Burger prices rose 12% (2021-2023) vs. 34% beef cost increase → **$2.50/loss per burger**.  
+- **Austin Location**: Maintained taco margins by swapping to cheaper avocados during shortages.  
+
+#### **SQL Query**:  
+```sql  
+SELECT   
+    city,   
+    item_name,   
+    AVG(price) as avg_price,  
+    (SELECT price FROM ingredient_costs WHERE item='beef' AND date=m.date) AS beef_cost  
+FROM menus m  
+WHERE item_category = 'Burgers'  
+GROUP BY city, item_name;  
+```  
 
 ---
 
-### **4. Actionable Strategies**
-   - **Objective**: Recommend optimized pricing models based on data-driven insights.
-   - **Approach**:
-     - **Dynamic Pricing**: Suggest dynamic pricing strategies based on demand and competition.
-     - **Value Meals**: Recommend bundled offers or value meals to increase perceived value.
-     - **Premium Pricing**: Identify opportunities for premium pricing on high-demand or unique items.
-     - **Promotions**: Suggest targeted promotions to drive sales of underperforming items.
-   - **Output**: A set of tailored pricing recommendations for restaurants.
+### **Phase 3: Competitive Benchmarking**  
+**Objective**: Secret-shop 50 competitors for real-time pricing.  
+
+#### **Web Scraping Ethics Dilemma**:  
+- Yelp prohibited scraping → built "crowdsourcing" feature in UrbanEats app:  
+  - "Snap a competitor menu, get 100 loyalty points!"  
+  - 1,200 user submissions in 2 weeks.  
+
+#### **Price Positioning Map** (Python):  
+```python  
+import matplotlib.pyplot as plt  
+
+def plot_price_quality(competitors):  
+    plt.scatter(competitors['price'], competitors['yelp_rating'])  
+    plt.xlabel('Price')  
+    plt.ylabel('Yelp Rating')  
+    plt.title('Value-for-Money Analysis')  
+    plt.show()  
+
+# Revealed UrbanEats' nachos were 20% pricier than better-rated competitors  
+```  
 
 ---
 
-## **Technical Implementation**
+### **Phase 4: Dynamic Pricing Engine**  
+**Objective**: Adjust prices based on demand, costs, and local factors.  
 
-### **1. Data Collection with OCR**
-```python
-from PIL import Image
-import pytesseract
+#### **Rules Engine** (SQL):  
+```sql  
+UPDATE menu_prices  
+SET price =  
+    CASE  
+        WHEN ingredient_cost > current_price * 0.4 THEN current_price * 1.1  
+        WHEN competitor_price < current_price * 0.9 THEN current_price * 0.95  
+        ELSE current_price  
+    END  
+WHERE location = 'Chicago';  
+```  
 
-# Example: Extract text from a menu image using Tesseract OCR
-def extract_menu_text(image_path):
-    image = Image.open(image_path)
-    text = pytesseract.image_to_string(image)
-    return text
-
-# Example usage
-image_path = "menu_image.jpg"
-menu_text = extract_menu_text(image_path)
-print(menu_text)
-```
-
-### **2. Time-Series Analysis**
-```python
-import pandas as pd
-import matplotlib.pyplot as plt
-
-# Example: Analyze price trends over time
-def analyze_price_trends(menu_data):
-    menu_data['date'] = pd.to_datetime(menu_data['date'])
-    menu_data.set_index('date', inplace=True)
-    menu_data['price'].plot(title='Menu Price Trends Over Time')
-    plt.show()
-
-# Example usage
-menu_data = pd.DataFrame({
-    'date': ['2023-01-01', '2023-02-01', '2023-03-01'],
-    'price': [10, 12, 11]
-})
-analyze_price_trends(menu_data)
-```
-
-### **3. Comparative Analysis**
-```python
-# Example: Compare prices with competitors
-def compare_prices(restaurant_prices, competitor_prices):
-    comparison = pd.merge(restaurant_prices, competitor_prices, on='item', suffixes=('_restaurant', '_competitor'))
-    comparison['price_difference'] = comparison['price_restaurant'] - comparison['price_competitor']
-    return comparison
-
-# Example usage
-restaurant_prices = pd.DataFrame({
-    'item': ['Burger', 'Pizza'],
-    'price': [10, 12]
-})
-competitor_prices = pd.DataFrame({
-    'item': ['Burger', 'Pizza'],
-    'price': [9, 13]
-})
-price_comparison = compare_prices(restaurant_prices, competitor_prices)
-print(price_comparison)
-```
-
-### **4. Data Visualization**
-   - Use data visualization platforms like Power BI or Tableau to create interactive dashboards:
-     - Visualize price trends over time.
-     - Highlight competitive pricing insights.
-     - Provide actionable recommendations.
+#### **A/B Test Results**:  
+| Strategy          | Margin Change | Customer Complaints |  
+|-------------------|---------------|---------------------|  
+| Cost-Plus         | +8%           | No change           |  
+| Competitor-Match  | +3%           | -22%                |  
 
 ---
 
-## **Deliverables**
+### **Phase 5: Stakeholder Playbook & Training**  
+**Objective**: Get buy-in from skeptical managers.  
 
-1. **Historical Menu Price Database**:
-   - A structured database of historical menu prices.
+#### **Playbook Components**:  
+1. **"Red Zone" Alerts**: Items priced below cost (urgent fixes).  
+2. **Localized Price Ceilings**: "Never charge >$18 for salads in Dallas (avg. competitor: $14)."  
+3. **Promotion Calendar**: Discount overpiked items during off-peak hours.  
 
-2. **Price Trend Analysis Report**:
-   - Visualizations and insights into menu price evolution.
-
-3. **Competitive Pricing Insights**:
-   - A report comparing menu prices with competitors.
-
-4. **Actionable Pricing Recommendations**:
-   - Tailored strategies for optimizing menu pricing.
-
----
-
-## **Business Impact**
-
-1. **For Restaurants**:
-   - Improved pricing strategies to maximize profitability and customer satisfaction.
-   - Better alignment with market trends and competitor pricing.
-
-2. **For Analysts**:
-   - Enhanced ability to track and predict menu price trends.
-   - Data-driven insights to support strategic decision-making.
-
-3. **For Customers**:
-   - More appealing pricing options and promotions.
-   - Increased satisfaction with menu offerings.
+#### **Manager Dashboard** (Power BI):  
+- **Real-Time View**:  
+  - "Austin Tacos: 20% cheaper than El Paso Tacos. Recommend +$1.50."  
+- **Customer Sentiment**:  
+  - "Nacho complaints ↓ 40% after $2 price drop."  
 
 ---
 
-This project can provide significant value to restaurants and analysts by leveraging historical data and advanced analytics to optimize pricing strategies. Let me know if you’d like to dive deeper into any specific aspect or if you have another project to discuss! 🍽️📈
+## **Business Impact**  
+| Metric               | Before  | After (6 Months) |  
+|----------------------|---------|-------------------|  
+| Gross Margin         | 58%     | 65% (+7%)         |  
+| Price Complaints     | 32/week | 18/week (-44%)    |  
+| Cross-Location Price Gap | 15%    | 4%                |  
+
+---
+
+## **Real-World Challenges**  
+1. **Chef Rebellion**: Austin chef refused "inferior avocado" swap (compromised with weekend premium specials).  
+2. **Data Leak Risk**: Competitor spotted secret shopper → used VPN-masked scraping.  
+3. **Menu Board Costs**: Updating digital menus cost $8K/location (prioritized high-traffic stores).  
+
+---
+
+## **Deliverables**  
+1. **Technical**:  
+   - Python OCR pipeline with OpenCV enhancement.  
+   - AWS DynamoDB for real-time competitor prices.  
+2. **Business**:  
+   - Power BI dashboard with pricing KPIs.  
+   - "Price Optimization Playbook" for managers.  
+
+---
+
+## **Executive Summary**  
+*By treating menus as living datasets, not static artifacts, UrbanEats turned a margin crisis into a $1.2M/year opportunity. The intern’s work proves that in the restaurant game, today’s special is tomorrow’s data point.*  
+
+---
+
+This case study plunges the intern into the cutthroat world of menu economics—faded receipts, stubborn chefs, and Yelp vigilantes—while delivering a system that turns pricing from art to science.
