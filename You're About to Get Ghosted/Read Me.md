@@ -180,5 +180,3 @@ visualize_churn_metrics(metrics)
    - Enhanced integration with CRM platforms and data analytics tools.
 
 ---
-
-This project has the potential to significantly improve customer retention and satisfaction.
