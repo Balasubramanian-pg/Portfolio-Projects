@@ -1,7 +1,7 @@
 
 ---
 
-# **Hyper-Realistic Case Study: Customer Churn Prediction and Retention System**  
+# Customer Churn Prediction and Retention System**  
 **Tools**: Python, SQL, Power BI, Excel | **Duration**: 8-week Internship  
 **Business Context**: *ConnectTel Telecom*, a $500M revenue company, faces a 25% annual churn rate, costing $45M/year. They need to:  
 1. **Predict churn risk** with 90% accuracy using CRM and usage data.  
