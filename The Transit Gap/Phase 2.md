@@ -1,7 +1,3 @@
-Here’s the **Phase 2 Approach Note** for the case study:  
-
----
-
 # **Phase 2 Approach Note: Spatial Gap Analysis & Economic Potential Mapping**  
 **Project**: The Transit Gap - Between-Stops Economy Analyzer  
 **Objective**: Identify high-potential transit gaps using foot traffic, business density, and economic indicators.  
