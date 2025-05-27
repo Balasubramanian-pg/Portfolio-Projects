@@ -1,4 +1,4 @@
-# 🚀 Dynamic Menu Pricing & Profitability Optimization Project 📈
+# Menu Pricing & Profitability Optimization Project data:image/svg+xml,%3csvg stroke-width='1.5' id='Layer_1' data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cdefs%3e%3cstyle%3e.cls-3zo7m9i1ywb7q93al3iqle-1%7bfill:none%3bstroke:%23FC0058%3bstroke-miterlimit:10%3b%3b%7d%3c/style%3e%3c/defs%3e%3cline class='cls-3zo7m9i1ywb7q93al3iqle-1' x1='0.5' y1='1.46' x2='23.5' y2='1.46'/%3e%3crect class='cls-3zo7m9i1ywb7q93al3iqle-1' x='2.42' y='1.46' width='19.17' height='3.83'/%3e%3cpolygon class='cls-3zo7m9i1ywb7q93al3iqle-1' points='19.67 5.29 4.33 5.29 4.33 18.71 12 22.54 19.67 18.71 19.67 5.29'/%3e%3cpolygon class='cls-3zo7m9i1ywb7q93al3iqle-1' points='12 12.96 12.6 14.22 13.96 14.42 12.98 15.4 13.21 16.79 12 16.14 10.79 16.79 11.02 15.4 10.04 14.42 11.4 14.22 12 12.96'/%3e%3cpath class='cls-3zo7m9i1ywb7q93al3iqle-1' d='M8.17 10.08A8.74 8.74 0 0 1 12 9.13a8.74 8.74 0 0 1 3.83.95'/%3e%3c/svg%3e
 
 **A multi-phase approach to leveraging data for enhanced restaurant profitability and market competitiveness.**
 
