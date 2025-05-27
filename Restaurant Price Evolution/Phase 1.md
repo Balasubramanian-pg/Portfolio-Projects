@@ -170,7 +170,7 @@ This project is broken down into five distinct phases, each building upon the la
 
 ---
 
-## 🛠 Key Technologies
+##  Key Technologies
 
 *   **Data Storage & Querying:** SQL
 *   **OCR:** Tesseract, AWS Textract
