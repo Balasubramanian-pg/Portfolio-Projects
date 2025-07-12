@@ -66,4 +66,4 @@ This **Customer Churn Prediction and Retention System** can be structured into *
 
 ---
 
-This phased approach ensures an **iterative and scalable** implementation of the system while maximizing business impact. 🚀
+This phased approach ensures an **iterative and scalable** implementation of the system while maximizing business impact. 
