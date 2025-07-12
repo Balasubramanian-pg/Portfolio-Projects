@@ -113,11 +113,11 @@ sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
 📌 *Goal:* Provide actionable insights for Phase 2 (Predictive Modeling).  
 
 ### **5.1 Key Deliverables**  
-📊 **Data Reports & Dashboards**  
+**Data Reports & Dashboards**  
 - Excel summary: *“Rainfall > 0.5” reduces occupancy by 40% at Miami resorts.”*  
 - Power BI **Cancellation Risk Dashboard** with visual trends.  
 
-📜 **Technical Documentation**  
+**Technical Documentation**  
 - Data cleaning steps & Python scripts.  
 - SQL queries for extracting relevant booking & revenue data.  
 
@@ -130,5 +130,3 @@ sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
 
 ## **Conclusion**  
 Phase 1 provides a **data-backed foundation** for predictive modeling by uncovering the impact of weather on revenue. The next phase will leverage these insights to **forecast cancellations and demand surges** with high accuracy.  
-
-Would you like any refinements or additional details? 😊
