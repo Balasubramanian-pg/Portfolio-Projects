@@ -118,7 +118,7 @@ ci_lower, ci_upper = np.percentile(simulation_results, [5, 95])
 ---
 
 ## **Final Outcome & Impact**  
-🚀 **The Transit Gap Analyzer will provide a comprehensive, data-driven strategy to optimize transit expansion, improve accessibility, and unlock economic potential.**  
+**The Transit Gap Analyzer will provide a comprehensive, data-driven strategy to optimize transit expansion, improve accessibility, and unlock economic potential.**  
 
 Next steps: Deployment, stakeholder workshops, and iterative refinements.  
 
