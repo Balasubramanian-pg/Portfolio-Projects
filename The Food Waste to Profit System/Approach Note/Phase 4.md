@@ -1,5 +1,3 @@
----
-
 # **Approach Note: Phase 4 – Circular Economy Dashboard Development**  
 **Project**: FreshPlate Food Waste Reduction Initiative  
 **Owner**: [Intern Name] | **Date**: [Insert Date] | **Tools**: Power BI, SQL, Excel  
