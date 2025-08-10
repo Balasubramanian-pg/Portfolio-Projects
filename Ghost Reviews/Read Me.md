@@ -1,185 +1,94 @@
+# Identifying and Quantifying the Impact of Ghost Reviews on Local Economies
+
+### **Executive Summary**
+
+Online reviews are the lifeblood of modern local commerce, yet a critical flaw exists in the ecosystem: **ghost reviews**. These are reviews posted on the pages of businesses that have permanently closed. Our investigation reveals that these digital phantoms are not benign artifacts; they actively mislead consumers, distort market dynamics, and cause quantifiable revenue leakage from informed businesses to defunct ones, before ultimately redirecting to a second-choice competitor.
+
+This project undertook a three-phase approach to address this problem. We first developed a methodology to systematically **identify** ghost reviews by cross-referencing review timestamps with business closure dates. Second, we conducted a geospatial and economic **analysis** to simulate and measure the "misdirection effect," quantifying the redirected customer footfall and leaked revenue. Finally, we developed a robust, actionable **solution**: a "Business Inactivity Tagging" protocol for review platforms.
+
+Our findings indicate that a significant percentage of consumer journeys are initially influenced by highly-rated closed businesses, leading to an estimated **$X million in annual revenue leakage** within our simulated city district. By implementing our proposed tagging system, review platforms can increase user trust, create a fairer competitive landscape, and recapture this lost economic efficiency, ensuring customer traffic flows to viable, operational businesses.
 
 ---
 
-# Customer Churn Prediction and Retention System
-**Tools**: Python, SQL, Power BI, Excel | **Duration**: 8-week Internship  
-**Business Context**: *ConnectTel Telecom*, a $500M revenue company, faces a 25% annual churn rate, costing $45M/year. They need to:  
-1. **Predict churn risk** with 90% accuracy using CRM and usage data.  
-2. **Reduce churn by 20%** in 6 months via automated retention campaigns.  
-3. **Increase CLTV (Customer Lifetime Value)** by 15% through personalized offers.  
+### **1. Project Context**
+
+In the digital age, a business's online presence is its most valuable asset. Platforms like Google Maps, Yelp, and TripAdvisor serve as the primary discovery engine for consumers seeking local services, from cafes to clinics. The decision-making process is heavily skewed by two factors: average star rating and review volume.
+
+However, when a business ceases operations, its digital presence does not vanish. Its online profile, complete with years of accumulated positive reviews, often remains active and discoverable. This creates a new and unaddressed challenge: **ghost reviews**. These are legitimate-looking reviews posted—either through user error, system lag, or malicious intent—long after a business has shut its doors. These phantom endorsements create a misleadingly positive image of a defunct business, creating a trap for unwary consumers.
+
+### **2. The Problem Statement**
+
+The persistence of ghost reviews on major platforms introduces significant friction into the consumer journey and creates an unfair competitive environment. This project seeks to answer three critical questions:
+
+1.  **Identification:** Can we reliably and systematically identify "ghost reviews" at scale by analyzing publicly available data?
+2.  **Quantification:** What is the measurable economic impact of these reviews? How much potential revenue is misdirected, and which active competitors are inadvertently benefiting or losing out?
+3.  **Rectification:** What is a scalable, low-friction solution that review platforms can implement to mitigate this problem and restore market integrity?
+
+Our hypothesis is that highly-rated closed businesses act as "black holes," attracting customer interest that must then be redirected, leading to wasted time for consumers and lost primary revenue opportunities for deserving, operational businesses.
+
+### **3. Project Objectives & Key Performance Indicators (KPIs)**
+
+*   **Objective 1:** Develop a repeatable process to identify ghost reviews with at least 99% accuracy.
+    *   **KPI:** Percentage of correctly identified ghost reviews from a curated validation set.
+*   **Objective 2:** Quantify the economic impact of ghost reviews in a sample market.
+    *   **KPI:** Total calculated "Revenue Leaked" per business category and per competitor.
+    *   **KPI:** Percentage of simulated customer journeys that begin with a "ghost interaction."
+*   **Objective 3:** Design a practical solution for review platforms.
+    *   **KPI:** A formal proposal document outlining the "Business Inactivity Tagging" system.
 
 ---
 
-## **Problem Statement**  
-*ConnectTel*’s reactive approach (e.g., retention offers after cancellation requests) fails to address early warning signs. Manual processes miss 40% of at-risk customers.  
+### **4. Methodology and Phased Approach**
+
+Our project is structured into four distinct phases, moving from data discovery to a final, actionable solution.
+
+#### **Phase 1: Data Acquisition & Ghost Identification**
+
+The first step is to gather the necessary data. This involves creating a comprehensive dataset that simulates data from online business directories and review platforms.
+
+*   **Step 1: Business Directory Aggregation:** We compile a master list of businesses, including their name, category, geographic coordinates (latitude/longitude), and most importantly, their operational **status** (`Open` or `Permanently Closed`) and a `closure_date` for the latter.
+*   **Step 2: Review Data Collection:** For each business, we gather all associated reviews, capturing the rating, text, and `review_date`.
+*   **Step 3: The "Ghost" Filter:** The core of this phase is a simple but powerful operation. We merge the two datasets and apply a filter to isolate reviews where the `review_date` is more recent than the business's `closure_date`. The output is a clean list of all identified ghost reviews.
+
+#### **Phase 2: Qualitative & Sentiment Analysis**
+
+Once identified, we need to understand the *nature* of these ghost reviews. Are they positive and misleading, or are they negative warnings?
+
+*   **Step 1: Sentiment Scoring:** We apply a pre-trained Natural Language Processing (NLP) model to the `review_text` of each ghost review. This assigns a sentiment score (e.g., from -1.0 for highly negative to 1.0 for highly positive).
+*   **Step 2: Insight Generation:** We analyze the distribution of these scores. Our key finding is that a majority of ghost reviews carry a positive sentiment, confirming that they are actively misleading consumers by praising a service that no longer exists.
+
+#### **Phase 3: Geospatial & Economic Impact Analysis**
+
+This is the most critical phase, where we measure the real-world impact. We simulate customer behavior to understand how ghost reviews affect decisions.
+
+*   **Step 1: Simulating the Customer Journey:** We generate thousands of simulated "customer journeys." Each journey consists of a customer at a specific location looking for a business in a certain category (e.g., "Cafe").
+*   **Step 2: Modeling the "Uninformed Choice":** We model a customer's initial choice based on a combined "attractiveness score" (a function of a business's average rating and its proximity to the customer). Crucially, this model is "uninformed" of the business's operational status.
+*   **Step 3: Detecting the Misdirection:** We flag every journey where the initial choice is a closed business as a "ghost interaction."
+*   **Step 4: Quantifying Revenue Leakage:** For each ghost interaction, we identify the next-best *open* competitor the customer would be redirected to. We then assign a standard transaction value based on the business category (e.g., $15 for a cafe). This value represents the "revenue leaked" to a secondary choice, a direct measure of economic inefficiency.
+
+#### **Phase 4: Synthesis & Solutioning**
+
+In the final phase, we consolidate our findings and formulate a recommendation. The analysis from Phase 3 provides undeniable evidence that the lack of clear "closed" signals on business profiles leads to quantifiable economic distortion.
 
 ---
 
-## **Your Role as an Intern**  
-Analyze customer behavior, build predictive models, and design a retention engine.  
+### **5. The Proposed Solution: "Business Inactivity Tagging"**
 
----
+Based on our findings, we propose a simple, elegant, and highly effective solution for review platforms.
 
-### **Phase 1: Data Aggregation & Cleaning**  
-**Objective**: Merge fragmented CRM, billing, and support data.  
+*   **Concept:** A clear, visually distinct "Permanently Closed" or "Inactive" tag should be prominently displayed on the profile of any business confirmed to be out of operation.
+*   **Implementation:**
+    1.  **Filtering at the Source:** Businesses with this tag should be automatically filtered out from default search results (e.g., "cafes near me").
+    2.  **Disabling New Reviews:** The ability to post new reviews for tagged businesses should be disabled, preventing the creation of new ghost reviews.
+    3.  **Historical Transparency:** The profile should remain accessible via a direct link for historical reference, but with clear warnings that the business is no longer operational.
 
-#### **Data Sources**  
-1. **CRM Data** (SQL):  
-   - `Customer_ID, Plan_Type, Tenure, Monthly_Charges, Upgrade_History`.  
-   - Issues: 15% missing `Upgrade_History`; conflicting tenure values.  
-2. **Usage Logs** (CSV, 2M+ rows):  
-   - `Customer_ID, Data_Usage, Call_Duration, Outage_Count`.  
-3. **Support Tickets** (JSON):  
-   - Sentiment scores from NLP analysis of ticket text (e.g., "frustrated" = high risk).  
+**Benefits of this Solution:**
+*   **For Consumers:** Eliminates confusion and wasted time, leading to a more trustworthy and efficient user experience.
+*   **For Open Businesses:** Creates a level playing field where they compete only against other operational businesses, not the ghosts of past successes.
+*   **For Platforms:** Increases user trust, data quality, and the overall integrity of their ecosystem.
 
-#### **Tasks**  
-1. **Clean CRM Data** (SQL):  
-   ```sql  
-   -- Fix tenure inconsistencies (e.g., negative values)  
-   UPDATE customers  
-   SET Tenure = CASE  
-       WHEN Tenure < 0 THEN ABS(Tenure)  
-       ELSE Tenure  
-   END  
-   WHERE Tenure IS NOT NULL;  
-   ```  
+### **6. Project Deliverables**
 
-2. **Merge Datasets** (Python):  
-   ```python  
-   import pandas as pd  
-
-   # Merge usage and support data on Customer_ID  
-   merged_data = pd.merge(usage, support, on='Customer_ID', how='left')  
-   merged_data['Sentiment_Score'] = merged_data['Sentiment_Score'].fillna(0)  # Assume no tickets = neutral  
-   ```  
-
-**Deliverable**:  
-- Cleaned dataset with 95% completeness.  
-- Data dictionary mapping sentiment scores to risk levels.  
-
----
-
-### **Phase 2: Exploratory Analysis**  
-**Objective**: Identify churn drivers like outage frequency or price hikes.  
-
-#### **Key Insights**  
-1. **Churn Triggers** (Power BI):  
-   - 62% of churners experienced >3 outages/month.  
-   - Customers on legacy plans (no upgrades in 12 months) churn 3x faster.  
-2. **Sentiment Impact** (Python):  
-   ```python  
-   # Correlation matrix: Sentiment vs. Churn  
-   print(merged_data[['Sentiment_Score', 'Churned']].corr())  
-   # Output: -0.71 (strong negative correlation)  
-   ```  
-
-#### **Deliverable**:  
-- Power BI report: "Top 5 Churn Drivers: Outages, Plan Age, Sentiment, Usage Drops, Billing Complaints."  
-
----
-
-### **Phase 3: Predictive Modeling**  
-**Objective**: Build a model to flag at-risk customers 30 days pre-churn.  
-
-#### **Model Development**  
-1. **Algorithm**: XGBoost (handles imbalanced data with scale_pos_weight).  
-2. **Features**:  
-   - `Outage_Count`, `Sentiment_Score`, `Percent_Usage_Drop`, `Months_Since_Upgrade`.  
-3. **Validation**:  
-   - AUC-ROC: 0.92 | Precision: 88% | Recall: 85%.  
-
-#### **Code Snippet** (Python):  
-```python  
-from xgboost import XGBClassifier  
-from sklearn.model_selection import train_test_split  
-
-# Handle class imbalance (20% churners)  
-model = XGBClassifier(scale_pos_weight=4)  
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)  
-model.fit(X_train, y_train)  
-
-# Predict risk for a high-value customer  
-high_value_customer = [[3, -0.8, 45, 18]]  # 3 outages, negative sentiment, 45% usage drop, 18mo no upgrade  
-risk = model.predict_proba(high_value_customer)[0][1]  # Output: 94% risk  
-```  
-
-**Challenge**: Model initially flagged 60% false positives (fixed by adjusting classification thresholds).  
-
----
-
-### **Phase 4: Retention Automation**  
-**Objective**: Trigger personalized campaigns for at-risk customers.  
-
-#### **Workflows**  
-1. **Tier 1 (Risk > 80%)**:  
-   - Offer free month + plan upgrade.  
-2. **Tier 2 (Risk 50-80%)**:  
-   - Send loyalty discount (15% off next bill).  
-3. **Tier 3 (Risk 30-50%)**:  
-   - Proactive support call.  
-
-#### **SQL Automation**:  
-```sql  
--- Flag high-risk customers nightly  
-INSERT INTO retention_campaigns (Customer_ID, Campaign)  
-SELECT Customer_ID,  
-    CASE  
-        WHEN Churn_Risk >= 0.8 THEN 'Tier 1 Offer'  
-        WHEN Churn_Risk >= 0.5 THEN 'Tier 2 Offer'  
-        ELSE NULL  
-    END  
-FROM churn_predictions  
-WHERE Campaign IS NULL;  
-```  
-
----
-
-### **Phase 5: Dashboard & Playbook**  
-**Objective**: Empower managers to monitor and refine strategies.  
-
-#### **Power BI Dashboard**  
-- **Home Tab**:  
-  - Real-time churn risk distribution.  
-  - Campaign performance (e.g., Tier 1 acceptance rate: 68%).  
-- **Drill-Down**:  
-  - Customer profiles: "Customer 8921: 92% risk – 4 outages, 2 angry tickets."  
-
-#### **Playbook Components**  
-1. **Escalation Protocols**: When to escalate to human agents.  
-2. **Offer Expiry Rules**: Auto-retire stale discounts.  
-3. **A/B Test Results**: "Free month" beats "20% off" by 22% acceptance.  
-
----
-
-## **Business Impact**  
-| Metric               | Before  | After (6 Months) |  
-|----------------------|---------|-------------------|  
-| Monthly Churn Rate   | 4.1%    | 3.3% (-19.5%)     |  
-| Retention ROI        | N/A     | $8.2M saved       |  
-| CLTV                 | $1,200  | $1,380 (+15%)     |  
-
----
-
-## **Real-World Challenges**  
-1. **Data Privacy**: Masked `Customer_ID` in dashboards to comply with CCPA.  
-2. **Channel Overload**: SMS offers annoyed customers (fixed with opt-in rules).  
-3. **Model Decay**: Accuracy dropped 12% in 3 months (retrained biweekly).  
-
----
-
-## **Deliverables**  
-1. **Technical**:  
-   - Python scripts for model training and sentiment analysis.  
-   - SQL automation scripts for campaign triggers.  
-2. **Business**:  
-   - Power BI dashboard with customer risk profiles.  
-   - Excel playbook: "10 Retention Campaigns with ROI."  
-
----
-
-## **Executive Summary**  
-*By treating churn as a preventable event, not an inevitability, ConnectTel turned a $45M leak into a $8.2M plug. The intern’s work showcases how predictive analytics and empathy-driven automation can transform customer retention.*  
-
----
-
-This case study immerses the intern in real-world chaos—data messiness, stakeholder politics, and balancing automation with human touch—to deliver measurable business impact.
+1.  **A Comprehensive Report:** This document, detailing the project's context, methodology, findings, and recommendations.
+2.  **An Interactive Dashboard (Power BI/Tableau):** A dashboard visualizing the key findings, including a map of ghost review hotspots, a breakdown of revenue leakage by category, and a list of the most impacted competitors.
+3.  **A Formal Proposal:** A presentation deck outlining the "Business Inactivity Tagging" solution, designed for stakeholders at major review platforms.
