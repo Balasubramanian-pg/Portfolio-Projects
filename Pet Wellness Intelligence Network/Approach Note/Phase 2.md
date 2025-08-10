@@ -1,4 +1,4 @@
-# **Approach Note: Phase 2 – Predictive Health & Preventive Care**  
+# **Predictive Health & Preventive Care**  
 
 ### **Objective**  
 Leverage the unified pet health database from Phase 1 to develop **AI-driven predictive analytics** that detect early signs of illness and recommend preventive care measures, ensuring **proactive pet health management**.  
