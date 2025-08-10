@@ -1,6 +1,6 @@
 
 ---
-# **Hyper-Realistic Case Study: Urban Parking Optimization System**  
+# **Urban Parking Optimization System**  
 **Tools**: Python, SQL, GIS (ArcGIS), Power BI, IoT | **Duration**: 14-week Internship  
 **Business Context**: *MetroCity* (population 2.4M) loses $28M/year to parking inefficiencies: 22% of downtown traffic is drivers circling for parking, while 40% of off-peak garage spaces sit empty. Their goals:  
 1. Reduce parking search time by 35% in 6 months.  
