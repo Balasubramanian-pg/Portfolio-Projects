@@ -1,7 +1,3 @@
-Here’s a **deeply expanded, hyper-realistic case study** designed to simulate a high-impact internship project. It includes granular details, mock datasets, and real-world complexity while staying within SQL/Excel/Power BI scope:
-
----
-
 # **Case Study: Food Waste Optimization for "FreshPlate" Restaurant Group**  
 **Tools**: SQL, Excel, Power BI | **Duration**: 6-week Internship  
 **Business Context**: FreshPlate operates 35 restaurants across 4 cities, wasting 18% of inventory ($220K/month). Their goals:  
