@@ -1,4 +1,4 @@
-# **Approach Note: Phase 3 – AI-Powered Veterinary Decision Support**  
+# **Phase 3 – AI-Powered Veterinary Decision Support**  
 
 ### **Objective**  
 Build an **AI-driven decision support system** for veterinarians, enabling **data-backed clinical decisions, automated diagnostics, and treatment optimization**. This phase ensures **precision medicine for pets** by leveraging machine learning and real-time pet health data.  
