@@ -1,5 +1,3 @@
----
-
 # **Approach Note: Phase 1 – Waste Audit & Root Cause Analysis**  
 **Project**: FreshPlate Food Waste Reduction Initiative  
 **Owner**: [Intern Name] | **Date**: [Insert Date] | **Tools**: Excel  
