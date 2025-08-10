@@ -1,4 +1,4 @@
-# **Phase 3 Approach Note: Decision Support System & Visualization**  
+# **Decision Support System & Visualization**  
 **Project**: The Transit Gap - Between-Stops Economy Analyzer  
 **Objective**: Develop an interactive Decision Support System (DSS) to visualize transit gaps, economic potential, and optimize transit expansion strategies.  
 
