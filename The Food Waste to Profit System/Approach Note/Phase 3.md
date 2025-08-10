@@ -1,5 +1,3 @@
----
-
 # **Approach Note: Phase 3 – Profit Conversion & Revenue Modeling**  
 **Project**: FreshPlate Food Waste Reduction Initiative  
 **Owner**: [Intern Name] | **Date**: [Insert Date] | **Tools**: Excel, Power BI  
