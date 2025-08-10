@@ -1,6 +1,6 @@
 
 ---
-# **Hyper-Realistic Case Study: Menu Price Evolution Tracker**  
+# **Menu Price Evolution Tracker**  
 **Tools**: Python, SQL, Power BI, Tesseract OCR, AWS | **Duration**: 10-week Internship  
 **Business Context**: *UrbanEats Diner Chain* (12 locations) faces shrinking margins due to inconsistent pricing. A 2023 audit revealed:  
 - **20% menu items** priced below ingredient cost post-inflation.  
@@ -173,3 +173,4 @@ WHERE location = 'Chicago';
 ---
 
 This case study plunges the intern into the cutthroat world of menu economics—faded receipts, stubborn chefs, and Yelp vigilantes—while delivering a system that turns pricing from art to science.
+
