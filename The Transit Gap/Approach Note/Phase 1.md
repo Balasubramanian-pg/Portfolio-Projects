@@ -1,4 +1,4 @@
-# **Phase 1 Approach Note: Data Aggregation & Cleaning**  
+# **Data Aggregation & Cleaning**  
 **Project**: The Transit Gap - Between-Stops Economy Analyzer  
 **Objective**: Establish a clean, structured dataset integrating transit, business, and foot traffic data to identify high-potential transit gaps.  
 
