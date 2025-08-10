@@ -1,8 +1,4 @@
-Here's a detailed approach note for **Phase 1: Historical Weather-Revenue Analysis** of the *Weather FOMO - Lost Revenue Weather Tracker* project.  
-
----
-
-# **Approach Note – Phase 1: Historical Weather-Revenue Analysis**  
+# **Phase 1: Historical Weather-Revenue Analysis**  
 📌 *Objective:* Identify the correlation between weather conditions and revenue fluctuations at *SunnyDays Resorts* by analyzing historical weather, booking, and event data.  
 
 ---
