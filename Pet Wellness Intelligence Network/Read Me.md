@@ -1,6 +1,6 @@
 
 ---
-# **Hyper-Realistic Case Study: Pet Wellness Tracker**  
+# **Pet Wellness Tracker**  
 **Tools**: Python, SQL, IoT (Arduino/Raspberry Pi), Power BI, Figma | **Duration**: 12-week Internship  
 **Business Context**: *PawsCare Vet Clinics*, a chain of 50 clinics, faces a 30% no-show rate for vaccinations and a 25% rise in obesity-related pet illnesses. Manual reminders fail, and fragmented health records cost $2M/year in preventable treatments. Their goals:  
 1. Reduce missed wellness appointments by 40% in 6 months.  
