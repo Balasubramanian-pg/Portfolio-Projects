@@ -1,4 +1,4 @@
-## The Transit Gap - Between-Stops Economy Analyzer**  
+## The Transit Gap - Between-Stops Economy Analyzer
 
 **Tools**: Python, SQL, GIS (QGIS/ArcGIS), Power BI | **Duration**: 12-week Internship  
 **Business Context**: *MetroCity Transit Authority* seeks to boost ridership and local economic activity by targeting underutilized zones between subway stops. Despite 1.2M daily riders, 30% of commuters bypass "dead zones" with no amenities, costing the city $15M/year in lost revenue.  
