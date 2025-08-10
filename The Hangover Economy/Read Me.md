@@ -1,7 +1,7 @@
 
 ---
 
-# **Hyper-Realistic Case Study: The Hangover Economy - Post-Party Purchase Analyzer**  
+# **The Hangover Economy - Post-Party Purchase Analyzer**  
 **Tools**: Python, SQL, Excel, Power BI | **Duration**: 8-week Internship  
 **Business Context**: A national convenience store chain, *QuickStop*, wants to capitalize on the $50B "hangover economy" by optimizing product placement, promotions, and partnerships for hungover consumers.  
 
