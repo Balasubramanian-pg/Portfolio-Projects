@@ -1,187 +1,116 @@
+# **Project Phoenix: Phase 2 - Centralized Analysis & Insight Generation**
 
----
+**Objective:** To transform the raw, disparate waste log data into a centralized source of truth and generate actionable, evidence-based insights to guide strategic decision-making for waste reduction.
+**Timeline:** Months 3-4
+**Primary Tools:** SQL, Microsoft Excel (Power Query), Power BI (Initial Setup)
+**Key Stakeholders:** Operations Manager, Data Analyst, Head Chef, Finance Department
 
-# **Approach Note: Phase 2 – Redistribution Engine Development**  
-**Project**: FreshPlate Food Waste Reduction Initiative  
-**Owner**: [Intern Name] | **Date**: [Insert Date] | **Tools**: SQL, Power BI  
+### **1. Overview & Strategic Purpose**
 
----
+Phase 1 provided the raw material—the "what." Phase 2 is about discovering the "why" and the "so what." This phase moves from data collection to data intelligence. By centralizing and rigorously analyzing the data from all 15 locations, we will identify patterns, pinpoint root causes, and quantify the financial impact of specific waste issues. The output of this phase is a **prioritized list of actionable opportunities** for waste reduction, backed by solid data.
 
-## **Objective**  
-Design a scalable SQL-driven system to automate surplus food matching with nonprofits, ensuring 40% of FreshPlate’s excess inventory is donated or recycled within 8 months.  
+> **Key Callout: From Reactive to Proactive**
+> Without this analysis, our efforts would be reactive and based on hunches. This phase allows us to proactively target the most significant sources of waste, ensuring our interventions in Phase 3 will have the highest possible return on investment (ROI).
 
----
+### **2. Phase Inputs: The "Raw Material"**
 
-## **Scope**  
-- **Data**:  
-  - Real-time inventory tables (item, quantity, expiry date, location).  
-  - Nonprofit profiles (needs, pickup capacity, cold storage availability).  
-- **Focus Areas**:  
-  - Daily matching of perishable/non-perishable surplus to nonprofits.  
-  - Weekly donation performance tracking.  
-  - Integration with Power BI for real-time reporting.  
-- **Exclusions**: Handling logistics (e.g., transportation coordination).  
+The primary input for this phase is the deliverable from Phase 1:
+*   **15+ Excel Files:** The completed `SavoryBites_WasteLog_[Location].xlsx` files from each restaurant.
+*   **Baseline KPIs:** Initial high-level metrics on total waste cost.
 
----
+### **3. Core Activities & Technical Process**
 
-## **Data Sources**  
-1. **Inventory Table**: Updated hourly from POS systems.  
-   - Columns: `item_id, item_name, category, quantity_kg, expiry_date, location`.  
-2. **Nonprofits Database**:  
-   - Columns: `org_id, org_name, needs, pickup_capacity_kg, refrigeration_required`.  
-3. **Donation Logs**: Historical data on past donations (success/failure reasons).  
+This phase is executed through a structured, three-step data pipeline.
 
----
+#### **Step 1: Data Consolidation & Cleaning (Tool: Excel Power Query)**
 
-## **Methodology**  
+*   **Action:** Create a master Excel workbook that uses **Power Query** to connect to all 15 individual waste log files. Power Query will:
+    1.  **Extract:** Pull data from each source file.
+    2.  **Transform:** Clean and standardize the data (e.g., correct spelling errors in `Waste Reason`, standardize units to kilograms, apply consistent cost calculations).
+    3.  **Load:** Merge the cleaned data into a single, master table ready for analysis.
+*   **Output:** A clean, unified dataset (`master_waste_data`) in a single table or CSV file.
 
-### **Step 1: Database Design & Optimization**  
-**Schema**:  
-```sql  
--- Inventory Table  
-CREATE TABLE inventory (  
-  item_id INT PRIMARY KEY,  
-  item_name VARCHAR(50) NOT NULL,  
-  category VARCHAR(20) CHECK (category IN ('Perishable', 'Non-Perishable')),  
-  quantity_kg DECIMAL(10,2) NOT NULL,  
-  expiry_date DATE NOT NULL,  
-  location VARCHAR(20) NOT NULL  
-);  
+> **Key Callout: The Power of Automation**
+> Using Power Query instead of manual copy-pasting is critical. Once set up, this process can be re-run instantly in future months, saving dozens of hours and eliminating manual error. This builds a scalable process for ongoing analysis.
 
--- Nonprofits Table  
-CREATE TABLE nonprofits (  
-  org_id INT PRIMARY KEY,  
-  org_name VARCHAR(50) NOT NULL,  
-  needs VARCHAR(100),  -- e.g., 'Perishable, Dairy, Frozen'  
-  pickup_capacity_kg DECIMAL(10,2) NOT NULL,  
-  refrigeration_required BOOLEAN DEFAULT FALSE  
-);  
-```  
+#### **Step 2: Exploratory Data Analysis (EDA) (Tool: SQL)**
 
-**Optimizations**:  
-- Add indexes on `expiry_date` and `location` for faster querying.  
-- Use `CHECK constraints` to enforce category validity.  
+*   **Action:** The cleaned data is imported into a SQL database (e.g., PostgreSQL, MySQL, or even a robust SQLite file) for deep analysis. Key queries will be run to uncover insights:
 
----
+    ```sql
+    -- 1. Find the Top 5 Costliest Waste Items
+    SELECT 
+        waste_item_name,
+        SUM(estimated_cost) as total_cost
+    FROM master_waste_data
+    GROUP BY waste_item_name
+    ORDER BY total_cost DESC
+    LIMIT 5;
 
-### **Step 2: Surplus Matching Logic**  
-**Key SQL Queries**:  
-1. **Daily Perishable Matching**:  
-   ```sql  
-   -- Match items expiring in 24 hours with nonprofits needing perishables  
-   SELECT  
-     i.item_name,  
-     i.quantity_kg,  
-     i.location,  
-     n.org_name,  
-     n.pickup_capacity_kg  
-   FROM inventory i  
-   JOIN nonprofits n  
-     ON i.category = 'Perishable'  
-     AND n.needs LIKE '%Perishable%'  
-     AND n.refrigeration_required = TRUE  
-   WHERE i.expiry_date = CURDATE() + INTERVAL 1 DAY  
-     AND i.quantity_kg <= n.pickup_capacity_kg  
-   ORDER BY i.location;  
-   ```  
+    -- 2. Identify the Most Common Reasons for Waste
+    SELECT 
+        waste_reason,
+        SUM(quantity) as total_quantity_kg,
+        SUM(estimated_cost) as total_cost
+    FROM master_waste_data
+    GROUP BY waste_reason
+    ORDER BY total_cost DESC;
 
-2. **Weekly Capacity Utilization**:  
-   ```sql  
-   -- Track how much of a nonprofit’s capacity is used  
-   SELECT  
-     org_id,  
-     org_name,  
-     SUM(quantity_kg) AS total_donated,  
-     (SUM(quantity_kg) / pickup_capacity_kg) * 100 AS utilization_rate  
-   FROM donations  
-   GROUP BY org_id;  
-   ```  
+    -- 3. Compare Performance Across Locations
+    SELECT 
+        restaurant_name,
+        SUM(estimated_cost) as total_waste_cost,
+        SUM(estimated_cost) / (SELECT SUM(estimated_cost) FROM master_waste_data) * 100 as percent_of_total
+    FROM master_waste_data
+    GROUP BY restaurant_name
+    ORDER BY total_waste_cost DESC;
 
-**Edge Cases**:  
-- If no nonprofit claims an item, flag it for recycling partners.  
-- Split large surpluses (>100kg) across multiple nonprofits.  
+    -- 4. Analyze Waste by Day of Week (Using a JOIN to a dim_date table)
+    SELECT 
+        d.day_of_week,
+        SUM(f.estimated_cost) as total_cost
+    FROM fact_waste_log f
+    JOIN dim_date d ON f.date_id = d.date_id
+    GROUP BY d.day_of__week, d.day_of_week_number
+    ORDER BY d.day_of_week_number;
+    ```
+*   **Output:** A series of summarized tables and lists that answer critical business questions.
 
----
+#### **Step 3: Insight Synthesis & Hypothesis Formation**
 
-### **Step 3: Integration with Power BI**  
-**Automated Workflow**:  
-1. Use **SQL Server Agent** to run matching queries daily at 8 AM.  
-2. Export results to a CSV, then load into Power BI.  
-3. Build a **Donation Dashboard** with:  
-   - Map of nonprofits served by location.  
-   - Utilization rates (actual vs. capacity).  
-   - Alerts for unclaimed surpluses (e.g., "50kg unclaimed in Chicago").  
+*   **Action:** Translate SQL query results into business insights and form testable hypotheses.
+    *   **Finding:** "40% of waste cost is from over-preparation of fries and coleslaw on weekdays."
+    *   **Hypothesis:** "We can reduce waste by 15% by adjusting prep par levels for weekdays vs. weekends."
+    *   **Finding:** "Location SB-12 has 2x the waste cost of SB-07 for the same menu items."
+    *   **Hypothesis:** "SB-07's manager has a more effective inventory and prep routine that can be standardized across other locations."
 
-**Sample DAX Measure**:  
-```  
-Donation Success Rate =   
-DIVIDE(  
-    SUM(donations[quantity_kg]),  
-    SUM(inventory[quantity_kg]),  
-    0  
-)  
-```  
+> **Key Callout: The 80/20 Rule of Waste**
+> The analysis will almost certainly reveal that a small number of items (~20%) contribute to the majority of waste costs (~80%). Our strategy will be to focus relentlessly on these high-impact items first.
 
----
+### **4. Anticipated Challenges & Mitigation Strategies**
 
-## **Deliverables**  
-1. **SQL Scripts**:  
-   - `daily_matching.sql`: Automated surplus-to-nonprofit matching.  
-   - `weekly_utilization_report.sql`: Capacity tracking.  
-2. **Power BI Dashboard**:  
-   - Real-time donation tracking with drilldowns.  
-   - Exportable PDF reports for stakeholder meetings.  
-3. **Data Validation Checklist**:  
-   - Steps to audit `pickup_capacity_kg` vs. actual pickups.  
-   - Flagging expired donations in transit (e.g., "Spinach expired mid-transit").  
+| Challenge | Impact | Mitigation Strategy |
+| :--- | :--- | :--- |
+| **"Dirty Data"** from Phase 1 (spelling errors, inconsistent units). | Garbage In, Garbage Out. Analysis leads to incorrect conclusions. | **Power Query Cleaning:** Develop a robust "cleaning" script in Power Query that automatically corrects common errors and flags outliers for review. |
+| **Lack of SQL Expertise.** | Inability to perform deep analysis, slowing down the project. | **Leverage Power BI:** Many EDA tasks can be done through Power BI's visual query builder. For complex queries, a short-term consultant or upskilling an analyst can be cost-effective. |
+| **Data Silos.** | Resistance from managers who don't trust the aggregated data or feel their context is missing. | **Contextualize the Data:** Present findings back to managers *before* finalizing conclusions. Their qualitative insight (e.g., "We had a catering cancellation that week") is invaluable for accurate analysis. |
 
----
+### **5. Success Metrics & Deliverables**
 
-## **Timeline**  
-| Task                          | Duration | Owner       |  
-|-------------------------------|----------|-------------|  
-| Database Schema Finalization  | 2 days   | Intern      |  
-| Query Development & Testing   | 4 days   | Intern      |  
-| Power BI Dashboard Build      | 3 days   | Intern      |  
-| Stakeholder Review            | 1 day    | Intern + Manager |  
+By the end of Phase 2, we will have produced:
 
----
+1.  **A Centralized Data Repository:** A clean, analysis-ready SQL database or master file.
+2.  **The "Waste Intelligence" Report:** A PowerPoint or Power BI summary deck containing:
+    *   **Prioritized List of Opportunities:** A ranked list of the 3-5 most significant waste reduction opportunities (e.g., "1. Adjust Fry Prep Levels," "2. Address Bread Spoilage").
+    *   **Quantified Impact:** Each opportunity includes the projected monthly savings (e.g., "Potential save: `$1,200/month`").
+    *   **Outlier Analysis:** Clear identification of top-performing and bottom-performing locations.
+    *   **Data-Driven Hypotheses:** Clear, testable statements to be proven in Phase 3.
+3. **Initial Power BI Data Model:** The foundation of the dashboard is built with the cleaned data, ready for visualization in Phase 4.
 
-## **Risks & Mitigation**  
-| Risk                                  | Mitigation                                  |  
-|---------------------------------------|---------------------------------------------|  
-| Nonprofits reject last-minute surpluses | Add a backup recycler partner list.        |  
-| Incorrect expiry dates in inventory   | Validate dates against supplier invoices.  |  
-| Overloaded SQL server performance     | Schedule resource-heavy queries off-peak.  |  
+### **6. Next Steps: Handoff to Phase 3**
 
----
+The "Waste Intelligence" Report is the direct blueprint for **Phase 3: Implement Low-Tech Solutions & Pilot Redistribution**. It tells us **exactly what to fix, where to fix it, and what the potential payoff will be.** This ensures our actions in the next phase are precise, targeted, and have the highest probability of success.
 
-## **Next Steps**  
-1. Pilot the system in 5 locations for 2 weeks.  
-2. Train restaurant managers on updating inventory tables.  
-3. Transition to Phase 3: Profit conversion modeling for upcycled products.  
-
----
-
-**Approved By**: [Manager Name]  
-**Signature**: ___________________________  
-**Date**: _______________________________  
-
----
-
-### **Appendix: Real-World Testing Scenario**  
-**Mock Data Challenge**:  
-- **Problem**: A nonprofit’s `pickup_capacity_kg` is listed as 100kg, but they only collect 70kg.  
-- **Intern Task**:  
-  1. Use SQL to identify mismatches:  
-  ```sql  
-  SELECT *  
-  FROM donations  
-  WHERE org_id = 203  
-    AND quantity_kg > pickup_capacity_kg;  
-  ```  
-  2. Update the matching logic to cap donations at 80% of capacity.  
-
----
-
-This note equips the intern to tackle technical and operational challenges, ensuring the redistribution engine is both data-driven and adaptable to real-world constraints.
+**Document Version:** 1.0<br>
+**Author:** [Your Name/Department]<br>
+**Status:** Final Draft for Execution
