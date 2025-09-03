@@ -1,15 +1,9 @@
-Of course. Here is an expanded, professional document detailing Phase 1 of "Project Phoenix," complete with callouts to highlight critical information, challenges, and solutions.
-
-***
-
-## **Project Phoenix: Phase 1 - Manual Audit & Baseline Establishment**
+# **Project Phoenix: Phase 1 - Manual Audit & Baseline Establishment**
 
 **Objective:** To transition from intuitive understanding to data-driven awareness by establishing a accurate, quantified baseline of food waste across all SavoryBites locations.
 **Timeline:** Months 1-2
 **Primary Tool:** Microsoft Excel
 **Key Stakeholders:** Head Chef, Restaurant Managers, Kitchen Staff, Finance Department
-
----
 
 ### **1. Overview & Purpose**
 
