@@ -1,7 +1,7 @@
 ### **Project Scenario: "Project Phoenix" for SavoryBites Restaurant Chain**
 
 **Company:** SavoryBites, a chain of 15 casual dining restaurants.
-**Current Situation:** Managers intuitively know food waste is a problem, costing money and impacting sustainability goals. However, they have no standardized way to measure it, understand its causes, or address it systematically. Their current tools are limited to their Point-of-Sale (POS) system, Excel, and manual processes.
+<br>**Current Situation:** Managers intuitively know food waste is a problem, costing money and impacting sustainability goals. However, they have no standardized way to measure it, understand its causes, or address it systematically. Their current tools are limited to their Point-of-Sale (POS) system, Excel, and manual processes.
 
 **Project Goal:** To reduce food waste by 25% within 12 months and identify at least one viable avenue to convert waste into a revenue stream or cost savings.
 
