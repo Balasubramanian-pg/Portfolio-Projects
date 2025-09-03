@@ -2,12 +2,8 @@
 **Project**: FreshPlate Food Waste Reduction Initiative  
 **Owner**: [Intern Name] | **Date**: [Insert Date] | **Tools**: Excel  
 
----
-
 ## **Objective**  
 Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s food waste data across 35 locations to reduce waste by 35% in 8 months.  
-
----
 
 ## **Scope**  
 - **Data**: 6 months of historical waste logs (200K+ rows) from POS systems and manual entries.  
@@ -17,15 +13,11 @@ Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s 
   - Temporal trends (peak waste days/meals).  
 - **Exclusions**: Beverage waste (handled separately by the bar team).  
 
----
-
 ## **Data Sources**  
 1. **Waste Logs**: Raw CSV exports from restaurant POS systems.  
    - Columns: `Date, Location, Food_Category, Item, Waste_Reason, Quantity_kg, Cost, Supplier`.  
 2. **Supplier Master List**: Excel sheet with supplier reliability ratings.  
 3. **Menu Sales Data**: To cross-reference waste with low-selling dishes.  
-
----
 
 ## **Methodology**  
 
@@ -45,8 +37,6 @@ Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s 
 3. **Remove Outliers**:  
    - Filter entries where `Quantity_kg > 50` and validate with location managers.  
 
----
-
 ### **Step 2: Exploratory Analysis**  
 **Key Excel Functions & Tools**:  
 - **Pivot Tables**: Aggregate waste by item, location, and reason.  
@@ -63,8 +53,6 @@ Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s 
 1. **Waste by Day of Week**: Line chart showing bakery waste spikes on Sundays.  
 2. **Supplier Comparison**: Bar chart comparing spoilage rates (Supplier B: 22% vs. Supplier A: 9%).  
 
----
-
 ### **Step 3: Root Cause Identification**  
 **Guiding Questions**:  
 1. Why does "sourdough bread" account for 18% of bakery waste?  
@@ -79,8 +67,6 @@ Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s 
 | Supplier B delays      | High        | High        |  
 | Inconsistent portion sizes | Medium    | Low         |  
 
----
-
 ## **Deliverables**  
 1. **Cleaned Dataset**:  
    - Standardized dates, filled suppliers, outliers removed.  
@@ -92,8 +78,6 @@ Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s 
 4. **Root Cause Summary**:  
    - 3-5 actionable insights (e.g., "Renegotiate Supplier B contracts").  
 
----
-
 ## **Timeline**  
 | Task                  | Duration | Owner       |  
 |-----------------------|----------|-------------|  
@@ -102,26 +86,19 @@ Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s 
 | Root Cause Workshop   | 1 day    | Intern + Manager |  
 | Final Report          | 1 day    | Intern      |  
 
----
-
 ## **Risks & Mitigation**  
 | Risk                          | Mitigation |  
 |-------------------------------|------------|  
 | Incomplete data for 4 locations | Exclude and note in report |  
 | Stakeholder pushback on findings | Prep backup data samples |  
 
----
-
 ## **Next Steps**  
 1. Present findings to the ops team for buy-in.  
 2. Begin Phase 2: Build SQL-driven redistribution logic for surplus food.  
-
----
 
 **Approved By**: [Manager Name]  
 **Signature**: ___________________________  
 **Date**: _______________________________  
 
---- 
 
 This note balances technical rigor with stakeholder clarity, ensuring the intern stays focused on high-impact actions while navigating real-world data chaos.
