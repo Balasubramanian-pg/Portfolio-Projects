@@ -80,3 +80,5 @@ This DBML (Database Markup Language) schema defines the structure needed for the
    - `fact_redistribution` for tracking successful waste diversion
 
 The relationships between tables are defined using foreign key references, creating a star schema that's optimized for analytical queries in Power BI. This structure will allow for comprehensive reporting on waste reduction efforts, cost savings, and the impact of redistribution programs.
+
+<img width="1404" height="776" alt="Untitled" src="https://github.com/user-attachments/assets/95e43ad0-fc72-4fe5-b1c2-be7798e21ae8" />
