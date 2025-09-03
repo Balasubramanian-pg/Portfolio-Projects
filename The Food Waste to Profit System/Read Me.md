@@ -1,191 +1,74 @@
-# **Case Study: Food Waste Optimization for "FreshPlate" Restaurant Group**  
-**Tools**: SQL, Excel, Power BI | **Duration**: 6-week Internship  
-**Business Context**: FreshPlate operates 35 restaurants across 4 cities, wasting 18% of inventory ($220K/month). Their goals:  
-1. Reduce food waste by 35% in 8 months.  
-2. Donate 40% of surplus to nonprofits.  
-3. Launch 3 upcycled product lines by Q4.  
+### **Project Scenario: "Project Phoenix" for SavoryBites Restaurant Chain**
 
----
+**Company:** SavoryBites, a chain of 15 casual dining restaurants.
+**Current Situation:** Managers intuitively know food waste is a problem, costing money and impacting sustainability goals. However, they have no standardized way to measure it, understand its causes, or address it systematically. Their current tools are limited to their Point-of-Sale (POS) system, Excel, and manual processes.
 
-## **Phase 1: Waste Audit & Root Cause Analysis (Excel)**  
-**Task**: Analyze 6 months of waste data (200K+ rows) to identify patterns.  
+**Project Goal:** To reduce food waste by 25% within 12 months and identify at least one viable avenue to convert waste into a revenue stream or cost savings.
 
-### **Mock Dataset (Excel)**  
-| Date       | Location | Food_Category | Item          | Waste_Reason     | Quantity_kg | Cost  | Supplier |  
-|------------|----------|---------------|---------------|------------------|-------------|-------|----------|  
-| 2023-03-15 | Chicago  | Bakery        | Sourdough     | Overproduction   | 12.5        | $45   | Supplier A |  
-| 2023-03-15 | Houston  | Produce       | Spinach       | Spoilage         | 8.2         | $28   | Supplier B |  
-| ...        | ...      | ...           | ...           | ...              | ...         | ...   | ...      |  
+### **Phase 1: The Manual Audit & Baseline Establishment (Months 1-2)**
 
-**Real-World Complexity**:  
-- Inconsistent date formats (MM/DD vs. DD-MM-YYYY).  
-- 15% of entries missing `Waste_Reason` or `Supplier`.  
-- Outliers (e.g., a single entry showing 500kg of "beef waste" due to data entry error).  
+**Tool:** Excel
+**Goal:** Move from intuition to data.
 
-**Deliverables**:  
-1. **Cleaned Dataset**:  
-   - Use `TEXT-TO-COLUMNS`, `TRIM`, and `IFERROR` to standardize dates.  
-   - Apply `VLOOKUP` to fill missing `Supplier` data from a master list.  
-2. **Pivot Analysis**:  
-   - Top 5 wasteful items by cost: `=SUMIFS(Cost, Item, "Sourdough")`.  
-   - Waste reason trends: 62% of bakery waste is from "overproduction" on weekends.  
-3. **Recommendations**:  
-   - Negotiate with Supplier B (spoilage rate 22% vs. Supplier A’s 9%).  
-   - Adjust weekend bakery production by 30%.  
+- **Action:** Introduce a simple "Waste Log" spreadsheet in every kitchen. For one full month, every time food is thrown away, staff must log:
+    1. **Date & Time**
+    2. **Item:** (e.g., prepped onions, day-old bread, spoiled chicken, customer plate waste)
+    3. **Category:** Raw Ingredient / Prepared but Unsold / Plate Waste / Spoiled
+    4. **Quantity:** (in weight - kg/lbs or volume - units)
+    5. **Reason:** (e.g., over-preparation, spoilage, cosmetic, customer didn't like it)
+    6. **Estimated Cost:** (from ingredient cost sheet)
+- **Realistic Challenge:** Staff pushback ("this is extra work"). Solution: Train managers to lead by example, emphasize the "why," and maybe run a small incentive for the most consistent kitchen.
+- **Outcome:** After one month, you have a powerful, messy Excel dataset from all 15 locations. You can now establish a baseline total waste cost.
 
----
+### **Phase 2: Centralized Analysis & Insight Generation (Months 3-4)**
 
-## **Phase 2: Redistribution Engine (SQL)**  
-**Task**: Build a system to match surplus food with nonprofits.  
+**Tool:** SQL (or Power Query in Excel)
+**Goal:** Find the biggest sources of waste and their root causes.
 
-### **Database Schema**  
-```sql  
-CREATE TABLE inventory (  
-  item_id INT PRIMARY KEY,  
-  item_name VARCHAR(50),  
-  category VARCHAR(20),  
-  quantity_kg DECIMAL,  
-  expiry_date DATE,  
-  location VARCHAR(20)  
-);  
+- **Action:**
+    1. Consolidate all restaurant Excel files into a single database.
+    2. Use SQL to query this data and find key insights:
+        - `SELECT Reason, SUM(Estimated_Cost) FROM waste_log GROUP BY Reason ORDER BY SUM(Estimated_Cost) DESC;`
+        - `SELECT Item, SUM(Quantity) FROM waste_log WHERE Category = 'Prepared but Unsold' GROUP BY Item;` (What are we consistently making too much of?)
+        - `SELECT Restaurant_ID, SUM(Estimated_Cost) FROM waste_log GROUP BY Restaurant_ID;` (Is one location an outlier? A best performer?)
+        - Compare waste logs against sales data (from the POS) to see if waste for an item spikes on slow days.
+- **Realistic Outcome:** You discover that **40% of waste cost comes from over-preparation of french fries and coleslaw during weekday lunches**. Another **25% comes from bread spoilage** because the delivered loaves are too large.
 
-CREATE TABLE nonprofits (  
-  org_id INT PRIMARY KEY,  
-  org_name VARCHAR(50),  
-  needs VARCHAR(100),  -- e.g., "perishables, frozen"  
-  pickup_capacity_kg DECIMAL  
-);  
-```  
+### **Phase 3: Implement Low-Tech Solutions & Pilot Redistribution (Months 5-8)**
 
-**Complex Queries**:  
-1. **Daily Surplus Matching**:  
-```sql  
-SELECT   
-  i.location,  
-  i.item_name,  
-  i.quantity_kg,  
-  n.org_name  
-FROM inventory i  
-JOIN nonprofits n  
-  ON i.category = CASE  
-    WHEN n.needs LIKE '%perishable%' THEN 'Produce'  
-    WHEN n.needs LIKE '%frozen%' THEN 'Meat'  
-  END  
-WHERE i.expiry_date = CURDATE() + INTERVAL 1 DAY  
-  AND i.quantity_kg <= n.pickup_capacity_kg;  
-```  
+**Goal:** Act on the data to reduce waste and test a redistribution channel.
 
-2. **Weekly Donation Report**:  
-```sql  
-SELECT   
-  WEEK(expiry_date) AS week_number,  
-  location,  
-  SUM(quantity_kg) AS total_donated,  
-  COUNT(DISTINCT org_id) AS nonprofits_served  
-FROM inventory  
-GROUP BY week_number, location;  
-```  
+- **Action 1 (Process Change):**
+    - **For Fries/Slaw:** Adjust prep recipes and par-levels for weekdays vs. weekends. Implement "batch prep" throughout the lunch rush instead of pre-making everything upfront.
+    - **For Bread:** Negotiate with the supplier for smaller loaves or implement a rule to freeze half the delivery upon arrival.
+- **Action 2 (Redistribution Pilot - Tool: Excel/Phone):**
+    - Identify 3 restaurants near local farms or animal shelters.
+    - Instead of throwing away certain food scraps (vegetable peels, eggshells, old bread), staff place them in designated "farm buckets."
+    - A local pig farmer agrees to pick up the buckets twice a week for free. This **saves on waste disposal costs** (tipping fees), which is an indirect revenue gain.
+- **Measure:** Continue the waste log for these pilot locations to measure the impact of the changes.
 
-**Real-World Hurdles**:  
-- Nonprofit "City Harvest" can only accept 50kg/day but surplus averages 80kg.  
-- 20% of donations go unclaimed due to last-minute cancellations.  
+### **Phase 4: Reporting, Scaling, and Premium Redistribution (Months 9-12)**
 
----
+**Tool:** Power BI
+**Goal:** Create a culture of accountability and explore partnerships for higher-value waste.
 
-## **Phase 3: Profitability Modeling (Excel + Power BI)**  
-**Task**: Build a financial model for upcycled products.  
+- **Action:**
+    1. Build a **"Circular Economy Dashboard"** in Power BI that connects to the central waste database.
+    2. **Dashboard includes:**
+        - Key Metrics: Total waste cost (vs. last month, vs. baseline), waste by category, waste by reason.
+        - A map showing which locations are participating in the farm animal program and the weight of waste diverted.
+        - A leaderboard of locations based on waste reduction percentage. (Gamification!).
+    3. Share this dashboard with regional managers in weekly reviews to drive accountability.
+    4. **Pilot a "Non-Profit Partnership":** For one location near a homeless shelter, package unsold, safe-to-eat meals (e.g., day-old pastries, unserved soups) at the end of the night. A volunteer from the shelter picks it up. Use Power BI to track this donation (potential for tax benefits).
+- **Revenue Conversion Idea:** The data shows a consistent surplus of citrus peels (from bar drinks). Partner with a local craft distillery or marmalade maker to **sell them these peels** as raw ingredients. This becomes a direct, albeit small, revenue stream.
 
-### **Upcycled Product Analysis (Excel)**  
-| Product      | Input_Waste | Input_Cost/kg | Labor_Cost | Packaging | Selling_Price | Monthly_Volume |  
-|--------------|-------------|---------------|------------|-----------|---------------|----------------|  
-| Veggie Broth | 300kg       | $0.50         | $1.20      | $0.80     | $4.50         | 500 units      |  
-| Fruit Jam    | 150kg       | $0.30         | $2.00      | $1.50     | $6.00         | 300 units      |  
+### **Final Deliverable to Stakeholders:**
 
-**Formulas**:  
-- **COGS/Unit**: `=(Input_Cost*Input_Waste + Labor_Cost + Packaging)/Monthly_Volume`  
-- **Profit Margin**: `=(Selling_Price - COGS)/Selling_Price`  
+A Power BI report showcasing:
 
-**Sensitivity Analysis**:  
-- What-if table for 10-15% increases in labor costs.  
-- Break-even point using `GOAL SEEK`: Jam needs 275 units/month to break even.  
+- **A 30% reduction in food waste costs,** exceeding the goal.
+- **$X saved in reduced disposal fees** from the animal feed program.
+- **Y tons of food diverted** from landfills.
+- **A roadmap for Year 2:** Including a business case for a smaller IoT scale (e.g., smart scales for the waste bins in the top 3 locations to automate logging) and expanding the non-profit and upcycling partnerships.
 
----
-
-## **Phase 4: Executive Dashboard (Power BI)**  
-**Requirements**:  
-1. **Live Waste Tracker**:  
-   - Map overlay showing waste by location.  
-   - Trend line comparing current vs. target waste (e.g., 35% reduction goal).  
-2. **Donation Metrics**:  
-   - Donation fulfillment rate (actual vs. potential).  
-   - Top nonprofits by volume received.  
-3. **Revenue Engine**:  
-   - Actual vs. projected revenue from upcycled products.  
-   - ROI timeline for new product lines.  
-
-**Advanced Features**:  
-- **Drillthrough Page**: Click a location to see item-level waste details.  
-- **DAX Measures**:  
-  ```  
-  Waste Cost Savings = SUMX(Inventory, [Quantity_kg] * [Avg_Cost/kg] * 0.35)  
-  ```  
-- **Data Alerts**: Email managers if a location exceeds daily waste thresholds.  
-
----
-
-## **Phase 5: Stakeholder Presentation**  
-**Mock Scenario**: Present findings to CFO and Head of Sustainability.  
-
-**Slide 1: Problem & Insights**  
-- "Bakery waste costs $12K/month, 80% from weekend overproduction."  
-- "20% of donations fail due to capacity mismatches."  
-
-**Slide 2: Financial Impact**  
-- **Cost Savings**: $220K/month waste → $143K/month after fixes (35% reduction).  
-- **New Revenue**: $8K/month from broth/jam sales (scaling to $25K/month by Q4).  
-
-**Slide 3: Proposed Actions**  
-1. Redesign weekend bakery menu to use 30% less dough.  
-2. Partner with "WasteNot" logistics for donation pickups.  
-3. Pilot veggie broth in 5 locations by November.  
-
----
-
-## **Realistic Deliverables**  
-1. **Excel Files**:  
-   - `FreshPlate_Waste_Audit.xlsx` (cleaned data + pivot tables).  
-   - `Upcycled_Financial_Model.xlsx` (dynamic what-if scenarios).  
-2. **SQL Scripts**:  
-   - `daily_donation_matching.sql` (automated surplus matching).  
-   - `weekly_impact_report.sql`.  
-3. **Power BI File**:  
-   - `FreshPlate_Dashboard.pbix` with drilldowns and mobile view.  
-4. **Documentation**:  
-   - 10-page playbook: "How to Scale Upcycled Products."  
-   - 5-minute Loom video demoing the dashboard.  
-
----
-
-## **Added Complexity (Real-World Touches)**  
-- **Data Privacy**: Mask nonprofit names as "Nonprofit A", "Nonprofit B" in deliverables.  
-- **Change Resistance**: Mock email from a restaurant manager: *"Reducing bakery portions will hurt customer satisfaction!"* (Intern must propose solutions).  
-- **Supply Chain Constraints**: Supplier B refuses to negotiate – pivot to alternative suppliers.  
-
----
-
-## **Business Impact Metrics**  
-| Metric                | Before | After 6 Months |  
-|-----------------------|--------|----------------|  
-| Monthly Waste Cost    | $220K  | $143K (-35%)   |  
-| Donations Fulfilled   | 15%    | 48%            |  
-| Upcycled Revenue      | $0     | $8K            |  
-| CO2 Emissions (tons)  | 45     | 29 (-36%)      |  
-
----
-
-This structure forces the intern to:  
-1. Work with messy, real-world data.  
-2. Balance idealism (zero waste goals) with practicality (profitability).  
-3. Communicate technical findings to non-technical stakeholders.  
-
-Want to add even more depth? We could include mock email threads, a Gantt chart for the project, or a Python script for data cleaning (though you specified SQL/Excel/PBI). Let me know!
+This approach is realistic because it starts small, uses tools the company likely already has, proves value quickly with manual data, and uses that value to justify more sophisticated steps later. It turns a cost center into a story of efficiency, sustainability, and community engagement.
