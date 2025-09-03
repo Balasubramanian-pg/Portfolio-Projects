@@ -91,7 +91,6 @@ By the end of Phase 1, we will have produced:
 
 The validated baseline data and KPIs from Phase 1 will serve as the direct input for **Phase 2: Centralized Analysis & Insight Generation**. This data will be imported into a SQL database and Power BI to uncover the deep, actionable insights that will drive our reduction strategies.
 
-***
-**Document Version:** 1.0
-**Author:** [Your Name/Department]
+**Document Version:** 1.0<br>
+**Author:** [Your Name/Department]<br>
 **Status:** Final Draft for Execution
