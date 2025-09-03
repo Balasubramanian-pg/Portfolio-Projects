@@ -1,104 +1,103 @@
-# **Approach Note: Phase 1 – Waste Audit & Root Cause Analysis**  
-**Project**: FreshPlate Food Waste Reduction Initiative  
-**Owner**: [Intern Name] | **Date**: [Insert Date] | **Tools**: Excel  
+Of course. Here is an expanded, professional document detailing Phase 1 of "Project Phoenix," complete with callouts to highlight critical information, challenges, and solutions.
 
-## **Objective**  
-Identify patterns, root causes, and cost-saving opportunities in FreshPlate’s food waste data across 35 locations to reduce waste by 35% in 8 months.  
+***
 
-## **Scope**  
-- **Data**: 6 months of historical waste logs (200K+ rows) from POS systems and manual entries.  
-- **Focus Areas**:  
-  - Top wasteful items by cost and volume.  
-  - Supplier performance (spoilage rates).  
-  - Temporal trends (peak waste days/meals).  
-- **Exclusions**: Beverage waste (handled separately by the bar team).  
+## **Project Phoenix: Phase 1 - Manual Audit & Baseline Establishment**
 
-## **Data Sources**  
-1. **Waste Logs**: Raw CSV exports from restaurant POS systems.  
-   - Columns: `Date, Location, Food_Category, Item, Waste_Reason, Quantity_kg, Cost, Supplier`.  
-2. **Supplier Master List**: Excel sheet with supplier reliability ratings.  
-3. **Menu Sales Data**: To cross-reference waste with low-selling dishes.  
+**Objective:** To transition from intuitive understanding to data-driven awareness by establishing a accurate, quantified baseline of food waste across all SavoryBites locations.
+**Timeline:** Months 1-2
+**Primary Tool:** Microsoft Excel
+**Key Stakeholders:** Head Chef, Restaurant Managers, Kitchen Staff, Finance Department
 
-## **Methodology**  
+---
 
-### **Step 1: Data Cleaning & Standardization**  
-**Issues Identified**:  
-- Inconsistent date formats (MM/DD/YYYY vs. DD-MM-YYYY).  
-- Missing `Waste_Reason` (15% of entries) and `Supplier` (10% of entries).  
-- Outliers (e.g., 500kg of "beef waste" due to typo).  
+### **1. Overview & Purpose**
 
-**Actions**:  
-1. **Standardize Dates**:  
-   - Use `TEXT-TO-COLUMNS` to split malformed dates.  
-   - Apply `DATEVALUE` to convert text to Excel date format.  
-2. **Fill Missing Data**:  
-   - Use `VLOOKUP` to populate `Supplier` names from the master list.  
-   - Flag rows with missing `Waste_Reason` for manual review.  
-3. **Remove Outliers**:  
-   - Filter entries where `Quantity_kg > 50` and validate with location managers.  
+Currently, SavoryBites operates with an intuitive understanding that food waste is a problem. This phase is designed to replace that intuition with hard data. The primary output will be a **quantified baseline** of how much waste we generate, what we waste, why we waste it, and what it costs. This baseline is the fundamental cornerstone for all future waste reduction initiatives and for measuring the project's ultimate success.
 
-### **Step 2: Exploratory Analysis**  
-**Key Excel Functions & Tools**:  
-- **Pivot Tables**: Aggregate waste by item, location, and reason.  
-- **Conditional Formatting**: Highlight high-cost waste items in red.  
-- **SUMIFS/AVERAGEIFS**: Compare spoilage rates by supplier.  
+> **Key Callout: Why Start Manual?**
+> While IoT scales automate data collection, a manual audit is superior for initial discovery. It forces staff engagement, provides crucial context for the *reasons* behind waste, and is a low-cost, high-impact starting point that builds a culture of awareness from the ground up.
 
-**Sample Analysis**:  
-| Food_Category | Total_Waste_kg | Total_Cost | Primary_Waste_Reason |  
-|---------------|----------------|------------|----------------------|  
-| Bakery        | 1,200          | $4,200     | Overproduction (62%) |  
-| Produce       | 980            | $3,800     | Spoilage (48%)       |  
+### **2. The Core Instrument: The Waste Log**
 
-**Visualizations**:  
-1. **Waste by Day of Week**: Line chart showing bakery waste spikes on Sundays.  
-2. **Supplier Comparison**: Bar chart comparing spoilage rates (Supplier B: 22% vs. Supplier A: 9%).  
+The entire phase revolves around a simple, standardized Excel workbook deployed to each location.
 
-### **Step 3: Root Cause Identification**  
-**Guiding Questions**:  
-1. Why does "sourdough bread" account for 18% of bakery waste?  
-   - *Finding*: Overproduced on weekends due to outdated demand forecasts.  
-2. Why does Supplier B have higher spoilage rates?  
-   - *Finding*: Deliveries occur 2 days later than Supplier A.  
+#### **The Waste Log Template (`SavoryBites_WasteLog_Template.xlsx`)**
 
-**Prioritization Matrix**:  
-| Issue                  | Cost Impact | Ease of Fix |  
-|------------------------|-------------|-------------|  
-| Weekend bakery overproduction | High       | Medium      |  
-| Supplier B delays      | High        | High        |  
-| Inconsistent portion sizes | Medium    | Low         |  
+This template will consist of three key sheets:
 
-## **Deliverables**  
-1. **Cleaned Dataset**:  
-   - Standardized dates, filled suppliers, outliers removed.  
-2. **Pivot Table Report**:  
-   - Top 10 wasteful items by cost.  
-   - Waste reason breakdown by category.  
-3. **Visual Summary**:  
-   - Excel charts embedded in a 1-pager for stakeholders.  
-4. **Root Cause Summary**:  
-   - 3-5 actionable insights (e.g., "Renegotiate Supplier B contracts").  
+1.  **`Data_Entry` Sheet:** A user-friendly form for daily logging.
+2.  **`Cost_Reference` Sheet:** A protected list of standard ingredient costs for consistency.
+3.  **`Instructions` Sheet:** Clear, simple guidelines for staff.
 
-## **Timeline**  
-| Task                  | Duration | Owner       |  
-|-----------------------|----------|-------------|  
-| Data Cleaning         | 3 days   | Intern      |  
-| Pivot Table Analysis  | 2 days   | Intern      |  
-| Root Cause Workshop   | 1 day    | Intern + Manager |  
-| Final Report          | 1 day    | Intern      |  
+**Sample Structure of the `Data_Entry` Sheet:**
 
-## **Risks & Mitigation**  
-| Risk                          | Mitigation |  
-|-------------------------------|------------|  
-| Incomplete data for 4 locations | Exclude and note in report |  
-| Stakeholder pushback on findings | Prep backup data samples |  
+| Date (dd/mm/yyyy) | Time (hh:mm) | Item Wasted | Category | Quantity | Unit | Reason | Estimated Cost ($) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| 01/10/2023 | 14:30 | Prepped Onions | Raw Ingredient | 2.5 | kg | Over-Preparation | 5.00 |
+| 01/10/2023 | 23:15 | Day-Old Bread | Prepared Food | 10 | units | Spoilage | 8.50 |
+| 02/10/2023 | 20:45 | Beef Patty | Prepared Food | 4 | units | Customer Return | 12.00 |
 
-## **Next Steps**  
-1. Present findings to the ops team for buy-in.  
-2. Begin Phase 2: Build SQL-driven redistribution logic for surplus food.  
+**Definition of Log Fields:**
+*   **Category:** `Raw Ingredient`, `Prepared Food`, `Plate Waste`, `Spoiled`
+*   **Unit:** `kg`, `g`, `units`, `liters` (must be standardized).
+*   **Reason:** `Over-Preparation`, `Spoilage`, `Trim Waste`, `Customer Complaint`, `Kitchen Error`, `Expired`
 
-**Approved By**: [Manager Name]  
-**Signature**: ___________________________  
-**Date**: _______________________________  
+> **Key Callout: Standardized Costs**
+> The `Cost_Reference` sheet is vital. It prevents arbitrary guesses and ensures data consistency. For example, it will define that "Prepped Onions" cost `$2.00/kg`. This allows the `Estimated Cost` in the log to be a calculated field (`=[@Quantity] * VLOOKUP([@[Item Wasted]], Cost_Reference, 2, FALSE)`), reducing error and bias.
 
+### **3. Implementation Plan: Rollout & Training**
 
-This note balances technical rigor with stakeholder clarity, ensuring the intern stays focused on high-impact actions while navigating real-world data chaos.
+**Week 1: Preparation & Briefing**
+*   Finalize the Waste Log template and cost reference list with the Head Chef.
+*   Conduct a mandatory virtual briefing with all Restaurant Managers to explain the **"why"**—connecting waste reduction to cost savings, environmental impact, and potential for staff incentives.
+
+**Week 2: On-Site Training & Launch**
+*   Managers train their kitchen teams on the log during pre-shift meetings.
+*   **Golden Rule:** **Every single item** destined for the compost/trash must be logged *first*.
+*   Print and laminate quick-reference guides and place them near all waste bins.
+*   Designate a "Waste Captain" (e.g., a sous-chef) per shift to ensure compliance.
+
+**Weeks 3-6: Active Auditing Period**
+*   All 15 locations log every waste item for four full weeks (covering various weekdays and weekends to capture accurate patterns).
+*   Managers dedicate 5 minutes at the end of each shift to review the log for completeness.
+
+**Week 7: Data Submission**
+*   Managers email their completed Excel file to the central project lead (e.g., Operations Manager).
+
+**Week 8: Data Consolidation & Analysis**
+*   The project lead consolidates all 15 Excel files into a single master dataset.
+*   Initial analysis begins to establish the baseline metrics.
+
+### **4. Anticipated Challenges & Mitigation Strategies**
+
+| Challenge | Impact | Mitigation Strategy |
+| :--- | :--- | :--- |
+| **Staff Pushback** ("This is extra work") | Data incompleteness renders the project useless. | **1. Leadership Buy-in:** Managers must participate actively. <br> **2. Create a Contest:** Offer a prize for the most complete and accurate log. <br> **3. Communicate the Vision:** Explain how this data will make their jobs easier in the long run (e.g., less prep, simpler inventory). |
+| **Inconsistent Entries** | Data is messy and unreliable. | **1. Simplify the Log:** Use data validation drop-downs for Category, Unit, and Reason. <br> **2. Provide Clear Examples:** The `Instructions` sheet must have photo examples. <br> **3. Standardize Costs:** The `Cost_Reference` sheet automates cost calculation. |
+| "Logging Amnesia" | Items are thrown away without being logged. | **1. Physical Reminders:** Place the log on a tablet or clipboard right next to the main waste bin. <br> **2. Peer Accountability:** The "Waste Captain" is responsible for reminding the team. |
+
+> **Key Callout: Culture Over Technology**
+> The success of Phase 1 is 10% technology and 90% change management. The goal is not just to collect data, but to foster a mindset of mindfulness and accountability around waste. The simple act of logging forces a moment of reflection that, in itself, begins to reduce waste.
+
+### **5. Success Metrics & Deliverables**
+
+By the end of Phase 1, we will have produced:
+
+1.  **A Master Waste Dataset:** A single, consolidated Excel file containing ~4 weeks of waste data from all locations.
+2.  **Baseline Key Performance Indicators (KPIs):**
+    *   **Total Weekly Waste Cost:** (e.g., "We waste `$1,200` per week across all locations")
+    *   **Average Waste Cost per Location:** (e.g., "`$80`/week")
+    *   **Top 5 Wasted Items by Cost:** (e.g., "Beef, Avocado, Bread, Fries, Cream")
+    *   **Primary Reasons for Waste:** (e.g., "60% is due to Over-Preparation")
+3.  **Identification of Outliers:** Which location has the highest/lowest waste cost? Why?
+4.  **Anecdotal Feedback:** Qualitative insights from staff on why waste occurs.
+
+### **6. Next Steps: Handoff to Phase 2**
+
+The validated baseline data and KPIs from Phase 1 will serve as the direct input for **Phase 2: Centralized Analysis & Insight Generation**. This data will be imported into a SQL database and Power BI to uncover the deep, actionable insights that will drive our reduction strategies.
+
+***
+**Document Version:** 1.0
+**Author:** [Your Name/Department]
+**Status:** Final Draft for Execution
