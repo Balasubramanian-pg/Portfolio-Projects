@@ -32,7 +32,6 @@ The **Customer Churn Prediction and Retention System** addresses a critical chal
      - Use sentiment analysis to gauge customer satisfaction from support interactions and reviews.
    - **Output**: A comprehensive dataset of customer engagement metrics.
 
----
 
 ### **2. Risk Scoring**
    - **Objective**: Predict the likelihood of customer churn using predictive models.
