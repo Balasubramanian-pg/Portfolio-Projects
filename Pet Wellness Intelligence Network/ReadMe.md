@@ -8,12 +8,8 @@
 ## **Problem Statement**  
 *PawsCare*’s paper-based records and generic SMS reminders can’t track real-time pet activity or tailor care. Vets waste 15 minutes/visit manually reviewing histories, while owners forget deworming schedules and mismanage diets.  
 
----
-
 ## **Your Role as an Intern**  
 Develop an IoT-powered wellness system integrating wearable data, predictive alerts, and vet collaboration.  
-
----
 
 ### **Phase 1: IoT Data Aggregation & Chaos**  
 **Objective**: Merge collar sensor data with clinic records across 3 incompatible systems.  
@@ -44,8 +40,6 @@ health_data = extract_pet_data(pdf_path)
 **Deliverable**:  
 - Unified SQL database with 500K+ pet profiles (activity, weight, vet history).  
 
----
-
 ### **Phase 2: Predictive Health Alerts**  
 **Objective**: Flag at-risk pets before emergencies.  
 
@@ -72,8 +66,6 @@ current_data = [[-0.15, 8]]  # 15% activity drop, 8 squats/hour
 risk = model.predict_proba(current_data)[0][1]  # 92% risk → Alert vet  
 ```  
 
----
-
 ### **Phase 3: Diet & Exercise Personalization**  
 **Objective**: Auto-generate plans using breed, age, and sensor data.  
 
@@ -94,8 +86,6 @@ WHERE breed = 'Golden Retriever';
 **A/B Test Result**:  
 - Pets on auto-plans achieved target weight 3x faster than control group.  
 
----
-
 ### **Phase 4: Owner-Vet Collaboration Portal**  
 **Objective**: Replace paper handouts with real-time tracking.  
 
@@ -109,8 +99,6 @@ WHERE breed = 'Golden Retriever';
 #### **API Integration Challenge**:  
 - Clinic APIs lacked OAuth – built Python middleware for HIPAA-compliant data sync.  
 
----
-
 ## **Business Impact**  
 | Metric               | Before  | After (6 Months) |  
 |----------------------|---------|-------------------|  
@@ -118,14 +106,10 @@ WHERE breed = 'Golden Retriever';
 | Obesity Visits       | 120/mo  | 89/mo (-26%)      |  
 | Owner App Adoption   | 0%      | 76%               |  
 
----
-
 ## **Real-World Challenges**  
 1. **Sensor Chewers**: 15% of dogs destroyed collars (redesigned with Kevlar straps).  
 2. **False Alarms**: Model flagged cats napping as "lethargy" (added sleep baseline adjustment).  
 3. **Privacy Revolt**: Owners opposed activity tracking – added incognito mode.  
-
----
 
 ## **Deliverables**  
 1. **Technical**:  
@@ -135,11 +119,7 @@ WHERE breed = 'Golden Retriever';
    - Power BI vet dashboard.  
    - Figma app prototype with 10K+ user test notes.  
 
----
-
 ## **Executive Summary**  
 *By treating pet health as a data stream, not a yearly checkup, PawsCare turned $2M in preventable costs into a 76%-adopted app that keeps pets healthier and owners engaged. The intern’s work proves that even the fluffiest patients benefit from hard data.*  
-
----
 
 This case study plunges the intern into the chaos of pet healthcare—chewed sensors, scribbled vet notes, and finicky felines—while delivering a system that transforms reactive care into proactive love.
