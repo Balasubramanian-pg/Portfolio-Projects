@@ -1,13 +1,9 @@
-
----
 # **Pet Wellness Tracker**  
 **Tools**: Python, SQL, IoT (Arduino/Raspberry Pi), Power BI, Figma | **Duration**: 12-week Internship  
 **Business Context**: *PawsCare Vet Clinics*, a chain of 50 clinics, faces a 30% no-show rate for vaccinations and a 25% rise in obesity-related pet illnesses. Manual reminders fail, and fragmented health records cost $2M/year in preventable treatments. Their goals:  
 1. Reduce missed wellness appointments by 40% in 6 months.  
 2. Cut obesity-related visits by 20% through personalized diet plans.  
 3. Build a pet owner app with 80% adoption across their client base.  
-
----
 
 ## **Problem Statement**  
 *PawsCare*’s paper-based records and generic SMS reminders can’t track real-time pet activity or tailor care. Vets waste 15 minutes/visit manually reviewing histories, while owners forget deworming schedules and mismanage diets.  
