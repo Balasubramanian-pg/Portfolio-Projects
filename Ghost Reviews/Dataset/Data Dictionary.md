@@ -23,8 +23,6 @@ My primary goal is to create a synthetic "universe" where the phenomenon of "gho
     *   **Phase 2 (Sentiment Analysis):** The `review_text` in `reviews.csv` needs to be generated in a way that correlates with the `rating`. This makes the sentiment analysis step meaningful.
     *   **Phase 3 (Economic Impact):** The `customer_journeys.csv` is *explicitly designed* to make this phase possible. It contains the "before" (initial choice) and "after" (final choice), allowing for direct calculation of leaked revenue.
 
----
-
 ### The Datasets You Need to Create
 
 Here are the three core datasets you would generate to power this entire project.
