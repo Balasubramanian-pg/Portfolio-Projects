@@ -2,8 +2,6 @@
 
 This document serves as a central directory for all projects within this portfolio. Each project is listed below with direct links to its key components, including documentation, datasets, and source code.
 
----
-
 ## Ghost Reviews
 
 An analysis of business reviews, aimed at identifying patterns and potentially fraudulent or "ghost" reviews to ensure data authenticity.
