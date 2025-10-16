@@ -5,11 +5,11 @@ Objective: As a data-driven intern at TrendBuy, a fast-fashion retailer, your mi
 #### Project Overview:
 In this guided project, you'll work through the following phases:
 
-    Data Aggregation & Cleaning: Merge TikTok trend data with purchase and return logs to create a comprehensive dataset.
-    Exploratory Analysis: Identify regret drivers and trends using Power BI and Python.
-    Predictive Modeling: Develop an XGBoost model to flag high-regret-risk purchases in real-time.
-    Intervention Engine: Design a system to nudge customers with personalized offers and messages.
-    Consumer App & Dashboard: Create a prototype of the "TrendGuard" app and a Power BI dashboard for managers.
+- Data Aggregation & Cleaning: Merge TikTok trend data with purchase and return logs to create a comprehensive dataset.
+- Exploratory Analysis: Identify regret drivers and trends using Power BI and Python.
+- Predictive Modeling: Develop an XGBoost model to flag high-regret-risk purchases in real-time.
+- Intervention Engine: Design a system to nudge customers with personalized offers and messages.
+- Consumer App & Dashboard: Create a prototype of the "TrendGuard" app and a Power BI dashboard for managers.
 
 #### Key Deliverables:
 
