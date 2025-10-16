@@ -8,8 +8,6 @@ This project undertook a three-phase approach to address this problem. We first 
 
 Our findings indicate that a significant percentage of consumer journeys are initially influenced by highly-rated closed businesses, leading to an estimated **$X million in annual revenue leakage** within our simulated city district. By implementing our proposed tagging system, review platforms can increase user trust, create a fairer competitive landscape, and recapture this lost economic efficiency, ensuring customer traffic flows to viable, operational businesses.
 
----
-
 ### **1. Project Context**
 
 In the digital age, a business's online presence is its most valuable asset. Platforms like Google Maps, Yelp, and TripAdvisor serve as the primary discovery engine for consumers seeking local services, from cafes to clinics. The decision-making process is heavily skewed by two factors: average star rating and review volume.
@@ -35,8 +33,6 @@ Our hypothesis is that highly-rated closed businesses act as "black holes," attr
     *   **KPI:** Percentage of simulated customer journeys that begin with a "ghost interaction."
 *   **Objective 3:** Design a practical solution for review platforms.
     *   **KPI:** A formal proposal document outlining the "Business Inactivity Tagging" system.
-
----
 
 ### **4. Methodology and Phased Approach**
 
@@ -69,8 +65,6 @@ This is the most critical phase, where we measure the real-world impact. We simu
 #### **Phase 4: Synthesis & Solutioning**
 
 In the final phase, we consolidate our findings and formulate a recommendation. The analysis from Phase 3 provides undeniable evidence that the lack of clear "closed" signals on business profiles leads to quantifiable economic distortion.
-
----
 
 ### **5. The Proposed Solution: "Business Inactivity Tagging"**
 
