@@ -1,5 +1,3 @@
-
----
 # **Urban Parking Optimization System**  
 **Tools**: Python, SQL, GIS (ArcGIS), Power BI, IoT | **Duration**: 14-week Internship  
 **Business Context**: *MetroCity* (population 2.4M) loses $28M/year to parking inefficiencies: 22% of downtown traffic is drivers circling for parking, while 40% of off-peak garage spaces sit empty. Their goals:  
@@ -7,17 +5,11 @@
 2. Increase parking revenue by 20% through dynamic pricing.  
 3. Cut downtown CO2 emissions by 15% via reduced idling.  
 
----
-
 ## **Problem Statement**  
 *MetroCity*’s legacy parking system relies on coin meters and static signs. Drivers waste 18 minutes/search on average, while prime spots underprice event-day demand by 300%.  
 
----
-
 ## **Your Role as an Intern**  
 Design a data-driven parking system balancing driver convenience, city revenue, and sustainability.  
-
----
 
 ### **Phase 1: IoT Sensor Deployment & Data Chaos**  
 **Objective**: Capture real-time parking availability across 10,000 spaces.  
@@ -43,8 +35,6 @@ available_spots = read_analog_gauge('garage3.jpg')
 
 **Deliverable**:  
 - Unified parking API with 95% uptime across street/garage spots.  
-
----
 
 ### **Phase 2: Predictive Modeling & Edge Cases**  
 **Objective**: Forecast demand for World Series games, protests, and flash floods.  
@@ -73,8 +63,6 @@ def forecast_event_demand(event_date, attendee_count):
 forecast = forecast_event_demand('2023-10-30', 45000)  
 ```  
 
----
-
 ### **Phase 3: Dynamic Pricing Engine**  
 **Objective**: Balance accessibility and revenue without public backlash.  
 
@@ -100,8 +88,6 @@ WHERE effective_date = CURDATE();
 **Backlash Mitigation**:  
 - Partnered with Uber to offer "Park & Ride" discounts during 4x surges.  
 
----
-
 ### **Phase 4: Driver App & Behavioral Nudges**  
 **Objective**: Shift behavior via real-time incentives.  
 
@@ -117,8 +103,6 @@ WHERE effective_date = CURDATE();
 | Reservation Discount | 28%      | 41%                   |  
 | Eco Points           | 12%      | 18%                   |  
 
----
-
 ### **Phase 5: Stakeholder Dashboards**  
 **Objective**: Align city staff, businesses, and residents.  
 
@@ -131,8 +115,6 @@ WHERE effective_date = CURDATE();
 3. **Business View**:  
    - Foot traffic correlation with garage availability.  
 
----
-
 ## **Business Impact**  
 | Metric               | Before  | After (6 Months) |  
 |----------------------|---------|-------------------|  
@@ -140,14 +122,10 @@ WHERE effective_date = CURDATE();
 | Parking Revenue      | $42M    | $51M (+21%)       |  
 | Downtown Emissions   | 12K tons| 10.2K (-15%)      |  
 
----
-
 ## **Real-World Challenges**  
 1. **Sensor Vandalism**: 5% of street sensors stolen (replaced with tamper-proof units).  
 2. **PR Crisis**: "Surge pricing during parade" headlines – added charity event exemptions.  
 3. **Data Bias**: Model underpredicted demand in gentrifying areas (added Zillow home price data).  
-
----
 
 ## **Deliverables**  
 1. **Technical**:  
@@ -157,11 +135,7 @@ WHERE effective_date = CURDATE();
    - Driver app prototype (Figma).  
    - Stakeholder playbook: "Crisis Communication for Pricing Changes."  
 
----
-
 ## **Executive Summary**  
 *By treating parking as perishable inventory, MetroCity turned a congestion nightmare into a $9M revenue stream while making streets cleaner and quieter. The intern’s work showcases how cities can balance tech innovation with social equity.*  
-
----
 
 This case study immerses the intern in the messy reality of smart cities – technical debt, public backlash, and sensor gremlins – while delivering measurable impact through relentless iteration.
