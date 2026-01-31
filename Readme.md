@@ -1,11 +1,5 @@
 # Repository Structure: Portfolio-Projects
 
-**Repository:** [Balasubramanian-pg/Portfolio-Projects](https://github.com/Balasubramanian-pg/Portfolio-Projects)  
-**Branch:** main
-
-## Complete File Structure
-
-
 ## Ghost Reviews
 
 
