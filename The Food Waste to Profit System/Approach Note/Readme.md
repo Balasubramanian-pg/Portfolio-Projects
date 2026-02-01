@@ -1,22 +1,3 @@
-**PROJECT PHENIX: OPERATIONAL OPTIMIZATION & WASTE REDUCTION INITIATIVE**  
-**Client:** SavoryBites Restaurant Chain  
-**Project Lead:** Data Architecture & Transformation Office  
-**Version:** 1.0 (FINAL)  
-**Status:** Approved for Execution  
-**Date:** October 15, 2024  
-
----
-
-### **1. EXECUTIVE OVERVIEW**
-
-Project Phoenix is a strategic, data-driven transformation initiative designed to address the critical inefficiency of food waste within SavoryBites, a 15-unit casual dining chain. Historically viewed as an unavoidable cost, food waste represents a significant leakage of net profit, impacting Cost of Goods Sold (COGS), labor efficiency, and corporate sustainability objectives.
-
-Currently, SavoryBites lacks a standardized measurement framework, relying on managerial intuition and isolated Point-of-Sale (POS) data that tracks sales but fails to quantify loss. This project establishes a replicable, four-phase maturity model to transition the organization from intuition to empirical evidence, targeting a **25% reduction in food waste costs within 12 months** and identifying new revenue streams through circular economy partnerships.
-
-The initiative aligns with broader industry pressures, including inflationary cost surges, legislative organic waste bans, and growing consumer demand for sustainable practices. By closing the operational gap between procurement and sales, Project Phoenix aims to recover an estimated **$2.16M in annual lost profit** while enhancing enterprise valuation and brand reputation.
-
----
-
 ### **2. PROJECT OBJECTIVES**
 
 - **Quantify:** Establish an empirical baseline for waste volume and financial impact.
