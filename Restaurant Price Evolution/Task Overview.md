@@ -1958,3 +1958,357 @@ This section was constructed by starting from constraints, then designing a syst
 * Fraud rates as participation scales
 * Representativeness of submissions by city
 * Drift in competitor positioning over time
+
+## Part 6: Pricing Engine and Decision Systems
+
+### Purpose of This Section
+
+This section explains how analytical insights were converted into **controlled pricing actions**. The focus is not on algorithmic sophistication, but on **decision discipline**. In restaurant pricing, the cost of a bad price change is often higher than the cost of a missed opportunity.
+
+The pricing engine was therefore designed to be:
+
+* Conservative by default
+* Explainable to non-technical stakeholders
+* Resistant to extreme or cascading errors
+* Aligned with brand and customer perception constraints
+
+---
+
+## 75. Pricing as a Decision System, Not an Algorithm
+
+A central design decision was to reject the idea of “fully automated pricing.”
+
+Reasons included:
+
+* Low tolerance for visible pricing mistakes
+* Menu board update costs
+* Customer sensitivity to frequent changes
+* Manager accountability for local outcomes
+
+The system did not *set* prices autonomously. It **recommended bounded actions** within clearly defined rules.
+
+---
+
+## 76. Pricing Philosophy Adopted
+
+UrbanEats pricing decisions were guided by three principles:
+
+1. **Do not surprise customers**
+2. **Recover margins gradually**
+3. **Never outrun perceived value**
+
+These principles shaped every rule and safeguard.
+
+---
+
+## 77. Rule-Based vs Model-Driven Pricing
+
+Two approaches were evaluated.
+
+### Model-Driven Pricing
+
+Pros:
+
+* Potentially higher optimization
+* Adaptive to complex interactions
+
+Cons:
+
+* Low interpretability
+* High risk of edge-case failures
+* Difficult to justify to managers
+
+### Rule-Based Pricing
+
+Pros:
+
+* Transparent
+* Auditable
+* Easy to override
+* Predictable behavior
+
+Cons:
+
+* Less theoretically optimal
+* Requires manual tuning
+
+Given the organizational context, **rule-based pricing was chosen**.
+
+---
+
+## 78. Structure of the Pricing Rules Engine
+
+The rules engine operated as a layered filter.
+
+### Rule Evaluation Order
+
+1. Hard constraints
+2. Competitive constraints
+3. Cost pressure rules
+4. Demand and sentiment modifiers
+
+Rules earlier in the chain could block later ones.
+
+---
+
+## 79. Hard Constraints and Guardrails
+
+Hard constraints were non-negotiable.
+
+Examples:
+
+* Maximum single price increase per cycle
+* Minimum time between price changes
+* Absolute price ceilings by category and city
+* Brand consistency thresholds across locations
+
+These constraints prevented runaway adjustments.
+
+---
+
+## 80. Cost-Based Adjustment Rules
+
+Cost-based rules addressed margin leakage.
+
+### Example Logic
+
+* If ingredient cost exceeds X percent of price for Y weeks
+* And item sales volume exceeds Z threshold
+* Then recommend price increase within bounded range
+
+This prevented overreaction to short-term volatility.
+
+---
+
+## 81. Competitive Constraint Rules
+
+Competitive rules acted as brakes.
+
+Examples:
+
+* Block price increases when already above competitor median
+* Flag price decreases when significantly underpriced
+* Require justification for exceeding peer percentile thresholds
+
+Competition was treated as a **context**, not a target.
+
+---
+
+## 82. Customer Sentiment Modifiers
+
+Customer complaints influenced prioritization, not direction.
+
+Examples:
+
+* High complaints increased urgency of price decreases
+* High complaints delayed price increases
+* Complaint trends over time mattered more than spikes
+
+This ensured pricing did not antagonize loyal customers.
+
+---
+
+## 83. Location-Specific Elasticity Assumptions
+
+True elasticity estimation was infeasible due to data limitations.
+
+ASSUMPTION
+Elasticity was approximated using historical price changes and volume response where available. Where unavailable, conservative default assumptions were used and clearly labeled.
+
+Elasticity assumptions affected:
+
+* Size of recommended changes
+* Priority ranking of actions
+
+---
+
+## 84. Simulation and Scenario Testing
+
+Before recommendations reached managers, they were simulated.
+
+### Simulation Inputs
+
+* Historical sales volumes
+* Expected demand impact
+* Cost trajectories
+
+### Simulation Outputs
+
+* Estimated margin impact
+* Estimated revenue impact
+* Risk classification
+
+This turned abstract rules into tangible outcomes.
+
+---
+
+## 85. Risk Scoring and Recommendation Ranking
+
+Each recommendation was assigned a risk score.
+
+Risk factors included:
+
+* Size of price change
+* Item visibility
+* Complaint history
+* Competitive positioning
+
+Managers saw **ranked recommendations**, not raw rule outputs.
+
+---
+
+## 86. A/B Testing Framework Design
+
+A/B testing was introduced cautiously.
+
+### Design Principles
+
+* Only one variable changed at a time
+* Tests limited to subsets of locations
+* Clear stop conditions defined in advance
+
+This avoided ambiguous results.
+
+---
+
+## 87. Interpreting A/B Test Results
+
+Results were evaluated across multiple dimensions:
+
+* Margin change
+* Sales volume
+* Complaint volume
+* Operational friction
+
+A strategy was only promoted if it passed all thresholds.
+
+---
+
+## 88. Avoiding Feedback Loops and Oscillation
+
+Frequent price changes risk oscillation.
+
+Mitigations included:
+
+* Cooldown periods
+* Hysteresis thresholds
+* Manual review for reversals
+
+This stabilized pricing behavior.
+
+---
+
+## 89. Override Mechanisms and Human Judgment
+
+Managers retained override authority.
+
+Override reasons were logged, including:
+
+* Local events
+* Supply disruptions
+* Promotional campaigns
+
+Overrides became learning signals, not failures.
+
+---
+
+## 90. Governance and Accountability
+
+Pricing recommendations were auditable.
+
+Each recommendation stored:
+
+* Triggering rules
+* Supporting data
+* Simulation results
+* Final action taken
+
+This supported post-mortems and audits.
+
+---
+
+## 91. Integration with Menu Operations
+
+Operational realities shaped pricing cadence.
+
+Constraints included:
+
+* Digital menu board update costs
+* Printed menu replacement cycles
+* Staff retraining requirements
+
+Pricing cycles were aligned with operational windows.
+
+---
+
+## 92. Preventing Brand Fragmentation
+
+Cross-location price drift was monitored continuously.
+
+Rules flagged:
+
+* Excessive divergence
+* Unjustified local premiums
+* Inconsistent promotional behavior
+
+This protected brand coherence.
+
+---
+
+## 93. Failure Modes Considered
+
+The system explicitly anticipated failures.
+
+Examples:
+
+* Cost spikes without price response
+* Overcorrection leading to complaints
+* Competitive misreads
+
+Each had documented mitigation steps.
+
+---
+
+## 94. Measuring Pricing Engine Success
+
+Success was measured beyond margins.
+
+Metrics included:
+
+* Recommendation adoption rate
+* Manager override frequency
+* Complaint trend changes
+* Time-to-action reduction
+
+This ensured the system served people, not just numbers.
+
+---
+
+## 95. Cultural Impact of the Pricing Engine
+
+The engine changed conversations.
+
+Managers stopped asking:
+
+* “Can we raise prices?”
+
+They started asking:
+
+* “What does the data say we can justify?”
+
+This shift mattered as much as financial gains.
+
+---
+
+## Reasoning Summary
+
+This section was developed by treating pricing as a sociotechnical system, combining analytical rigor with behavioral, operational, and brand constraints.
+
+---
+
+## Points Requiring Ongoing Review
+
+* Validity of elasticity assumptions
+* Rule thresholds as inflation regimes change
+* Long-term customer sentiment effects
+
