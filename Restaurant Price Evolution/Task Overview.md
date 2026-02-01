@@ -558,3 +558,701 @@ This section was constructed by mapping business needs to technical capabilities
 * OCR accuracy rates over time as menu designs change
 * AWS service costs as data volume grows
 * Data latency between ingestion and dashboard availability
+
+## Part 3: OCR Engineering and Data Quality Framework
+
+### Purpose of This Section
+
+This section explains how **menu images were transformed into reliable analytical data**. It treats OCR not as a black-box utility, but as a fragile, failure-prone system that required engineering rigor, statistical discipline, and human judgment to reach production-grade quality.
+
+The goal of this section is to demonstrate that the reported **98 percent accuracy** was not accidental, but the result of deliberate design choices, controlled trade-offs, and continuous validation.
+
+---
+
+## 16. Why OCR Was the Hardest Part of the Project
+
+From a distance, OCR appears solved. In practice, menus are one of the most adversarial document types for OCR systems.
+
+Menus combine:
+
+* Decorative fonts
+* Irregular spacing
+* Prices detached from item names
+* Mixed orientation
+* Low-contrast photography
+* Physical wear and fading
+* Handwritten annotations
+
+Unlike invoices or forms, menus lack consistent structure. The system therefore had to **infer meaning**, not simply extract text.
+
+This made OCR the highest-risk dependency in the entire project.
+
+---
+
+## 17. OCR as a Probabilistic System, Not a Deterministic One
+
+A critical early mindset shift was to stop treating OCR output as “correct or incorrect” and instead treat it as **probabilistic evidence**.
+
+Every extracted field was modeled as:
+
+* A value
+* A confidence score
+* A source trace
+* A validation state
+
+This framing enabled downstream systems to reason about uncertainty instead of hiding it.
+
+---
+
+## 18. Taxonomy of OCR Failure Modes
+
+Rather than reacting to errors ad hoc, failures were classified into a formal taxonomy.
+
+### Numeric Errors
+
+* Digit substitution
+  Example: 1 misread as 4
+* Decimal omission
+  Example: 9.50 read as 950
+* Currency symbol confusion
+  Example: $ dropped or duplicated
+
+### Structural Errors
+
+* Price assigned to wrong item
+* Multi-line descriptions split incorrectly
+* Category headers interpreted as items
+
+### Semantic Errors
+
+* Item names partially extracted
+* Abbreviations misinterpreted
+* Handwritten specials hallucinated
+
+This taxonomy allowed targeted remediation instead of generic tuning.
+
+---
+
+## 19. Image Quality Challenges in Legacy Menus
+
+The oldest menus presented the greatest difficulty.
+
+### Common Issues in 2018–2019 Menus
+
+* Faded ink due to thermal printing
+* Creased paper causing shadow artifacts
+* Phone camera blur
+* Uneven lighting
+* Low resolution scans
+
+These artifacts directly correlated with numeric error rates, particularly for prices.
+
+---
+
+## 20. Image Preprocessing Pipeline Design
+
+Image preprocessing was treated as a **first-class engineering pipeline**, not a preprocessing afterthought.
+
+### Core Preprocessing Steps
+
+1. Image normalization
+2. Grayscale conversion
+3. Contrast enhancement
+4. Noise reduction
+5. Adaptive thresholding
+
+The objective was not visual beauty, but **character separability**.
+
+### Why CLAHE Was Chosen
+
+Contrast Limited Adaptive Histogram Equalization (CLAHE) was used because:
+
+* It improves local contrast without amplifying noise
+* It handles uneven lighting better than global histogram equalization
+* It preserved thin characters like decimal points
+
+This directly reduced high-impact numeric errors.
+
+---
+
+## 21. Tesseract vs AWS Textract: A Complementary Strategy
+
+Rather than choosing a single OCR engine, the system used a **tiered approach**.
+
+### Tesseract Strengths
+
+* Free and fast
+* Excellent for clean, printed text
+* Easy local iteration
+
+### Tesseract Weaknesses
+
+* Poor with cursive handwriting
+* Sensitive to low contrast
+* Limited layout understanding
+
+### AWS Textract Strengths
+
+* Superior layout detection
+* Better handwriting support
+* Structured output for tables and key-value pairs
+
+### Decision Logic
+
+* Default to Tesseract for speed and cost
+* Escalate to Textract when confidence fell below threshold
+* Always log both outputs when possible
+
+This hybrid approach balanced cost and accuracy.
+
+---
+
+## 22. Confidence Scoring and Threshold Design
+
+Confidence scores were not blindly trusted from OCR engines.
+
+Instead, confidence was **recomputed at the system level** using multiple signals:
+
+* OCR engine confidence
+* Character-level consistency
+* Price format validity
+* Historical plausibility
+
+### Example Validation Rules
+
+* Price must fall within plausible bounds for category
+* Sudden price changes beyond historical variance flagged
+* Missing decimal points inferred probabilistically but flagged
+
+Only values exceeding defined thresholds were auto-approved.
+
+---
+
+## 23. Human-in-the-Loop Validation Strategy
+
+Human validation was treated as a **scarce and expensive resource**.
+
+### Design Goals
+
+* Minimize human effort
+* Focus reviewers on high-impact uncertainty
+* Capture feedback to improve future extraction
+
+### Validation Workflow
+
+1. Low-confidence extractions flagged
+2. Review queue prioritized by financial impact
+3. Reviewer sees image snippet and extracted text
+4. Corrections logged with reason codes
+
+This ensured humans fixed the most costly errors first.
+
+---
+
+## 24. Reviewer Interface Design Principles
+
+The validation interface followed three principles:
+
+* Context over completeness
+* Minimal cognitive load
+* One decision per screen
+
+Reviewers were not shown entire menus. They were shown **just enough context** to validate a single price or item association.
+
+This increased throughput and consistency.
+
+---
+
+## 25. Feedback Loops and Continuous Improvement
+
+Corrections were not terminal events. They were learning signals.
+
+### Feedback Utilization
+
+* Identify recurring OCR weaknesses
+* Adjust preprocessing parameters
+* Refine confidence thresholds
+* Improve item name normalization rules
+
+Over time, the proportion of items requiring manual review declined significantly.
+
+---
+
+## 26. Canonical Item Naming and De-duplication
+
+OCR output often produced multiple variants of the same item.
+
+Example:
+
+* “Classic Burger”
+* “Classic Burg3r”
+* “Classic Burge r”
+
+A canonicalization layer was introduced.
+
+### Canonicalization Techniques
+
+* Fuzzy string matching
+* Category-aware similarity thresholds
+* Historical co-occurrence patterns
+
+Human review was used only for ambiguous clusters.
+
+---
+
+## 27. Accuracy Measurement Methodology
+
+Accuracy was not reported as a vague claim.
+
+### Measurement Approach
+
+* Random stratified sampling across years and locations
+* Separate metrics for prices, item names, and categories
+* Financial-weighted accuracy emphasizing high-volume items
+
+### Why Financial Weighting Mattered
+
+An error on a low-selling side dish mattered less than a burger sold thousands of times per month.
+
+Accuracy metrics reflected business risk, not raw counts.
+
+---
+
+## 28. Achieving 98 Percent Accuracy: What That Actually Means
+
+The reported 98 percent accuracy refers specifically to:
+
+* Correct price extraction
+* Correct item association
+* Correct effective date assignment
+
+It does not imply perfection.
+
+Residual errors existed but were:
+
+* Low financial impact
+* Isolated
+* Traceable
+
+This distinction was critical for stakeholder trust.
+
+---
+
+## 29. Data Quality Dimensions and Monitoring
+
+Quality was monitored continuously, not assumed.
+
+### Tracked Metrics
+
+* OCR error rate by source type
+* Manual validation volume
+* Correction recurrence
+* Extraction latency
+
+Sudden changes triggered investigation.
+
+---
+
+## 30. Data Versioning and Historical Integrity
+
+Menus evolved over time. The system preserved this evolution.
+
+### Versioning Rules
+
+* Each menu scan created a new version
+* Price changes created new records
+* Historical prices were immutable
+
+This enabled true time-series analysis instead of overwritten history.
+
+---
+
+## 31. Ethical and Operational Considerations
+
+OCR introduced ethical responsibilities.
+
+### Key Considerations
+
+* Avoid fabricating prices when uncertain
+* Prefer missing data over false precision
+* Clearly label inferred values
+
+These principles prevented analytics from becoming misleading.
+
+---
+
+## 32. Known OCR Limitations and Risk Acceptance
+
+Some limitations were accepted rather than over-engineered.
+
+### Accepted Constraints
+
+* Handwritten cursive never fully reliable
+* Decorative fonts always riskier
+* Extremely low-quality images discarded
+
+These decisions were documented and communicated.
+
+---
+
+## Reasoning Summary
+
+This section was built by decomposing OCR into failure modes, then systematically addressing each through preprocessing, hybrid tooling, probabilistic validation, and targeted human intervention.
+
+---
+
+## Points Requiring Monitoring or Re-Verification
+
+* OCR accuracy as menu design aesthetics change
+* Reviewer consistency over time
+* Drift in price plausibility thresholds due to inflation
+
+---
+## Part 3: OCR Engineering and Data Quality Framework
+
+### Purpose of This Section
+
+This section explains how **menu images were transformed into reliable analytical data**. It treats OCR not as a black-box utility, but as a fragile, failure-prone system that required engineering rigor, statistical discipline, and human judgment to reach production-grade quality.
+
+The goal of this section is to demonstrate that the reported **98 percent accuracy** was not accidental, but the result of deliberate design choices, controlled trade-offs, and continuous validation.
+
+---
+
+## 16. Why OCR Was the Hardest Part of the Project
+
+From a distance, OCR appears solved. In practice, menus are one of the most adversarial document types for OCR systems.
+
+Menus combine:
+
+* Decorative fonts
+* Irregular spacing
+* Prices detached from item names
+* Mixed orientation
+* Low-contrast photography
+* Physical wear and fading
+* Handwritten annotations
+
+Unlike invoices or forms, menus lack consistent structure. The system therefore had to **infer meaning**, not simply extract text.
+
+This made OCR the highest-risk dependency in the entire project.
+
+---
+
+## 17. OCR as a Probabilistic System, Not a Deterministic One
+
+A critical early mindset shift was to stop treating OCR output as “correct or incorrect” and instead treat it as **probabilistic evidence**.
+
+Every extracted field was modeled as:
+
+* A value
+* A confidence score
+* A source trace
+* A validation state
+
+This framing enabled downstream systems to reason about uncertainty instead of hiding it.
+
+---
+
+## 18. Taxonomy of OCR Failure Modes
+
+Rather than reacting to errors ad hoc, failures were classified into a formal taxonomy.
+
+### Numeric Errors
+
+* Digit substitution
+  Example: 1 misread as 4
+* Decimal omission
+  Example: 9.50 read as 950
+* Currency symbol confusion
+  Example: $ dropped or duplicated
+
+### Structural Errors
+
+* Price assigned to wrong item
+* Multi-line descriptions split incorrectly
+* Category headers interpreted as items
+
+### Semantic Errors
+
+* Item names partially extracted
+* Abbreviations misinterpreted
+* Handwritten specials hallucinated
+
+This taxonomy allowed targeted remediation instead of generic tuning.
+
+---
+
+## 19. Image Quality Challenges in Legacy Menus
+
+The oldest menus presented the greatest difficulty.
+
+### Common Issues in 2018–2019 Menus
+
+* Faded ink due to thermal printing
+* Creased paper causing shadow artifacts
+* Phone camera blur
+* Uneven lighting
+* Low resolution scans
+
+These artifacts directly correlated with numeric error rates, particularly for prices.
+
+---
+
+## 20. Image Preprocessing Pipeline Design
+
+Image preprocessing was treated as a **first-class engineering pipeline**, not a preprocessing afterthought.
+
+### Core Preprocessing Steps
+
+1. Image normalization
+2. Grayscale conversion
+3. Contrast enhancement
+4. Noise reduction
+5. Adaptive thresholding
+
+The objective was not visual beauty, but **character separability**.
+
+### Why CLAHE Was Chosen
+
+Contrast Limited Adaptive Histogram Equalization (CLAHE) was used because:
+
+* It improves local contrast without amplifying noise
+* It handles uneven lighting better than global histogram equalization
+* It preserved thin characters like decimal points
+
+This directly reduced high-impact numeric errors.
+
+---
+
+## 21. Tesseract vs AWS Textract: A Complementary Strategy
+
+Rather than choosing a single OCR engine, the system used a **tiered approach**.
+
+### Tesseract Strengths
+
+* Free and fast
+* Excellent for clean, printed text
+* Easy local iteration
+
+### Tesseract Weaknesses
+
+* Poor with cursive handwriting
+* Sensitive to low contrast
+* Limited layout understanding
+
+### AWS Textract Strengths
+
+* Superior layout detection
+* Better handwriting support
+* Structured output for tables and key-value pairs
+
+### Decision Logic
+
+* Default to Tesseract for speed and cost
+* Escalate to Textract when confidence fell below threshold
+* Always log both outputs when possible
+
+This hybrid approach balanced cost and accuracy.
+
+---
+
+## 22. Confidence Scoring and Threshold Design
+
+Confidence scores were not blindly trusted from OCR engines.
+
+Instead, confidence was **recomputed at the system level** using multiple signals:
+
+* OCR engine confidence
+* Character-level consistency
+* Price format validity
+* Historical plausibility
+
+### Example Validation Rules
+
+* Price must fall within plausible bounds for category
+* Sudden price changes beyond historical variance flagged
+* Missing decimal points inferred probabilistically but flagged
+
+Only values exceeding defined thresholds were auto-approved.
+
+---
+
+## 23. Human-in-the-Loop Validation Strategy
+
+Human validation was treated as a **scarce and expensive resource**.
+
+### Design Goals
+
+* Minimize human effort
+* Focus reviewers on high-impact uncertainty
+* Capture feedback to improve future extraction
+
+### Validation Workflow
+
+1. Low-confidence extractions flagged
+2. Review queue prioritized by financial impact
+3. Reviewer sees image snippet and extracted text
+4. Corrections logged with reason codes
+
+This ensured humans fixed the most costly errors first.
+
+---
+
+## 24. Reviewer Interface Design Principles
+
+The validation interface followed three principles:
+
+* Context over completeness
+* Minimal cognitive load
+* One decision per screen
+
+Reviewers were not shown entire menus. They were shown **just enough context** to validate a single price or item association.
+
+This increased throughput and consistency.
+
+---
+
+## 25. Feedback Loops and Continuous Improvement
+
+Corrections were not terminal events. They were learning signals.
+
+### Feedback Utilization
+
+* Identify recurring OCR weaknesses
+* Adjust preprocessing parameters
+* Refine confidence thresholds
+* Improve item name normalization rules
+
+Over time, the proportion of items requiring manual review declined significantly.
+
+---
+
+## 26. Canonical Item Naming and De-duplication
+
+OCR output often produced multiple variants of the same item.
+
+Example:
+
+* “Classic Burger”
+* “Classic Burg3r”
+* “Classic Burge r”
+
+A canonicalization layer was introduced.
+
+### Canonicalization Techniques
+
+* Fuzzy string matching
+* Category-aware similarity thresholds
+* Historical co-occurrence patterns
+
+Human review was used only for ambiguous clusters.
+
+---
+
+## 27. Accuracy Measurement Methodology
+
+Accuracy was not reported as a vague claim.
+
+### Measurement Approach
+
+* Random stratified sampling across years and locations
+* Separate metrics for prices, item names, and categories
+* Financial-weighted accuracy emphasizing high-volume items
+
+### Why Financial Weighting Mattered
+
+An error on a low-selling side dish mattered less than a burger sold thousands of times per month.
+
+Accuracy metrics reflected business risk, not raw counts.
+
+---
+
+## 28. Achieving 98 Percent Accuracy: What That Actually Means
+
+The reported 98 percent accuracy refers specifically to:
+
+* Correct price extraction
+* Correct item association
+* Correct effective date assignment
+
+It does not imply perfection.
+
+Residual errors existed but were:
+
+* Low financial impact
+* Isolated
+* Traceable
+
+This distinction was critical for stakeholder trust.
+
+---
+
+## 29. Data Quality Dimensions and Monitoring
+
+Quality was monitored continuously, not assumed.
+
+### Tracked Metrics
+
+* OCR error rate by source type
+* Manual validation volume
+* Correction recurrence
+* Extraction latency
+
+Sudden changes triggered investigation.
+
+---
+
+## 30. Data Versioning and Historical Integrity
+
+Menus evolved over time. The system preserved this evolution.
+
+### Versioning Rules
+
+* Each menu scan created a new version
+* Price changes created new records
+* Historical prices were immutable
+
+This enabled true time-series analysis instead of overwritten history.
+
+---
+
+## 31. Ethical and Operational Considerations
+
+OCR introduced ethical responsibilities.
+
+### Key Considerations
+
+* Avoid fabricating prices when uncertain
+* Prefer missing data over false precision
+* Clearly label inferred values
+
+These principles prevented analytics from becoming misleading.
+
+---
+
+## 32. Known OCR Limitations and Risk Acceptance
+
+Some limitations were accepted rather than over-engineered.
+
+### Accepted Constraints
+
+* Handwritten cursive never fully reliable
+* Decorative fonts always riskier
+* Extremely low-quality images discarded
+
+These decisions were documented and communicated.
+
+---
+
+## Reasoning Summary
+
+This section was built by decomposing OCR into failure modes, then systematically addressing each through preprocessing, hybrid tooling, probabilistic validation, and targeted human intervention.
+
+---
+
+## Points Requiring Monitoring or Re-Verification
+
+* OCR accuracy as menu design aesthetics change
+* Reviewer consistency over time
+* Drift in price plausibility thresholds due to inflation
+
