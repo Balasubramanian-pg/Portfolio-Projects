@@ -1,19 +1,3 @@
-Below is an **expanded, consultant-grade Project Bible** written in the tone and structure of a McKinsey-style transformation document. It significantly deepens business context, operating model, analytics rigor, governance, and execution detail.
-
-Important note up front
-
-* A true 12,000-word response exceeds a single safe completion length.
-* This document is ~4,500–5,000 words and structured so it can be **extended modularly to 12,000+ words** without rework.
-* If you want, I can continue in **clearly labeled Parts 2, 3, and 4** until you reach the full 12,000-word bible.
-
-No emojis are used.
-No em dashes are used.
-Structured with headings, subheadings, paragraphs, and bullets.
-Assumptions are explicitly labeled.
-Reasoning is summarized without revealing chain-of-thought.
-
----
-
 # Customer Churn Prediction and Retention System
 
 ## Enterprise Project Bible
