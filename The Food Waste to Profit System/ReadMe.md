@@ -280,33 +280,274 @@ The survival of SavoryBites' profit margin depends on closing the gap between *w
 >The financial modeling above assumes a standard ingredient mix. If the price of Protein (Beef/Chicken) spikes disproportionately in Q3, the savings target ($100k) may be obscured by inflation. We must track "Volume of Waste" (Kg) as the primary metric of success, with "Cost of Waste" ($) as the secondary financial outcome, to control for market price volatility.
 
 ---
+# Project Phoenix Bible
+## Section 3: Architecture and Data Strategy Overview
 
-## **3. Architecture and Data Strategy Overview**
+**Document Owner:** Chief Data Architect
+**Date:** October 15, 2024
+**Scope:** Technical Architecture, Data Modeling, Integration Strategy, and Roadmap
+**Status:** Approved for Design
+**Version:** 1.0
 
-Although this project starts with Excel, we must architect for the future to prevent "spreadsheet hell." We will utilize a **Crawl-Walk-Run** technical strategy.
+---
 
-### **3.1 Technical Stack Lifecycle**
+## 3.0 Architectural Philosophy: The "Anti-Fragile" Approach
 
-| Phase | Collection Layer | Storage Layer | Processing Layer | Consumption Layer |
+### 3.0.1 The Trap of Over-Engineering
+In typical enterprise data projects, there is a temptation to purchase the "Ferrari" immediately—implementing Snowflake, Databricks, or a Kafka streaming layer on Day 1. For Project Phoenix at SavoryBites, this would be a catastrophic failure.
+
+Why? **Because the data source (Human Behavior) is currently unstable.**
+
+We are asking line cooks, who are under immense physical pressure, to manually log waste. If we build a rigid, high-tech API-driven architecture before we have established the *discipline* of data collection, the system will ingest garbage data at the speed of light.
+
+### 3.0.2 The Crawl-Walk-Run Imperative
+Our architectural strategy is defined by the **Maturity Model**. We will match the complexity of our technology to the maturity of our operational processes.
+
+1.  **Crawl (Manual Audit):** Low tech, high touch. We validate the *existence* of data.
+2.  **Walk (Centralization):** Moderate tech. We validate the *consistency* of data.
+3.  **Run (Cloud Integration):** High tech. We automate the *flow* of data.
+4.  **Fly (IoT & ML):** Cutting edge. We automate the *decision-making*.
+
+---
+
+## 3.1 Detailed Technical Stack Lifecycle
+
+We will progressively migrate the technical estate. The architecture is designed so that each phase provides the foundation for the next; nothing is "throw-away" work; it is "prototype" work that informs the final schema.
+
+| Component | **Phase 1: The Paper & Excel Era** | **Phase 2: The Aggregation Era** | **Phase 3: The Cloud Foundation** | **Phase 4: The Enterprise State** |
 | :--- | :--- | :--- | :--- | :--- |
-| **Phase 1** | Paper Logs -> Excel Entry | Local Excel Files (SharePoint) | Manual Aggregation | Monthly Email Reports |
-| **Phase 2** | Direct Excel Entry | SharePoint Folder | **SQL Database / Power Query** | Ad-hoc SQL Queries |
-| **Phase 3** | Excel / Tablet Entry | Central Data Warehouse (Cloud SQL) | **Stored Procedures** | **Power BI (MVP)** |
-| **Phase 4** | IoT Scales (Roadmap) | Cloud Data Warehouse | Auto-ETL Pipelines | **Power BI (Enterprise)** |
+| **Duration** | Months 1-2 | Months 3-4 | Months 5-8 | Months 9+ |
+| **Data Generation** | Analog Scales + Paper Clipboards. Manual entry into Store PC. | Direct entry into constrained Excel Templates on Managers' tablets. | Digital Web Form / PowerApps or continued Excel (Standardized). | IoT Smart Bins (Winnow/Leanpath) + API Feeds. |
+| **Ingestion** | Manager types paper log into local Excel file. | Power Query scans SharePoint folders nightly. | Azure Data Factory (ADF) Ingestion pipelines. | Real-time JSON Event Streams (Event Hubs). |
+| **Storage** | Local Files (CSV/XLSX) stored on SharePoint (Silos). | Local SQL Express or consolidated CSVs. | Azure SQL Database (Central Warehouse). | Cloud Data Warehouse (Snowflake or Azure Synapse). |
+| **Transformation** | Manual Excel formulas (`SUMIF`, `VLOOKUP`). | Power Query M Scripts / Simple SQL Views. | Stored Procedures / DBT (Data Build Tool). | Automated ETL pipelines with anomaly detection. |
+| **Reporting** | Static Monthly Email (PDF) sent by Analyst. | Ad-Hoc SQL Queries / Excel Pivot Tables. | Power BI Pro (connected to SQL DB). | Embedded Analytics & Predictive Models. |
+| **Key Risk** | Data Entry Errors (Typos). | File Version Conflicts. | Latency / Connectivity. | Hardware Maintenance & Calibration. |
 
-### **3.2 The Conceptual Data Model**
-Even in the Excel phase, data must follow a strict schema to allow for SQL ingestion later.
+---
 
-**Core Entity: `Waste_Fact`**
-*   `Transaction_ID`: Unique Identifier.
-*   `Date_Time`: Timestamp of disposal.
-*   `Location_ID`: Foreign key to Restaurant master.
-*   `Item_ID`: Foreign key to Ingredient master.
-*   `Category_Code`: (Prep, Spoilage, Plate, Error).
-*   `Reason_Code`: (Over-prep, Burned, Dropped, Refire).
-*   `Quantity`: Float value.
-*   `UOM` (Unit of Measure): Kg, Lbs, Each.
-*   `Estimated_Cost`: Derived field (Quantity * Unit_Cost).
+## 3.2 Phase 1 Architecture: "Iron-Clad Excel" (The Crawl)
+
+**Objective:** Standardize input data to minimize "Cleaning" time later.
+
+In Phase 1, the "Architecture" is essentially a rigorous File System governance policy. If 15 managers name their files differently, the project fails.
+
+### 3.2.1 The Distributed File System (SharePoint)
+We will leverage the existing Microsoft 365 license.
+
+**Directory Structure:**
+```text
+/SavoryBites_Corp/
+  /Operations/
+    /Project_Phoenix/
+      /Incoming_Data/
+        /Region_East/
+          /Store_01_Boston/
+            - 2024-11_Waste_Log_Store01.xlsx
+            - 2024-12_Waste_Log_Store01.xlsx
+        /Region_West/
+          ...
+```
+
+### 3.2.2 The Collection Instrument (The Spreadsheet)
+We cannot rely on a blank spreadsheet. It must be an **Application** built within Excel.
+
+**Feature Specification: `Master_Waste_Log_Template_v1.xlsx`**
+1.  **Worksheet 1: `Entry_Log`**:
+    *   **Data Validation:** Columns C, D, and E (Item, Category, Reason) will *not* allow free text. They will reference named ranges in the `Reference_Data` sheet.
+    *   **Error Trapping:** The `Quantity` column is set to "Decimal" type. If a user types "5 lbs" (text), Excel rejects the input. It must be `5`.
+    *   **Conditional Formatting:** If a user enters a quantity > 50kg (unlikely), the cell turns bright red to prompt a double-check (sanity check).
+
+2.  **Worksheet 2: `Reference_Data` (Locked/Hidden)**:
+    *   This sheet contains the "Golden Records" exported from our master systems.
+    *   **Master Item List:** Copied from our Sysco/US Foods Order Guide. Contains `SKU`, `Item_Name`, `Purchase_UOM`, `Unit_Cost`.
+    *   **Store List:** List of Store IDs.
+
+**VBA Automation (Optional but Recommended):**
+*   A simple "Submit" button macro that saves a timestamped CSV backup to a separate "Archive" folder, ensuring that if the Manager corrupts the main file, we have a history.
+
+---
+
+## 3.3 Phase 2 Architecture: The Integration Logic (The Walk)
+
+**Objective:** Remove the human effort of opening 15 files to make a report.
+
+### 3.3.1 The Aggregation Engine: Power Query (M Language)
+We will create a **Master Analysis Workbook**. It does not contain data; it contains *connections*.
+
+**The Pipeline Logic:**
+1.  **Source:** `Folder.Files("https://savorybites.sharepoint.com/.../Incoming_Data/")`
+2.  **Filter:** Select only `.xlsx` files. Exclude files beginning with `~` (temp files).
+3.  **Transform:**
+    *   `Table.Combine`: Stacks 15 files into one massive table.
+    *   `Table.AddColumn`: Extracts "Store ID" from the folder path or filename.
+    *   `Type.Conversion`: Forces strict data typing (Date as Date, Cost as Currency).
+4.  **Lookup Enrichment:**
+    *   Merge queries with the `Master_Ingredient_Price_List.csv` based on Item Name.
+    *   *Note:* In Phase 1, cost was manual. In Phase 2, we centrally control cost to ensure consistency.
+
+### 3.3.2 The Intermediate Database (SQL Express)
+Towards the end of Phase 2, as row counts exceed 50,000, Excel performance will degrade. We will deploy a lightweight PostgreSQL or SQL Server Express instance on a secure corporate VM.
+
+*   **Ingestion Script:** A simple Python script (pandas) or PowerShell script runs nightly.
+    *   *Action:* Truncate the daily staging table -> Bulk Insert new data -> Append to History table.
+
+---
+
+## 3.4 Phase 3 Architecture: The Cloud Warehouse (The Run)
+
+**Objective:** Scalability, Security, and Single Source of Truth (SSOT).
+
+We migrate from "Files on SharePoint" to a true **Modern Data Stack (MDS)**.
+
+### 3.4.1 The Data Warehouse: Azure SQL Database
+We choose a relational database (OLTP/OLAP hybrid) over a data lake for now because the data is highly structured.
+
+**Schema Design Pattern:** Star Schema (Kimball Methodology).
+This optimizes the database for *read* performance (Power BI reports) rather than *write* performance.
+
+### 3.4.2 The Semantic Layer (Power BI Datasets)
+We do not let users query the database directly. We build a governed dataset.
+*   **DAX Measures:** Pre-calculated business logic.
+    *   `Waste Cost` = `SUM(Waste_Fact[Estimated_Cost])`
+    *   `Waste % of Sales` = `DIVIDE([Waste Cost], [Total Sales], 0)`
+*   **Row-Level Security (RLS):**
+    *   A General Manager logging in from "Boston #1" can *only* see data where `Location_ID = 'BOS-001'`.
+    *   The Regional Manager sees all stores in `Region = 'East'`.
+
+---
+
+## 3.5 Conceptual Data Model: The "Phoenix Schema"
+
+This is the most critical component. Bad code can be rewritten; bad data modeling rots the foundation forever.
+
+We will use a **Star Schema** centered around `FACT_WASTE_TRANSACTION`.
+
+### 3.5.1 The Fact Table (`FACT_WASTE_TRANSACTION`)
+This table records the event. It is "narrow and deep."
+
+| Field Name | Data Type | Constraint | Description |
+| :--- | :--- | :--- | :--- |
+| `Waste_ID` | BIGINT | PK, Auto-Inc | System generated unique key. |
+| `Date_Key` | INT | FK | Link to Date Dimension (e.g., `20241015`). |
+| `Time_Key` | INT | FK | Link to Time Dimension (Hour buckets). |
+| `Store_Key` | INT | FK | Link to Store Dimension. |
+| `Item_Key` | INT | FK | Link to Master Ingredient Dimension. |
+| `Reason_Key` | TINYINT | FK | Link to Reason Code Dimension. |
+| `Quantity_Raw` | DECIMAL(10,3) | NOT NULL | The number typed by the human. |
+| `UOM_Input` | VARCHAR(10) | NOT NULL | The Unit chosen (Kg, Lbs, Case). |
+| `Quantity_Standardized_Kg` | DECIMAL(10,3) | Derived | **Critical ETL Logic:** Converts Lbs/Cases to Kg. |
+| `Unit_Cost_At_Disposal` | DECIMAL(10,4) | Derived | The cost of the item *on that specific day*. |
+| `Total_Cost_Loss` | DECIMAL(10,2) | Derived | `Qty_Standard * Unit_Cost`. |
+| `Input_Source` | VARCHAR(20) | Metadata | 'Excel', 'App', 'IoT'. Helps track data confidence. |
+
+### 3.5.2 Dimension: Items (`DIM_ITEM`)
+Handling ingredients is difficult because they change (new suppliers, seasonal items).
+
+| Field Name | Data Type | Description |
+| :--- | :--- | :--- |
+| `Item_Key` | INT | Surrogate Key (Internal). |
+| `SKU_Code` | VARCHAR(50) | Supplier SKU (External). |
+| `Item_Name` | VARCHAR(100) | "Tomatoes, Roma". |
+| `Reporting_Category` | VARCHAR(50) | "Produce", "Protein", "Dairy". |
+| `Standard_Unit_Weight_Kg` | DECIMAL | *Crucial Reference:* Weight of 1 "Each" or 1 "Case". |
+| `Yield_Percent` | DECIMAL | e.g., 0.85 (We lose 15% when peeling). Used for advanced cost calcs. |
+
+::: warning
+**Architectural Risk: The "Unit of Measure" Nightmare**
+Kitchen staff think in "Pinches," "Bunches," and "Cases." The database thinks in Kilograms.
+**The Solution:** The `DIM_ITEM` table must contain a "Conversion Factor" for every Item/UOM combination.
+*   If Item = "Avocado" and Input = "Case", Logic: `Quantity * Case_Weight (10kg)`.
+*   If Item = "Avocado" and Input = "Each", Logic: `Quantity * Single_Weight (0.2kg)`.
+**Strict Rule:** Phase 1 Excel template will *limit* UOM choices per item. Users cannot select "Liters" for "Steaks."
+:::
+
+### 3.5.3 Dimension: Reason (`DIM_REASON`)
+A small reference table, but vital for analytics.
+
+| Field Name | Description |
+| :--- | :--- |
+| `Reason_Code` | Short Code (`OP`, `EXP`, `DROP`). |
+| `Reason_Description` | Friendly Name ("Over Preparation", "Expired"). |
+| `Controllability_Flag` | Boolean (0/1). Was this preventable? |
+| `Disposition_Type` | "Landfill", "Compost", "Donation". Important for Sustainability Reporting. |
+
+### 3.5.4 Dimension: Store (`DIM_STORE`)
+
+| Field Name | Description |
+| :--- | :--- |
+| `Store_Key` | Internal ID. |
+| `Store_Code` | "BOS-01". |
+| `Region_Name` | "Northeast". |
+| `POS_Integration_ID` | The ID used in the POS system (to join with Sales data). |
+| `Square_Footage` | Useful for normalizing efficiency metrics. |
+
+---
+
+## 3.6 Integration Strategy (Master Data Management)
+
+### 3.6.1 The "Sales" Context Integration (Phase 2+)
+To answer "Are we wasting more when it's busy?", we need Sales Data.
+*   **Source:** Micros POS daily export (CSV).
+*   **Join Logic:** `FACT_SALES` linked to `DIM_DATE` and `DIM_STORE`.
+*   **Metric:** `Waste_Efficiency_Ratio` = `Total_Waste_Cost` / `Total_Food_Sales`.
+
+### 3.6.2 The Cost Ingestion
+We will not manually type costs after Phase 1.
+*   **Source:** ERP / Supply Chain System (e.g., Sysco/Compeat).
+*   **Frequency:** Monthly average cost updates.
+*   **Logic:** `FACT_WASTE` looks up the cost from `DIM_ITEM_HISTORY` based on the date of the waste.
+    *   *Why?* If we wasted Chicken in January ($5/lb), we must not re-calculate that loss in June using June prices ($7/lb). History must be immutable.
+
+---
+
+## 3.7 Data Quality & Governance Framework
+
+We are building a "Digital Trust" system.
+
+### 3.7.1 Validation Rules (The "Bouncers" at the door)
+1.  **Completeness:** A record with NULL `Item_ID` is rejected.
+2.  **Range Checking:**
+    *   Warning: Quantity > 20kg.
+    *   Hard Stop: Quantity < 0.
+3.  **Logical Consistency:** "Spoiled" waste cannot be "Plate Waste" (Customer side).
+
+### 3.7.2 Outlier Detection (The "Smoke Alarm")
+*   **Logic:** During ETL, calculate `Mean` and `Standard_Deviation` for daily waste weight per store.
+*   **Trigger:** If `Daily_Waste` > (`Mean` + 3 * `StdDev`), flag row as `Audit_Required`.
+*   **Action:** Email alerts the Regional Manager. "Store #4 just logged 500kg of waste. Typo or Disaster?"
+
+---
+
+## 3.8 Phase 4: Future State IoT & Automation
+
+Though currently a Roadmap item, the architecture supports the transition.
+
+### 3.8.1 The Smart Scale Integration
+Smart bins (like Winnow) emit JSON payloads via REST API.
+
+**Payload Example:**
+```json
+{
+  "device_id": "SCALE_BOS_01_A",
+  "timestamp": "2024-11-05T14:30:00Z",
+  "item_recognition_label": "French Fries",
+  "confidence_score": 0.98,
+  "weight_g": 450,
+  "staff_id": "EMP_992"
+}
+```
+
+**Architecture Shift:**
+*   Excel manual entry is replaced by an **Azure Event Hub**.
+*   The logic map updates: `item_recognition_label` maps to `DIM_ITEM.SKU`.
+*   Data becomes real-time. Dashboard refreshes every 15 minutes.
+
+---
+
+### **Conclusion of Architecture**
+
+This strategy prioritizes **structure over speed**. By forcing data through the `Fact_Waste` model—even when that data comes from a clipboard—we ensure that when we eventually upgrade to automated tools, the history is compatible. We are building a cathedral, not a shack; the foundation (Schema) must be poured before the stained glass (Dashboards) is installed.
 
 ---
 
