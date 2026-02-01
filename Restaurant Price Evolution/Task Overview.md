@@ -1256,3 +1256,330 @@ This section was built by decomposing OCR into failure modes, then systematicall
 * Reviewer consistency over time
 * Drift in price plausibility thresholds due to inflation
 
+
+## Part 4: Analytical Modeling and Time-Series Design
+
+### Purpose of This Section
+
+This section explains how five years of extracted menu prices were converted into **analytical signals that executives could trust**. The focus is on modeling choices, temporal alignment, and loss attribution rather than on mathematical novelty.
+
+The guiding principle was simple:
+If a pricing insight cannot be explained to a restaurant manager in plain language, it does not belong in production.
+
+---
+
+## 33. From Clean Data to Analytical Truth
+
+Once OCR outputs were validated and standardized, the project shifted from data engineering to analytical modeling.
+
+At this stage, the main risk was no longer incorrect data, but **incorrect interpretation**.
+
+Menu prices are time-dependent, location-specific, and cost-constrained. Treating them as static values would destroy their meaning.
+
+The system therefore treated **price as a time series, not a column**.
+
+---
+
+## 34. Core Analytical Questions
+
+All modeling decisions were anchored to four business questions:
+
+1. How have prices changed over time for each item and location?
+2. How did those changes compare to ingredient and labor cost movements?
+3. Where did margins silently deteriorate?
+4. Which price moves would have the highest impact with lowest customer backlash?
+
+Every derived metric could be traced back to at least one of these questions.
+
+---
+
+## 35. Time-Series Modeling Philosophy
+
+Rather than applying complex forecasting models, the system emphasized **historical reconstruction and comparison**.
+
+Reasons for this choice:
+
+* Restaurant pricing is constrained by brand and customer psychology.
+* Data volume per item was limited.
+* Interpretability mattered more than predictive precision.
+
+The objective was not to predict the future perfectly, but to **understand the past accurately**.
+
+---
+
+## 36. Price History as a First-Class Entity
+
+Prices were modeled with explicit validity windows.
+
+### Price Record Structure
+
+Each price record contained:
+
+* Item identifier
+* Location identifier
+* Price value
+* Effective start date
+* Effective end date
+* Source and confidence metadata
+
+This allowed queries such as:
+
+* What was the price of Item X in City Y on Date Z?
+* How long did a given price persist?
+* How often were prices adjusted?
+
+These questions were impossible to answer in the legacy Excel system.
+
+---
+
+## 37. Handling Irregular Price Changes
+
+Unlike financial tick data, menu prices change irregularly.
+
+Challenges included:
+
+* Long periods of price stability
+* Sudden step changes
+* Asynchronous updates across locations
+
+To address this, the system used **event-based time series**, not fixed intervals.
+
+Prices were forward-filled only for analytical comparison, never stored that way.
+
+---
+
+## 38. Ingredient Cost Normalization
+
+Ingredient cost data arrived at different granularities.
+
+Examples:
+
+* Beef prices weekly at national level
+* Avocado prices monthly with regional variance
+* Dairy prices quarterly
+
+### Normalization Strategy
+
+* Convert all costs to a weekly time index
+* Interpolate cautiously where needed
+* Tag interpolated values explicitly
+
+ASSUMPTION
+Linear interpolation was used for short gaps where no official data existed. This was necessary to align costs with menu prices. Interpolated values were flagged and excluded from high-stakes decisions.
+
+---
+
+## 39. Item-to-Ingredient Mapping
+
+Each menu item was mapped to a **primary cost driver**.
+
+Examples:
+
+* Burgers to beef
+* Tacos to poultry or beef depending on variant
+* Salads to produce basket index
+
+This mapping was intentionally simplified.
+
+Reasoning:
+
+* Full recipe costing was unavailable.
+* The goal was directional insight, not exact food cost accounting.
+
+This simplification was disclosed to stakeholders to prevent overinterpretation.
+
+---
+
+## 40. Wage Inflation as a Cost Driver
+
+Labor costs were modeled separately from ingredient costs.
+
+### Wage Data Characteristics
+
+* City-specific
+* Discrete step changes
+* Politically driven rather than market-driven
+
+Wage increases were applied as **step functions**, not gradual trends.
+
+This allowed the system to attribute sudden margin changes correctly.
+
+---
+
+## 41. Cost-to-Price Ratio Modeling
+
+For each item, location, and time period, the system computed:
+
+* Ingredient cost to price ratio
+* Labor-adjusted cost proxy
+* Combined cost pressure index
+
+These ratios were more informative than absolute values.
+
+A burger priced at $12 and one priced at $18 could both be unhealthy, depending on costs.
+
+---
+
+## 42. Margin Leakage Detection Logic
+
+Margin leakage was defined as:
+
+A sustained divergence between cost increases and price adjustments beyond a tolerable threshold.
+
+### Detection Rules
+
+* Cost increase greater than price increase by defined percentage
+* Persistence beyond a minimum duration
+* Material sales volume
+
+This avoided flagging temporary anomalies.
+
+---
+
+## 43. Loss Attribution Methodology
+
+Loss attribution answered a critical question:
+
+How much money did we lose because we did not adjust prices in time?
+
+### Attribution Steps
+
+1. Identify baseline margin period
+2. Compute expected price given cost movement
+3. Compare actual price to expected price
+4. Multiply gap by units sold
+
+This converted abstract analysis into dollar values executives could act on.
+
+---
+
+## 44. Example: Burger Margin Erosion in New York
+
+The New York burger case illustrated the system’s value.
+
+* Beef costs rose sharply
+* Menu prices rose modestly
+* Margin gap persisted for over 18 months
+
+The system quantified the loss per burger and aggregated it to annual impact.
+
+This shifted conversations from opinion to evidence.
+
+---
+
+## 45. Cross-Location Price Variance Analysis
+
+Price inconsistency damages brand trust.
+
+The system computed:
+
+* Mean price per item across locations
+* Deviation from mean by location
+* Persistence of deviation
+
+High variance triggered investigation, not automatic correction.
+
+---
+
+## 46. Customer Complaint Correlation
+
+Complaint data was aligned with price changes.
+
+Key insight:
+
+Complaints correlated more with **relative pricing** than absolute pricing.
+
+Customers tolerated higher prices when competitors were similarly priced.
+
+---
+
+## 47. Statistical Techniques Used Sparingly
+
+The project deliberately avoided overfitting.
+
+Used techniques included:
+
+* Moving averages
+* Z-score anomaly detection
+* Simple regression for correlation checks
+
+Advanced models were rejected due to limited interpretability.
+
+---
+
+## 48. Seasonality Handling
+
+Seasonal items distorted naive analysis.
+
+Mitigations included:
+
+* Separate treatment of seasonal SKUs
+* Year-over-year comparisons instead of month-over-month
+* Exclusion from baseline margin calculations
+
+This prevented false alarms.
+
+---
+
+## 49. Data Gaps and Imperfect Information
+
+Not all questions had clean answers.
+
+Examples:
+
+* Missing historical sales volume
+* Incomplete ingredient price history
+* Untracked portion size changes
+
+These gaps were documented rather than hidden.
+
+---
+
+## 50. Trust Through Transparency
+
+Every dashboard metric included:
+
+* Definition
+* Data sources
+* Known limitations
+
+This transparency increased adoption and reduced resistance.
+
+---
+
+## 51. Performance and Scalability Considerations
+
+Time-series queries were optimized via:
+
+* Pre-aggregated tables
+* Indexed date ranges
+* Partitioning by location and category
+
+This ensured dashboards remained responsive.
+
+---
+
+## 52. Analytical Outputs Produced
+
+Key outputs included:
+
+* Item-level margin trend reports
+* Location-level risk rankings
+* Cost-pressure heatmaps
+* Price adjustment opportunity lists
+
+Each output tied directly to a business decision.
+
+---
+
+## Reasoning Summary
+
+This section was built by translating business questions into temporal models, prioritizing interpretability, and converting abstract cost movements into defensible financial impact.
+
+---
+
+## Points Requiring Verification or Ongoing Review
+
+* Validity of ingredient-to-item mappings
+* Impact of interpolation assumptions
+* Continued relevance of baseline margin periods
