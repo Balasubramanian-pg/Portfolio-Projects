@@ -224,3 +224,337 @@ Operational:
 * Faster response time to cost shocks
 
 These metrics prevented local optimization from undermining global outcomes.
+
+## Part 2: Data Landscape and Systems Architecture
+
+### Purpose of This Section
+
+This section establishes the **technical backbone** of the Menu Price Evolution Tracker. It explains how raw, chaotic menu artifacts are transformed into a governed, analytical system capable of supporting pricing decisions at scale.
+
+The intent is not merely to describe tools, but to explain **why specific architectural choices were made**, what alternatives were rejected, and how the system balances accuracy, cost, scalability, and organizational trust.
+
+---
+
+## 9. End-to-End Data Flow Architecture
+
+At a high level, the system follows a layered architecture designed to mirror the lifecycle of menu pricing decisions.
+
+### Architectural Layers
+
+1. **Data Ingestion Layer**
+
+   * Physical and digital menu artifacts
+   * Crowdsourced competitor menus
+   * External economic datasets
+
+2. **Processing and Validation Layer**
+
+   * OCR pipelines
+   * Image preprocessing
+   * Human validation workflows
+
+3. **Storage Layer**
+
+   * Structured historical menu database
+   * Semi-structured competitor pricing store
+   * Reference and dimension tables
+
+4. **Analytics and Modeling Layer**
+
+   * Time-series price tracking
+   * Cost correlation models
+   * Benchmarking logic
+
+5. **Presentation and Decision Layer**
+
+   * Power BI dashboards
+   * Alerting and rules engines
+   * Manager-facing insights
+
+Each layer is deliberately decoupled to allow changes without cascading failures across the system.
+
+---
+
+## 10. Source Systems and Data Ownership
+
+A core early decision was to explicitly define **data ownership** at the source level.
+
+### Primary Data Sources
+
+#### Internal Sources
+
+* Legacy menu PDFs
+* Photographs of printed menus
+* Handwritten chef specials
+* Excel pricing sheets maintained by managers
+
+Ownership:
+
+* Corporate operations for official menus
+* Local managers for temporary and seasonal items
+
+#### External Sources
+
+* Ingredient prices from USDA
+* Wage data from BLS
+* Competitor pricing via crowdsourced submissions
+
+Ownership:
+
+* Corporate analytics team
+
+Explicit ownership reduced ambiguity during data disputes and validation escalations.
+
+---
+
+## 11. Menu Artifacts as Semi-Structured Data
+
+Menus appear simple to customers, but from a data perspective they are **semi-structured documents with high variance**.
+
+### Structural Challenges
+
+* Inconsistent layouts across years and locations
+* Price placement not tied to item names
+* Seasonal inserts and handwritten notes
+* Varying fonts, contrast, and image quality
+
+Treating menus as either unstructured text or rigid tables proved insufficient. Instead, the system treats each menu as a **document composed of extractable entities**:
+
+* Item name
+* Description
+* Price
+* Category
+* Location
+* Effective date
+
+This conceptual model informed OCR preprocessing and downstream schema design.
+
+---
+
+## 12. OCR as a Data Engineering Problem
+
+OCR was not treated as a one-time extraction task, but as an **ongoing data engineering pipeline**.
+
+### Why OCR Was Central
+
+* 5 years of pricing history existed only in visual form
+* Manual re-entry would introduce bias and inconsistency
+* OCR accuracy directly affected margin calculations
+
+### Failure Modes Identified Early
+
+* Numeric hallucination under poor contrast
+* Decimal misplacement
+* Item name fragmentation
+* Duplicate extraction across overlapping scans
+
+These risks shaped the choice of tools and validation strategies.
+
+---
+
+## 13. Cloud Architecture on AWS
+
+AWS was selected due to its flexibility, managed services, and compatibility with Python-based workflows.
+
+### Core AWS Components
+
+* **Amazon S3**
+
+  * Raw menu images
+  * Preprocessed images
+  * OCR output logs
+
+* **AWS Textract**
+
+  * Advanced OCR for complex documents
+  * Backup for low-confidence Tesseract outputs
+
+* **AWS Lambda**
+
+  * Event-driven OCR processing
+  * Lightweight validation triggers
+
+* **Amazon DynamoDB**
+
+  * Real-time competitor pricing submissions
+  * High-velocity, schema-flexible data
+
+* **Amazon RDS or PostgreSQL**
+
+  * Canonical historical menu database
+  * Strong relational integrity
+
+This hybrid architecture avoided overengineering while preserving extensibility.
+
+---
+
+## 14. Data Storage Strategy and Trade-offs
+
+### Structured vs Semi-Structured Storage
+
+The system deliberately used **multiple storage paradigms**.
+
+#### Relational Database Use Cases
+
+* Historical menu prices
+* Item-to-ingredient mappings
+* Location and category dimensions
+
+Advantages:
+
+* Strong consistency
+* Complex joins
+* Time-series analysis support
+
+#### NoSQL Use Cases
+
+* Competitor menu submissions
+* Raw OCR outputs
+* Validation feedback
+
+Advantages:
+
+* Flexible schema
+* Rapid ingestion
+* Cost efficiency for sparse data
+
+This separation prevented analytical workloads from being polluted by noisy raw inputs.
+
+---
+
+## 15. Schema Design Principles
+
+The schema was designed around **immutability and traceability**.
+
+### Key Principles
+
+* Prices are never overwritten
+* Every price has an effective date range
+* Source metadata is preserved
+* Confidence scores are stored alongside extracted values
+
+### Core Tables
+
+#### menus
+
+* menu_id
+* location_id
+* effective_start_date
+* effective_end_date
+* source_type
+
+#### menu_items
+
+* item_id
+* standardized_item_name
+* category
+* is_core_item
+
+#### menu_prices
+
+* menu_id
+* item_id
+* price
+* extraction_confidence
+* source_image_id
+
+This design enabled full historical reconstruction of any menu at any point in time.
+
+---
+
+## 16. Security, Access Control, and Cost Management
+
+Although this was an internship project, security considerations were treated seriously.
+
+### Access Controls
+
+* Read-only access for most managers
+* Write access restricted to ingestion pipelines
+* Audit logging for price changes and overrides
+
+### Cost Management Decisions
+
+* OCR batch processing scheduled during off-peak hours
+* Textract used selectively for low-confidence cases
+* Archival policies for raw images after validation
+
+These measures ensured the system remained financially justifiable.
+
+---
+
+## 17. Data Quality as a First-Class Concern
+
+Data quality was not handled downstream. It was embedded at every layer.
+
+### Quality Dimensions Tracked
+
+* Accuracy
+* Completeness
+* Timeliness
+* Consistency
+* Traceability
+
+Each extracted price carried metadata describing:
+
+* Extraction method
+* Confidence score
+* Validation status
+* Human reviewer if applicable
+
+This transparency increased stakeholder trust.
+
+---
+
+## 18. Lineage and Auditability
+
+Every analytical insight needed to be defensible.
+
+### Lineage Capabilities
+
+* From dashboard metric back to SQL query
+* From SQL record back to OCR output
+* From OCR output back to source image
+
+This was critical when managers questioned recommendations or when finance audited margin claims.
+
+---
+
+## 19. Integration with Analytics and BI Tools
+
+The storage layer was optimized for consumption by Power BI.
+
+### Semantic Layer Design
+
+* Pre-aggregated views for common KPIs
+* Clear separation between raw facts and derived metrics
+* Naming conventions aligned with business language
+
+This reduced dashboard complexity and improved adoption.
+
+---
+
+## 20. Architectural Constraints and Known Limitations
+
+No system is perfect, and documenting limitations was part of the project discipline.
+
+### Known Constraints
+
+* OCR accuracy still lower for handwritten cursive
+* Competitor data subject to sampling bias
+* Near-real-time pricing updates limited by menu board update cycles
+
+Explicitly acknowledging these constraints prevented overconfidence in outputs.
+
+---
+
+## Reasoning Summary
+
+This section was constructed by mapping business needs to technical capabilities, then justifying each architectural choice based on reliability, scalability, and stakeholder trust rather than novelty.
+
+---
+
+## Points Requiring Verification or Monitoring
+
+* OCR accuracy rates over time as menu designs change
+* AWS service costs as data volume grows
+* Data latency between ingestion and dashboard availability
