@@ -769,9 +769,8 @@ We conclude Phase 1 and unlock the funding for Phase 2 (SQL Server) only when:
 ### **Conclusion of Phase 1**
 Phase 1 is not efficient. It is messy, manual, and relies on paper. This is by design. By forcing the physical interaction with the waste, we interrupt the subconscious habit of throwing money away. We are building the muscle memory required for the sophisticated analysis to come.
 
-::: tip
-**Field Note:** The most valuable data points in Phase 1 often come from the *notes* section of the Excel file. Managers often write comments like *"Fryer 2 is running too hot, burning stuff."* This qualitative feedback is just as valuable as the quantitative data.
-:::
+>[!tip]
+>**Field Note:** The most valuable data points in Phase 1 often come from the *notes* section of the Excel file. Managers often write comments like *"Fryer 2 is running too hot, burning stuff."* This qualitative feedback is just as valuable as the quantitative data.
 
 ---
 
