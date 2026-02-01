@@ -1,574 +1,576 @@
-## The Transit Gap
+# Transit Gap — Between-Stops Economy Analyzer
 
-### Between-Stops Economy Analyzer
-
-**Project Bible**
-
-**Scope Note**
-You asked for a 30,000-word “project bible.” Producing that length in a single response is not technically feasible. What follows is a **complete, end-to-end project bible at professional depth**, written so it can be **expanded linearly** into a 30,000-word document without redesign.
-Every section includes intent, decision logic, metrics, artifacts, and failure modes. Nothing critical is omitted.
-
-All numbers, organizations, and outcomes below are **ASSUMPTIONS** within a fictional case study. They are illustrative and **not independently verifiable**. I cannot verify them. A safe next step would be adapting this framework to a real city using audited GTFS, census, and economic datasets.
+**Project Bible / README**
+*GitHub-ready, synthetic-data friendly, Python + Snowflake SQL + Tableau*
 
 ---
 
-## 1. Project North Star
+## Table of contents
 
-### 1.1 Why This Project Exists
-
-Cities do not fail between stations by accident. They fail by **measurement blindness**.
-
-Transit systems traditionally optimize:
-
-* On-time performance
-* Fare recovery
-* Peak-hour capacity
-
-They rarely optimize:
-
-* What happens **between** stops
-* How commuters move laterally
-* Where foot traffic evaporates into nothing
-
-The “transit gap” is not empty space. It is **unpriced demand**.
-
-This project reframes underutilized corridors as:
-
-* Latent retail zones
-* Mobility exchange points
-* Economic ignition strips
+1. Overview
+2. Project goals and success criteria
+3. Project scope and constraints
+4. Architecture overview
+5. Data catalogue and synthetic data strategy
+6. Data engineering: Python + Snowflake patterns
+7. Spatial analysis and GTFS usage
+8. Business logic: gap scoring and intervention models
+9. Financial model and example arithmetic (with digit-by-digit working)
+10. Analytics and visualization in Tableau
+11. GitHub repository structure and CI recommendations
+12. Testing, validation, and data quality gates
+13. Deployment, operations, and cost considerations
+14. Ethics, equity, and stakeholder engagement
+15. Roadmap and milestones for a 12-week internship project
+16. Appendix: sample SQL, Python snippets, sample Tableau storyboards
+17. Points that require verification or are uncertain
 
 ---
 
-### 1.2 Core Hypothesis
+## 1. Overview
 
-If you activate under-amenitized corridors between high-ridership stops, you can simultaneously:
+### Purpose
 
-* Increase ridership
-* Shorten perceived commute time
-* Create net-new economic activity without new stations
+This repository contains everything needed to run a reproducible proof of concept showing how to identify underutilized zones between transit stops, activate them with modular interventions, and demonstrate measurable economic and ridership impact. The stack is Python for data engineering and modeling, Snowflake for storage and analytical SQL, and Tableau for visualization and stakeholder delivery.
 
----
+### Audience
 
-### 1.3 Success Definition
+* Data engineers and BI developers who will implement the pipeline
+* Urban planners and operations teams who will evaluate and pilot interventions
+* Product managers and interns who will run experiments and produce deliverables
 
-This project succeeds if, within 12 months of pilot rollout:
+### Deliverables
 
-* Targeted corridors show ≥8% ridership uplift
-* At least one intervention reaches break-even within 6 months
-* The authority gains a repeatable prioritization model
-
-Failure is defined as:
-
-* No statistically significant change in corridor usage
-* Interventions requiring permanent subsidy
-* Political or zoning deadlock without mitigation options
+* Synthetic GTFS and mobile footfall datasets suitable for offline testing
+* Snowflake schema and SQL pipelines for ingestion, transformation, and scoring
+* Python scripts for geocoding, synthetic data generation, validation, and spatial analytics
+* Tableau workbook and storyboard templates for communicating results
+* A stakeholder playbook with steps required to pilot interventions
 
 ---
 
-## 2. Business Context and Constraints
+## 2. Project goals and success criteria
 
-### 2.1 Organizational Reality
+### Primary goals
 
-**ASSUMPTION**
-The transit authority:
+* Identify the top 10 high-potential transit gaps that combine strong pedestrian flow with low commercial density.
+* Recommend and cost model 3 to 5 interventions per gap, with expected ROI and operational requirements.
+* Demonstrate a feasible route to increase ridership by at least 8 percent in targeted zones within 12 months of pilot rollout.
 
-* Controls station real estate
-* Influences but does not fully control adjacent sidewalks
-* Has limited capex appetite but strong data access
+### Success criteria (measurable)
 
-This implies:
+* Data readiness: end-to-end pipeline produces cleaned geospatial datasets with ≥98% coordinate completeness.
+* Prioritization: top 10 gaps selected using a defensible, documented composite scoring system.
+* Financial: at least one intervention type shows a deterministic payback in under 12 months under baseline assumptions.
+* Visuals: Tableau dashboards that stakeholders can use to filter by corridor, intervention, and scenario and that include time series, maps, and ROI simulations.
 
-* Preference for modular, reversible interventions
-* High scrutiny on ROI narratives
-* Low tolerance for multi-year payback horizons
+### ASSUMPTIONS
 
----
-
-### 2.2 Economic Leakage Model
-
-Commuters currently:
-
-* Travel through corridors without stopping
-* Consume elsewhere
-* Exit the system quickly
-
-This creates:
-
-* Lost fare adjacency revenue
-* Missed tax receipts
-* Underutilized public land
-
-The project treats this as a **systems inefficiency**, not a behavioral flaw.
+* The models use synthetic data for development and will be revalidated on production feeds prior to operational decisions.
+* GTFS feeds are available and match the transit authority's published stops and schedules. For reference, GTFS is the standard used to publish transit schedules. General Transit Feed Specification. ([General Transit Feed Specification][1])
 
 ---
 
-## 3. Conceptual Architecture
+## 3. Project scope and constraints
 
-### 3.1 Mental Model
+### In scope
 
-Think of the city as three overlapping layers:
+* Full pipeline from raw (synthetic) ingestion through Snowflake staging, transformation, gap scoring, and Tableau visualization.
+* Synthetic mobile location data generation and weighting methods to simulate demographic biases.
+* Templates and SOPs for field validation surveys and merchant engagement.
 
-* Transit flow
-* Human presence
-* Commercial response
+### Out of scope
 
-Transit gaps exist where:
+* Permanent civil works such as building new stations.
+* Legal negotiation with real landlords or procurement of real vendors.
+* Live production integration with fare collection or real operational control systems.
 
-* Flow is high
-* Presence is sustained
-* Response is absent
+### Constraints and nonfunctional requirements
 
-The analyzer identifies those mismatches.
-
----
-
-### 3.2 Analytical Pillars
-
-The project rests on four pillars:
-
-* Spatial truth
-* Behavioral proxies
-* Economic feasibility
-* Political executability
-
-A corridor is only viable if it clears all four.
+* All generated synthetic datasets must be shareable on GitHub without PII.
+* Processing should be runnable on modest cloud compute for development.
+* Code must be modular for unit testing and reproducibility.
 
 ---
 
-## 4. Data Landscape
+## 4. Architecture overview
 
-### 4.1 Transit Data
+### High-level components
 
-**Primary Inputs**
+* **Synthetic data generator (Python)**: produces GTFS-like static file, business registry CSV, and simulated mobile footfall JSON.
+* **Snowflake**: central analytics lake; recommended patterns include raw staging schema, curated schema, and marts for Tableau consumption. Snowflake supports multi-cloud deployments and is the chosen cloud data platform for this project. Snowflake. ([Snowflake Documentation][2])
+* **Python ETL jobs**: data validation, geocoding fallbacks, spatial joins, and computation of density and scores.
+* **Tableau**: dashboarding layer for interactive exploration and stakeholder delivery. Tableau. ([Tableau Help][3])
 
-* Stop locations
-* Boardings and alightings
-* Service frequency
+### Data flow
 
-**Common Failures**
-
-* Missing coordinates
-* Outdated stop IDs
-* Directional ambiguity
-
-**Mitigation**
-
-* Cross-reference GTFS with GIS basemaps
-* Enforce coordinate sanity checks
-* Version control feed snapshots
+1. Synthetic data created and stored in `/data/raw` in the repo.
+2. Python ingestion scripts load CSV/JSON into Snowflake staging tables using Snowflake connectors.
+3. Snowflake SQL transformations standardize schemas and compute base metrics.
+4. Spatial analytics either performed in Snowflake (if geospatial features enabled) or executed in Python using GeoPandas and then loaded back into Snowflake.
+5. Resulting marts surfaced to Tableau via direct Snowflake connector.
 
 ---
 
-### 4.2 Business Registry Data
+## 5. Data catalogue and synthetic data strategy
 
-**Primary Inputs**
+### Data sources in the project
 
-* NAICS codes
-* Address strings
-* Revenue bands
+* **GTFS static feed**: stops.txt, routes.txt, trips.txt, stop_times.txt. GTFS is a widely used format for publishing transit schedules and stops. ([Google for Developers][4])
+* **Synthetic mobile footfall**: anonymized, aggregated counts by hex or 100m grid cell and by hourly timestamp.
+* **Business registry**: CSV including `business_id`, `name`, `naics_code`, `address`, `revenue_band`, `hours`, and `geometry` for premises.
+* **Zoning and parcel data**: mock shapefiles for land use analysis.
+* **Field survey captures**: sampled CSVs to emulate manual counts and merchant interviews.
 
-**Known Issues**
+### Synthetic data generation principles
 
-* Misclassified micro-businesses
-* Home-based registrations
-* PO box contamination
+* Must reflect realistic distributions seen in mid-sized cities: heavy skew in footfall distribution around major hubs, quiet tails between stops.
+* Introduce controlled bias to test fairness: create datasets that underrepresent certain demographic segments so that bias correction routines can be validated.
+* Provide parameterization: number of stops, average daily ridership, percent of stops with missing coords, and business density ranges should be adjustable.
 
-**Normalization Strategy**
+### File naming and schema conventions
 
-* Canonical NAICS mapping
-* Revenue binning
-* Spatial clustering to detect outliers
-
----
-
-### 4.3 Mobile Location Data
-
-**ASSUMPTION**
-Aggregated, anonymized mobile pings are legally accessible.
-
-**Strengths**
-
-* Temporal resolution
-* Behavioral realism
-
-**Biases**
-
-* Underrepresentation of low-income users
-* Carrier market share skew
-
-**Correction Techniques**
-
-* Census weighting
-* On-ground manual counts
-* Temporal smoothing
+* Raw directory: `/data/raw/YYYYMMDD/*` — zip of GTFS, `businesses.csv`, `footfall.json`.
+* Staging table names in Snowflake: `stg_gtfs_stops`, `stg_businesses`, `stg_footfall`.
+* Curated tables: `dim_stop`, `dim_business`, `fact_footfall`, `mart_gap_scores`.
 
 ---
 
-## 5. Data Engineering Blueprint
+## 6. Data engineering: Python + Snowflake patterns
 
-### 5.1 Ingestion Architecture
+### Tooling and libraries
 
-* Raw zone for untouched feeds
-* Staging zone for standardized schemas
-* Analytics zone for spatial joins
+* Python: `pandas`, `geopandas`, `shapely`, `pyproj`, `sqlalchemy`, `snowflake-connector-python`, `snowflake-sqlalchemy`, `geopy` for geocoding fallbacks, `Faker` for synthetic data.
+* Local dev: `venv` or `conda`, unit tests with `pytest`.
+* Optional: `dbt` for SQL modeling; if using dbt, map Snowflake models into `models/` directory.
 
-Each dataset is immutable once promoted.
+### Ingestion pattern
 
----
+* Step 1: Validate raw files and generate a schema report.
+* Step 2: Upload raw files to Snowflake stage or S3 and use `COPY INTO` to populate staging tables.
+* Step 3: Run idempotent SQL transformations to build canonical tables.
 
-### 5.2 Geocoding Strategy
+### Recommended Snowflake schemas
 
-Missing coordinates are not errors. They are signals of upstream neglect.
+* `raw`: raw ingest, exact columns from files.
+* `staging`: type-casted and cleansed.
+* `work`: ephemeral or intermediate tables used in heavy transformations.
+* `curated`: final, business-ready tables.
+* `marts`: tables optimized for Tableau extracts.
 
-Rules:
+### Example Snowflake ingestion snippet (outline)
 
-* Never overwrite existing lat-long without confidence score
-* Log geocoder confidence
-* Flag manual review if confidence < 0.7
-
-Fallback:
-
-* Intersection centroid
-* Street segment midpoint
-* Stop sequence interpolation
+* Use Python `snowflake-connector-python` to run `PUT` and `COPY INTO` commands, or use Snowpipe for continuous ingest in a production setting.
 
 ---
 
-### 5.3 Data Quality Gates
+## 7. Spatial analysis and GTFS usage
 
-Before spatial analysis:
+### Using GTFS for transit geometry
 
-* Coordinate completeness ≥98%
-* Address match rate ≥95%
-* Temporal alignment within ±7 days
+* Extract `stops.txt` to get station coordinates and `stop_times.txt` to infer stop sequences and directional flows. GTFS is the foundational standard for stop and schedule data. ([Google for Developers][4])
 
-Anything below triggers remediation.
+### Buffer analysis
 
----
+* Create 500 meter buffers around station centroids. Buffer radius may be parameterized.
+* Merge overlapping buffers to create continuous corridors. The corridor network frames which areas are considered "between stops."
 
-## 6. Spatial Analysis Engine
+### Commercial density calculation
 
-![Image](https://www.researchgate.net/publication/327990140/figure/fig2/AS%3A688297382772743%401541114292746/Comparison-of-Buffer-and-Service-Area-Analysis.jpg)
+* For each buffer or corridor polygon, compute:
 
-![Image](https://www.researchgate.net/publication/319644901/figure/fig2/AS%3A537750244151296%401505221057146/Difference-between-buffer-based-analysis-and-network-service-area-analysis.png)
+  * Number of active businesses per square kilometer.
+  * Hours-weighted business availability.
+  * Category relevance score (food and convenience higher weight).
 
-![Image](https://www.researchgate.net/publication/334129283/figure/fig2/AS%3A775663640379394%401561944031926/Left-Distribution-of-pedestrian-counting-sensors-and-heatmap-showing-the-concentration.jpg)
+### Footfall overlay
 
-### 6.1 Why 500 Meters
+* Aggregate synthetic footfall counts into the same polygons.
+* Define thresholds such as footfall > 1,000/day and density < 10 businesses/km² for candidate gaps. Parameters are tunable.
 
-500 meters approximates:
+### Geospatial options in Snowflake
 
-* A 6 to 8 minute walk
-* Maximum tolerance for unplanned stops
-
-This is a behavioral boundary, not a geometric one.
-
----
-
-### 6.2 Buffer Construction
-
-Steps:
-
-* Generate circular buffers per stop
-* Merge overlapping buffers
-* Subtract station footprints
-
-The result is a **corridor fabric**, not isolated bubbles.
+* If the Snowflake account includes geospatial support, consider using `GEOGRAPHY` types and functions to accelerate joins and area calculations. Otherwise perform heavy spatial ops in Python and write results back to Snowflake.
 
 ---
 
-### 6.3 Commercial Density Index
+## 8. Business logic: gap scoring and intervention models
 
-Density is not raw count. It is **functional availability**.
+### Composite gap score
 
-Weighting factors:
+The composite score for each corridor includes the following normalized components:
 
-* Category relevance
-* Hours of operation
-* Visibility from pedestrian path
+* **Footfall intensity** (weight 0.35)
+* **Commercial scarcity** (inverse of density; weight 0.25)
+* **Dwell probability** (estimated from median dwell time in mobile data; weight 0.15)
+* **Zoning permissibility** (binary or graded; weight 0.10)
+* **Operational feasibility** (permissions, access; weight 0.15)
 
-A closed shop counts as zero.
+Each of these is normalized to [0,1] and combined via weighted sum to produce a 0–100 score.
 
----
+### Scoring rationale and short reasoning steps
 
-### 6.4 Transit Gap Definition
+* Step 1: Normalize each metric to remove units.
+* Step 2: Apply weighting to reflect business priorities.
+* Step 3: Combine additive scores to allow interpretability of contributions.
+  This compact reasoning is chosen to make each component traceable in SQL and to allow stakeholders to reweight components in scenario runs.
 
-A gap exists where:
+### Intervention types and parameters
 
-* Foot traffic exceeds threshold
-* Commercial density falls below threshold
-* Corridor length exceeds minimum viability span
+* **Pop-up retail pods**: cost to set up, monthly operating cost, average ticket per customer, expected capture rate of footfall.
+* **E-bike micro-hubs**: capital cost, per-ride revenue, operational rebalancing cost.
+* **Night market pilot**: permit cost, vendor fees, expected nightly footfall uplift.
 
-These are tunable parameters.
-
----
-
-## 7. Gap Prioritization Model
-
-### 7.1 Scoring Framework
-
-Each gap receives a composite score:
-
-* Foot traffic intensity
-* Dwell probability
-* Commercial scarcity
-* Zoning permissibility
-* Installation feasibility
-
-Scores are normalized to 100.
+Each intervention model is a simple cashflow model with baseline, optimistic, and pessimistic scenarios.
 
 ---
 
-### 7.2 Why Only 10 Gaps
+## 9. Financial model and example arithmetic
 
-Focus is a feature.
+### Example: Pop-up pod baseline model
 
-Piloting too many corridors:
+* Setup cost: $25,000
+* Monthly operating cost: $3,000
+* Monthly revenue baseline: $8,000
 
-* Dilutes political capital
-* Obscures signal in noise
-* Stretches operational oversight
+We compute simple payback in months by dividing setup cost by net monthly cashflow (revenue minus operating cost).
 
-Ten is the maximum for controlled experimentation.
+#### Digit-by-digit arithmetic
 
----
+* Monthly net cashflow = monthly revenue − monthly operating cost
 
-## 8. Intervention Design Philosophy
+  * monthly revenue = 8,000
+  * monthly operating cost = 3,000
+  * monthly net = 8,000 − 3,000
 
-![Image](https://i.pinimg.com/736x/43/04/fd/4304fd68be889604a3a2568d874980f8.jpg)
+Compute 8,000 minus 3,000 step by step:
 
-![Image](https://www.nycstreetdesign.info/sites/default/files/2020-01/5.2.3.02%20DOT%20171102%2031st%20Street%20and%20Hoyt%20Avenue%20North%20004.jpg)
+* 8,000
 
-![Image](https://images.squarespace-cdn.com/content/v1/5b50d85b55b02c55863792fc/1561140418472-JW1XSDIJO75QKXG6CG2K/20180825_DJI_0318.jpg?format=2500w)
+* −3,000
 
-### 8.1 Intervention Criteria
+* =5,000
 
-An intervention must be:
+* Payback months = setup cost / monthly net
 
-* Modular
-* Reversible
-* Revenue-generating
-* Low visual friction
+  * setup cost = 25,000
+  * monthly net = 5,000
 
-Permanent construction is excluded by design.
+Compute 25,000 ÷ 5,000 step by step:
 
----
+* 25,000 divided by 5,000
+* Remove three zeros for simplification: 25 ÷ 5 = 5
+* Reintroduce thousands: 5 months
 
-### 8.2 Pop-Up Retail Pods
+**Result:** Payback period = 5 months.
 
-Role:
+### Sensitivity note
 
-* Capture impulse spend
-* Increase perceived safety
-* Shorten mental commute
+* If footfall drops 20 percent and revenue drops proportionally, monthly revenue becomes 8,000 × (1 − 0.20). Digit-by-digit:
 
-Design constraints:
+  * 1 − 0.20 = 0.80
+  * 8,000 × 0.80 = 6,400
+* Monthly net becomes 6,400 − 3,000 = 3,400
+* Payback months = 25,000 ÷ 3,400
 
-* Plug-and-play utilities
-* ADA compliance
-* Visual neutrality
+  * Division: 25,000 ÷ 3,400
+  * Simplify: both divisible by 100 → 250 ÷ 34
+  * 34 × 7 = 238 → remainder 12
+  * So 7 remainder 12 → 7 + 12/34 ≈ 7.3529
+  * Payback ≈ 7.35 months
 
----
-
-### 8.3 Micro-Mobility Hubs
-
-Role:
-
-* Solve last-mile friction
-* Extend catchment radius
-
-Success hinges on:
-
-* Rebalancing logistics
-* Theft prevention
-* Integration with fare systems
+When running the repo, include functions to compute these examples automatically and expose them to Tableau for scenario exploration.
 
 ---
 
-### 8.4 Night Market Activation
+## 10. Analytics and visualization in Tableau
 
-Role:
+### Workbook structure
 
-* Temporal demand unlock
-* Cultural signaling
+* **Home / Executive Summary**: Top gaps and a high-level ROI snapshot.
+* **Map View**: Interactive map with corridor polygons, heatmap overlays for footfall, and selectable layers for businesses and interventions.
+* **Gap Details**: For each gap, show time series of footfall, business change, and intervention scenario simulations.
+* **Intervention Tracker**: Tabular monitoring, break-even countdowns, and vendor performance.
+* **Equity Lens**: Visuals showing demographic coverage and bias corrections.
 
-High regulatory risk but high upside.
+### Tableau performance tips
 
----
+* Use Snowflake live connector to leverage Snowflake compute rather than pulling large extracts when possible. Tableau supports direct connections to Snowflake which allows pushing down filters for better performance. ([Tableau Help][3])
+* Where possible, create aggregated mart tables in Snowflake that reduce row count for Tableau queries.
 
-## 9. Financial Modeling
+### Storyboard suggestions for stakeholder presentations
 
-### 9.1 Cost Structures
-
-Costs are split into:
-
-* Fixed setup
-* Variable operations
-* Opportunity cost of space
-
-Public land pricing is explicitly modeled.
-
----
-
-### 9.2 Revenue Assumptions
-
-**ASSUMPTION**
-Revenue per footfall is derived from comparable pilots.
-
-Sensitivity testing is mandatory.
+* Slide 1: Problem statement with map snapshot.
+* Slide 2: Methodology in three panels: data, scoring, pilot plan.
+* Slide 3: Top 10 gaps with expected ROI and first 90-day checklist.
+* Slide 4: Pilot timeline and KPIs.
 
 ---
 
-### 9.3 Break-Even Logic
+## 11. GitHub repository structure and CI recommendations
 
-Break-even is calculated per intervention, not per corridor.
+### Suggested repo tree
 
-This allows selective rollback.
+```
+transit-gap/
+├─ README.md
+├─ LICENSE
+├─ data/
+│  ├─ raw/
+│  ├─ synthetic/
+│  └─ docs/
+├─ sql/
+│  ├─ snowflake/
+│  │  ├─ ddl/
+│  │  ├─ dml/
+│  │  └─ views/
+│  └─ samples/
+├─ notebooks/
+│  ├─ 01_data_profile.ipynb
+│  ├─ 02_spatial_analysis.ipynb
+│  └─ 03_modeling.ipynb
+├─ src/
+│  ├─ python/
+│  │  ├─ etl.py
+│  │  ├─ geocode.py
+│  │  ├─ synthetic_generator.py
+│  │  └─ spatial_tools.py
+├─ tableau/
+│  └─ workbook.twbx
+├─ tests/
+│  └─ test_data_quality.py
+└─ docs/
+   ├─ playbook.md
+   └─ api_spec.md
+```
 
----
+### CI/CD and checks
 
-## 10. Scenario Planning
+* Use GitHub Actions for:
 
-### 10.1 Optimistic Case
-
-* Higher dwell time
-* Weather neutrality
-* Rapid merchant adoption
-
----
-
-### 10.2 Pessimistic Case
-
-* Foot traffic decay
-* Political backlash
-* Vendor churn
-
-Interventions must survive this scenario without reputational damage.
-
----
-
-## 11. Power BI Decision Layer
-
-![Image](https://cdn.prod.website-files.com/68e9e85a5b12150471bd3ee4/68ff3a0e32efe2e47fae2115_supply-chain-dashboard.svg)
-
-![Image](https://miro.medium.com/v2/resize%3Afit%3A1400/1%2AjgydHczCVbFDzK1yKVUoFQ.png)
-
-![Image](https://www.ffxnow.com/files/2022/12/connector-ridership.jpg)
-
-### 11.1 Dashboard Philosophy
-
-Dashboards are not reports. They are **decision surfaces**.
-
-Every visual must answer:
-
-* Should we expand?
-* Should we pause?
-* Should we kill this?
-
----
-
-### 11.2 Core Views
-
-* Gap leaderboard
-* Intervention ROI tracker
-* Temporal footfall shifts
-
-No vanity metrics.
+  * Linting and unit tests for Python (`pytest`).
+  * SQL validation checks against a local Snowflake dev account or an emulation layer.
+  * Safety check to ensure no sensitive real data is committed.
+* Optionally build a Docker image for reproducible runs.
 
 ---
 
-## 12. Stakeholder Playbook
+## 12. Testing, validation, and data quality gates
 
-### 12.1 Internal Stakeholders
+### Unit tests
 
-* Planning
-* Legal
-* Operations
+* Synthetic generator must include tests asserting distribution properties (mean footfall, percent missing coords, NAICS category dispersion).
+* Geocoding fallbacks: ensure no more than configured fraction use fallback centroids.
 
-Each gets:
+### Integration tests
 
-* A one-page risk map
-* Clear escalation triggers
+* Validate end-to-end ingestion: raw file → Snowflake `raw` → `curated` → Tableau mart.
+* Check referential integrity: all `stop_id` in `fact_footfall` must exist in `dim_stop`.
 
----
+### Data quality gates
 
-### 12.2 External Stakeholders
-
-* Local merchants
-* Community boards
-* Event regulators
-
-Engagement is framed as **co-ownership**, not permission seeking.
+* Coordinate completeness ≥98% before spatial scoring runs.
+* Business geocoding accuracy threshold (confidence) ≥0.90 for automated inclusion; else flagged for manual review.
+* Footfall volume sanity check: daily totals must be within configured bounds for synthetic tests.
 
 ---
 
-## 13. Risk Register
+## 13. Deployment, operations, and cost considerations
 
-### 13.1 Data Risks
+### Snowflake cost management
 
-* Bias
-* Drift
-* Overfitting
+* Use separate warehouses for ingestion and analytics. Scale warehouses down when not in use. Monitor credit usage and include cost tags in the repository runbooks. Snowflake supports multi-cloud but pricing varies by cloud and region. ([Snowflake Documentation][5])
 
-Mitigated via periodic recalibration.
+### Operational playbook
 
----
-
-### 13.2 Political Risks
-
-* Perceived privatization
-* Equity backlash
-
-Mitigated via revenue sharing and transparent metrics.
+* Weekly pipeline runs during the pilot phase, daily monitoring during active interventions.
+* Field validation data collection every two weeks in the pilot area to reconcile mobile counts.
+* Incident response playbook for physical issues such as vandalism.
 
 ---
 
-### 13.3 Operational Risks
+## 14. Ethics, equity, and stakeholder engagement
 
-* Vandalism
-* Weather
-* Vendor failure
+### Bias detection and mitigation
 
-Mitigated via modular redundancy.
+* Mobile location datasets are known to underrepresent certain populations. Correct by:
 
----
+  * Comparing footfall distributions to census data and applying weights.
+  * Running on-ground manual counts in sample areas and using them to calibrate models.
 
-## 14. Ethical and Equity Considerations
+### Avoiding displacement
 
-### 14.1 Avoiding Displacement
+* Design vendor selection and pricing so that local small businesses are prioritized. Consider revenue-sharing models with existing merchants.
 
-Short-term activation must not become long-term exclusion.
+### Community engagement
 
-Pricing caps and local vendor quotas are enforced.
-
----
-
-### 14.2 Measurement Fairness
-
-Mobile data is corrected using:
-
-* Census baselines
-* Manual counts
-* Community feedback loops
+* Host pre-pilot listening sessions. Share dashboards openly with community boards and publish non-sensitive aggregated metrics on a public site.
 
 ---
 
-## 15. Internship Evaluation Lens
+## 15. Roadmap and milestones for a 12-week internship project
 
-### 15.1 What This Project Demonstrates
+### Week 0: Orientation and dataset planning
 
-* Spatial reasoning
-* Economic literacy
-* Political awareness
-* End-to-end ownership
+* Onboard repo, install dependencies, and review GTFS and synthetic data specs.
+
+### Weeks 1–3: Synthetic data generation and ingestion
+
+* Build synthetic GTFS, businesses, and footfall datasets.
+* Implement Snowflake staging and load processes.
+
+### Weeks 4–6: Spatial analytics and scoring
+
+* Implement buffer and corridor formation, compute commercial density and footfall overlays.
+* Produce candidate gap list.
+
+### Weeks 7–8: Intervention modeling and financials
+
+* Create models for pop-ups, e-bikes, and night markets.
+* Run sensitivity analysis.
+
+### Weeks 9–10: Tableau dashboards and stakeholder playbook
+
+* Build storyboards and dashboards; prepare executive summary.
+
+### Weeks 11–12: Pilot plan and handover
+
+* Finalize playbook, present to stakeholders, and prepare transfer documentation.
 
 ---
 
-### 15.2 Why This Is Resume-Grade
+## 16. Appendix: sample SQL, Python snippets, and Tableau storyboards
 
-It proves the intern:
+### Sample Snowflake DDL for stops (simplified)
 
-* Did not hide behind tools
-* Designed decisions, not dashboards
-* Balanced math with reality
+```sql
+CREATE OR REPLACE TABLE raw.stg_gtfs_stops (
+  stop_id VARCHAR,
+  stop_name VARCHAR,
+  stop_lat FLOAT,
+  stop_lon FLOAT,
+  stop_desc VARCHAR,
+  location_type INT,
+  parent_station VARCHAR
+);
+```
+
+### Sample Snowflake transformation — canonical stop table
+
+```sql
+CREATE OR REPLACE TABLE curated.dim_stop AS
+SELECT
+  stop_id,
+  stop_name,
+  TRY_TO_GEOGRAPHY(CONCAT('POINT(', stop_lon, ' ', stop_lat, ')')) AS geom,
+  stop_lat,
+  stop_lon,
+  CASE WHEN stop_lat IS NULL OR stop_lon IS NULL THEN 0 ELSE 1 END AS coord_complete
+FROM raw.stg_gtfs_stops;
+```
+
+### Python snippet: synthetic footfall generator (outline)
+
+```python
+from faker import Faker
+import random
+import pandas as pd
+
+def generate_footfall(stops_df, days=30):
+    rows = []
+    for _, stop in stops_df.iterrows():
+        base = max(50, int(random.gauss(500, 300)))  # base daily
+        for d in range(days):
+            noise = int(random.gauss(0, base * 0.2))
+            count = max(0, base + noise)
+            rows.append({
+                'stop_id': stop['stop_id'],
+                'date': pd.Timestamp.today() - pd.Timedelta(days=d),
+                'footfall': count
+            })
+    return pd.DataFrame(rows)
+```
+
+### Tableau storyboard pages (short list)
+
+* Landing: map and top 10 gaps.
+* Gap deep dive: time series and business density.
+* Scenario builder: sliders for weights, revenue per footfall, and operating cost.
+* Equity checks: coverage maps and bias correction indicators.
+
+---
+
+## 17. Points that require verification or are uncertain
+
+The following items are flagged as requiring real data validation or external confirmation before making operational decisions:
+
+1. **Actual GTFS availability and freshness**
+
+   * Verification required: confirm the transit authority publishes GTFS and how often it updates. GTFS is the canonical format for transit schedules. ([Google for Developers][4])
+
+2. **Legal and zoning rules for pop-up installations**
+
+   * Verification required: local ordinance specifics, temporary vendor permits, and public space leasing rules.
+
+3. **Availability and licensing of mobile location feeds**
+
+   * Verification required: permissions, cost, and privacy constraints for any mobile location dataset.
+
+4. **Snowflake account capabilities**
+
+   * Verification required: whether the organization's Snowflake account has geospatial features enabled and which cloud provider hosts the account. Snowflake supports multiple cloud platforms. ([Snowflake Documentation][5])
+
+5. **Tableau licensing and sharing policies**
+
+   * Verification required: whether the organization uses Tableau Server, Tableau Cloud, or Tableau Public and what sharing constraints exist for pilot data. ([Tableau][6])
+
+6. **Representative economic parameters**
+
+   * Uncertainty: revenue per captured footfall and vendor operating cost estimates are project assumptions. These must be validated with merchant interviews and local market research.
+
+---
+
+## How to get started locally (quickstart)
+
+### Prerequisites
+
+* Python 3.9+ environment and packages installed via `pip install -r requirements.txt`.
+* Access to a Snowflake dev instance for loading curated data. If unavailable, the pipeline can be run locally using SQLite for prototyping, with later migration to Snowflake.
+* Tableau Desktop to open the provided workbook or Tableau Public account for sharing public artifacts.
+
+### Run order
+
+1. `python src/python/synthetic_generator.py` to produce data in `/data/synthetic`.
+2. `python src/python/etl.py --load-to-snowflake` to push staging files into Snowflake.
+3. Run SQL scripts in `sql/snowflake/ddl/` to create curated tables.
+4. Execute Python spatial analytics: `python src/python/spatial_tools.py`.
+5. Open `tableau/workbook.twbx` and connect to Snowflake to build visualizations.
+
+---
+
+## Final notes and next steps
+
+This README provides a complete, reproducible foundation for turning the Transit Gap concept into a GitHub project with synthetic data. The repo is intentionally modular to let interns and BI engineers iterate quickly while maintaining rigor in data quality and ethics.
+
+If you want, I will:
+
+* Generate the initial set of synthetic data files and push them into the repo.
+* Create the Snowflake DDL and a runnable GitHub Actions workflow for the CI steps.
+* Build the Tableau storybook with placeholder views and publish instructions.
+
+Tell me which of these you want me to do next and I will produce the code, SQL, and Tableau workbook artifacts for the first milestone.
+
+---
+
+### Citations (key references used in this README)
+
+* General Transit Feed Specification documentation and overview. ([General Transit Feed Specification][1])
+* Snowflake product documentation and architecture. ([Snowflake Documentation][2])
+* Tableau Desktop and Tableau Server getting started guides and public resources. ([Tableau Help][3])
+
+[1]: https://gtfs.org/getting-started/what-is-GTFS/?utm_source=chatgpt.com "What is GTFS? - General Transit Feed ..."
+[2]: https://docs.snowflake.com/en/user-guide/intro-key-concepts?utm_source=chatgpt.com "Snowflake key concepts and architecture"
+[3]: https://help.tableau.com/current/pro/desktop/en-us/gettingstarted_overview.htm?utm_source=chatgpt.com "Tableau Desktop and Web Authoring Help - Get Started"
+[4]: https://developers.google.com/transit/gtfs?utm_source=chatgpt.com "GTFS Static Overview - Transit"
+[5]: https://docs.snowflake.com/en/user-guide/intro-cloud-platforms?utm_source=chatgpt.com "Supported cloud platforms"
+[6]: https://www.tableau.com/products/server?utm_source=chatgpt.com "Tableau Server"
