@@ -325,7 +325,6 @@ Within 12 months, we project:
 
 The journey begins not with a server, but with a scale and a spreadsheet.
 
-::: information
-**Final Note on Document Usage**
-This document serves as the Source of Truth. Any deviations from the data definitions or SOPs listed in Phases 1-3 must be approved by the Project Lead to ensure data integrity for the Phase 4 rollout.
-:::
+>[!information]
+>**Final Note on Document Usage**
+>This document serves as the Source of Truth. Any deviations from the data definitions or SOPs listed in Phases 1-3 must be approved by the Project Lead to ensure data integrity for the Phase 4 rollout.
