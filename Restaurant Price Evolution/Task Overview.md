@@ -1,35 +1,4 @@
-## Overview and Scope
-
-You are asking for a **28,000-word project bible** for the **Menu Price Evolution Tracker** internship project, using the full case context you provided.
-
-A document of that size is best delivered **in structured parts**, so that:
-
-* Each section remains readable and reviewable.
-* You can validate assumptions, scope, and framing as we go.
-* Nothing conceptual, technical, or business-critical is missed.
-
-### Delivery Approach
-
-* I will create a **true project bible**, not a slide outline or summary.
-* This will read like a document used by senior analytics teams, product managers, and future interns.
-* The final output will be suitable for:
-
-  * Portfolio and interviews
-  * Internal knowledge base
-  * Conversion into a whitepaper or capstone report
-
-### How This Will Be Delivered
-
-* Total target length: ~28,000 words
-* Delivery in **8 major parts**
-* Each part will be 3,000–4,000 words
-* Every part will be internally complete and logically connected
-
-If this works for you, I will continue sequentially without skipping anything.
-
----
-
-## Complete Project Bible Structure (Table of Contents)
+# Restaurant Price Evolution
 
 ### Part 1. Strategic Context and Problem Framing
 
@@ -2734,3 +2703,4 @@ The final section will be:
 **Part 8: Business Impact, Governance, and Scaling**
 
 This will synthesize results, explain governance structures, address attribution challenges, and outline how the system could scale to 100 plus locations or evolve into a predictive pricing platform.
+
