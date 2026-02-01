@@ -774,82 +774,267 @@ Phase 1 is not efficient. It is messy, manual, and relies on paper. This is by d
 
 ---
 
-## **5. Phase 2: Centralized Analysis & Insight Generation (Months 3-4)**
+# Project Phoenix Bible
+## Section 5: Phase 2 – Centralized Analysis & Insight Generation (Months 3-4)
 
-### **5.1 Objective**
-Transition from isolated spreadsheets to aggregated intelligence. Identify the "Pareto Principles" of our waste (80% of costs coming from 20% of items).
+**Document Owner:** Head of Data Analytics
+**Date:** October 15, 2024
+**Scope:** Data Engineering, SQL Implementation, and Business Intelligence Extraction
+**Status:** Approved for Implementation
+**Dependencies:** Phase 1 Data Collection Completion
 
-### **5.2 Data Engineering Process**
+---
 
-#### **5.2.1 Ingestion (ETL)**
-We have 15 distinct Excel files (one per restaurant) updated daily.
-*   **Tool:** We will use **Power Query (Get Data > From Folder)** or a simple Python/SQL script to merge these files.
-*   **Transformation:**
-    1.  Union all tables.
-    2.  Standardize date formats (ISO 8601).
-    3.  Lookup Ingredient Costs: Join the waste log with the "Master Ingredient Price List" (CSV export from Purchasing System) on `Item_Name`.
-    4.  Calculation: `Total_Waste_Cost = Quantity * Cost_Per_Unit`.
+## 5.0 Introduction: The Shift from Observation to Intelligence
+Phase 1 was about *participation*—getting 150 kitchen staff to physically acknowledge waste. Phase 2 is about *truth*. We are moving from 15 disparate clipboards to a single, unified source of truth.
 
-#### **5.2.2 The SQL Environment**
-We set up a lightweight relational database (PostgreSQL or SQL Server Express).
+At the start of Month 3, we possess a messy but valuable asset: approximately 45,000 rows of waste data (15 stores x 30 days x 100 entries/day). Stored in isolated Excel spreadsheets, this data is noise. Aggregated into a relational database, it becomes a signal.
 
-**SQL Table Structure:**
+This phase transforms the role of the Operations Team from "Loggers" to "Analysts." We are not just reporting *what* happened; we are determining *why* it happened and *how much* it cost us.
+
+---
+
+## 5.1 Objectives
+The goal of Phase 2 is **Variance Decomposition**. We know we have a problem. Now we must dissect it.
+
+1.  **Ingestion Automation:** Eliminate the need for a human analyst to manually copy-paste 15 Excel files together.
+2.  **Valuation:** Append accurate financial values (Unit Costs) to volume data. Waste is physically measured in KGs but managed in Dollars.
+3.  **Pattern Recognition:** Identify the "Vital Few" (Pareto Principle).
+    *   Which *items* account for 80% of value loss?
+    *   Which *reasons* account for 80% of preventable volume?
+    *   Which *time slots* are the most dangerous?
+4.  **Performance Normalization:** Rank restaurants fairly. Store A losing $500 is not necessarily worse than Store B losing $200, if Store A does 10x the sales volume.
+
+---
+
+## 5.2 The Data Engineering Architecture
+We are bridging the gap between "file storage" (SharePoint) and "analytical processing" (SQL).
+
+### 5.2.1 The Data Source Landscape
+*   **Source:** SharePoint Folder `.../Incoming_Data/`.
+*   **Format:** Standardized `.xlsx` template (enforced in Phase 1).
+*   **Frequency:** Files are saved/overwritten daily by 11:00 PM local time.
+*   **File Naming Convention:** `Waste_Log_[STORE_ID]_[YYYYMM].xlsx`.
+
+### 5.2.2 The ETL Pipeline (Extract, Transform, Load)
+
+We will use **Excel Power Query (Get Data)** as the "Poor Man's ETL" initially, graduating to a **Python Script** if file sizes exceed 100MB.
+
+**Step 1: The Folder Scan (Extraction)**
+We configure a Power Query connection to the root SharePoint folder.
+*   *Filter:* Extension = `.xlsx` AND Name does not start with `~` (temp files).
+*   *Action:* `Table.ExpandTableColumn` to merge all files into a singular dataset.
+
+**Step 2: The Cleansing Layer (Transformation)**
+Raw data from kitchen managers will be imperfect. The transformation logic handles the "Human Error."
+*   **Date Standardization:** Convert text strings ("Nov 1st", "11/01") into ISO 8601 (`YYYY-MM-DD`).
+*   **Unit Conversion (The UOM Standardizer):**
+    *   *Problem:* Store A logs "5 Lbs" of Beef. Store B logs "2.2 Kg" of Beef.
+    *   *Logic:* Create a conditional column.
+        *   `IF UOM = 'LB' THEN Quantity * 0.453592 ELSE Quantity` -> `Quantity_KG`.
+    *   *Output:* A unified volume metric (`Quantity_KG`) for every single row.
+*   **Sanitization:** Trim whitespace (`TRIM()`), Proper Case text, remove NULL rows where managers dragged formulas too far down.
+
+**Step 3: The Cost Injection (Enrichment)**
+This is the most critical financial step. The waste logs contain *Volume*, not *Value*.
+*   **Reference Data:** We export the `Master_Ingredient_Price_List.csv` from the Purchasing System.
+    *   Columns: `Item_Code`, `Item_Name`, `Standard_Cost_Per_KG`, `Effective_Date`.
+*   **The Join:** Perform a **Left Outer Join** between `Waste_Log` and `Price_List` on `Item_Name`.
+    *   *Fallibility:* If a match is not found (e.g., Log says "Avocados", Price List says "Avocado, Haas"), the cost returns NULL.
+    *   *Governance:* All NULL cost rows are flagged for review. A "Mapping Table" is maintained to alias "Avocados" to "Avocado, Haas".
+*   **The Calculation:** `Estimated_Cost = Quantity_KG * Standard_Cost_Per_KG`.
+
+### 5.2.3 The SQL Database Schema
+Once transformed, the clean data is loaded into a local SQL Server Express or PostgreSQL instance. This provides query speed and allows for complex aggregations.
+
 ```sql
+-- The Central Truth Table
 CREATE TABLE waste_log (
-    log_id SERIAL PRIMARY KEY,
-    restaurant_id VARCHAR(10),
-    log_date DATE,
-    item_name VARCHAR(100),
-    category VARCHAR(50),
-    reason VARCHAR(50),
-    quantity_kg DECIMAL(10,2),
-    estimated_cost DECIMAL(10,2)
+    log_id INT IDENTITY(1,1) PRIMARY KEY, -- Auto-increment unique ID
+    transaction_uuid UNIQUEIDENTIFIER DEFAULT NEWID(), -- Traceability
+    
+    -- Dimensions
+    restaurant_id VARCHAR(10) NOT NULL, -- e.g., 'STORE-05'
+    log_date DATE NOT NULL,             -- e.g., '2024-11-01'
+    time_bucket_hour INT,               -- Derived from HH:MM (e.g., 14 for 2PM)
+    
+    -- Item Details
+    item_code VARCHAR(50),              -- SKU
+    item_name VARCHAR(100),             -- Clean Name
+    category VARCHAR(50) CHECK (category IN ('Raw', 'Prepared', 'Plate', 'Spoiled')),
+    reason VARCHAR(50) CHECK (reason IN ('OP', 'EXP', 'COOK', 'DROP')),
+    
+    -- Metrics
+    quantity_input DECIMAL(10,2),       -- What they typed
+    uom_input VARCHAR(10),              -- What they selected
+    quantity_kg DECIMAL(10,3),          -- Normalized Weight
+    unit_cost_at_time DECIMAL(10,4),    -- Frozen cost at time of waste
+    estimated_cost DECIMAL(10,2),       -- The Final $ Value
+    
+    -- Audit Metadata
+    ingest_timestamp DATETIME DEFAULT GETDATE(),
+    source_filename VARCHAR(255)
 );
+
+-- Indexing for Performance
+CREATE INDEX idx_waste_store_date ON waste_log(restaurant_id, log_date);
+CREATE INDEX idx_waste_category ON waste_log(category);
 ```
 
-### **5.3 Analytic Queries & Insights**
+---
 
-#### **5.3.1 Top Waste Drivers by Reason**
-*Business Question: Why are we losing money?*
+## 5.3 Analytic Queries & Insights: "The Forensic Accounting"
 
+With the database populated, we move from data engineering to business intelligence. We ask three specific questions to unlock the savings.
+
+### 5.3.1 Analysis A: The "Why" (Root Cause Attribution)
+*Business Question:* "Are we losing money because the food is bad (Spoilage) or because our process is bad (Over-Prep)?"
+
+**The SQL Query:**
 ```sql
 SELECT 
     Reason, 
-    SUM(Estimated_Cost) as Total_Cost 
-FROM waste_log 
-GROUP BY Reason 
-ORDER BY Total_Cost DESC;
-```
-*   **Result:** The data reveals that "Over-Preparation" is the #1 reason ($40,000 annualized). This is a *behavioral* issue, not a supplier issue.
-
-#### **5.3.2 Top Waste Drivers by Item (The "French Fry" Insight)**
-*Business Question: What are we over-prepping?*
-
-```sql
-SELECT 
-    Item_Name, 
-    SUM(Quantity_Kg) as Total_Weight,
-    SUM(Estimated_Cost) as Total_Cost
-FROM waste_log 
-WHERE Category = 'Prepared but Unsold'
-GROUP BY Item_Name
-ORDER BY Total_Cost DESC;
-```
-*   **Result:** French Fries and Coleslaw account for 40% of the cost. Staff are batch-cooking huge amounts at 1:30 PM, just before the lunch rush dies down. The food sits under heat lamps and is tossed at 4:00 PM.
-
-#### **5.3.3 Restaurant Benchmarking**
-*Business Question: Who is managing this well?*
-
-```sql
-SELECT 
-    Restaurant_ID, 
-    SUM(Estimated_Cost) / (SELECT SUM(Sales) FROM pos_sales WHERE pos_sales.store_id = waste_log.restaurant_id) as Waste_Percent_Of_Sales
+    -- Financial Impact
+    SUM(estimated_cost) AS Total_Cost,
+    CAST(SUM(estimated_cost) * 100.0 / (SELECT SUM(estimated_cost) FROM waste_log) AS DECIMAL(5,1)) AS Cost_Pct,
+    -- Frequency
+    COUNT(*) AS Incident_Count,
+    -- Magnitude
+    AVG(estimated_cost) AS Avg_Cost_Per_Incident
 FROM waste_log
-GROUP BY Restaurant_ID;
+GROUP BY Reason
+ORDER BY Total_Cost DESC;
 ```
-*   **Result:** Restaurant #4 has 1.2% waste vs Sales. Restaurant #9 has 4.5%. Restaurant #4 becomes the model for Best Practices.
+
+**The Scenario & Insight:**
+*   **Data Return:**
+    *   Over-Preparation (OP): $42,000 (45%)
+    *   Spoilage (EXP): $23,000 (25%)
+    *   Cook Error (CK): $15,000 (16%)
+    *   Plate Waste (PW): $13,000 (14%)
+*   **Interpretation:** Almost half our waste is **Self-Inflicted**.
+    *   *Insight:* "Over-Prep" is the low-hanging fruit. It means we cooked food hoping to sell it, but didn't. This suggests our "Par Levels" (prep quantity guides) are too optimistic.
+    *   *Action:* We do not need new suppliers (Spoilage); we need new production schedules.
+
+### 5.3.2 Analysis B: The "What" (Item-Level Pareto)
+*Business Question:* "We have 800 items on the menu. Which 5 items are killing the P&L?"
+
+**The SQL Query:**
+```sql
+SELECT TOP 10
+    Item_Name,
+    Category,
+    SUM(quantity_kg) AS Total_Weight_Kg,
+    SUM(estimated_cost) AS Total_Cost
+FROM waste_log
+WHERE Category = 'Prepared but Unsold' -- Focused only on Production Waste
+GROUP BY Item_Name, Category
+ORDER BY Total_Cost DESC;
+```
+
+**The Scenario & Insight:**
+*   **Data Return:**
+    1.  **French Fries:** $8,500 loss (High volume, low cost, huge aggregate).
+    2.  **Coleslaw:** $4,200 loss.
+    3.  **Mashed Potatoes:** $3,800 loss.
+*   **Deep Dive Investigation (The Time Dimension):**
+    *   We run a secondary query on French Fries specifically:
+        ```sql
+        SELECT time_bucket_hour, SUM(quantity_kg) 
+        FROM waste_log 
+        WHERE Item_Name = 'French Fries' 
+        GROUP BY time_bucket_hour 
+        ORDER BY time_bucket_hour;
+        ```
+    *   *Result:* Massive spike at 15:00 (3 PM) and 22:00 (10 PM).
+*   **The Narrative:**
+    *   *The 3 PM Spike:* The "Lunch Hangover." Cooks fill the fry baskets at 1:30 PM for the rush. The rush stops at 2:00 PM. The fries sit. At 3:00 PM shift change, the incoming manager tosses the cold fries.
+    *   *Action:* Implementation of "Cook-to-Order" blackout periods (Phase 3).
+
+### 5.3.3 Analysis C: The "Who" (Normalized Performance)
+*Business Question:* "Which manager needs a bonus, and which needs training?"
+
+*Warning:* We cannot compare raw totals. Store #1 (Times Square) will always have more waste than Store #15 (Suburbs) simply due to volume. We must normalize by Sales.
+
+**The SQL Query:**
+```sql
+WITH Store_Sales AS (
+    -- Aggregated from POS System Import
+    SELECT store_id, SUM(gross_sales) as Total_Sales 
+    FROM pos_data 
+    GROUP BY store_id
+),
+Store_Waste AS (
+    SELECT restaurant_id, SUM(estimated_cost) as Total_Waste
+    FROM waste_log
+    GROUP BY restaurant_id
+)
+SELECT 
+    w.restaurant_id,
+    w.Total_Waste,
+    s.Total_Sales,
+    -- The Magic Metric: Waste %
+    (w.Total_Waste / s.Total_Sales) * 100 AS Waste_Percentage_Of_Sales,
+    RANK() OVER (ORDER BY (w.Total_Waste / s.Total_Sales) ASC) as Performance_Rank
+FROM Store_Waste w
+JOIN Store_Sales s ON w.restaurant_id = s.store_id
+ORDER BY Waste_Percentage_Of_Sales DESC;
+```
+
+**The Scenario & Insight:**
+*   **Data Return:**
+    *   *Store #09:* 4.8% Waste (Worst).
+    *   *Store #04:* 1.2% Waste (Best).
+    *   *Average:* 3.1%.
+*   **The Deep Dive on Store #09:**
+    *   We filter the waste log for just Store #09.
+    *   We find that 60% of their waste is "Spoilage" of "Seafood".
+    *   *Root Cause:* Store #09 is in a business district that is dead on weekends, yet they are ordering fish delivery on Fridays.
+    *   *Action:* Change Store #09's delivery schedule to Monday/Wednesday only.
 
 ---
+
+## 5.4 Cross-Analysis: Validating the Data (Quality Assurance)
+
+Before we present these findings to the COO, we must audit the data for "Cheating."
+
+**The "Laziness" Query:**
+```sql
+-- Finding rounded numbers suggesting estimation
+SELECT 
+    restaurant_id,
+    COUNT(*) as Suspicious_Entries
+FROM waste_log
+WHERE quantity_input IN (1.00, 2.00, 5.00, 10.00) -- Clean integers usually mean guessing
+GROUP BY restaurant_id;
+```
+*   *Interpretation:* If Store #02 has 95% of their entries as exactly "1.00" or "5.00", they aren't using the scale. They are "pencil whipping" the log. The data from Store #02 is excluded from the regional average to avoid skewing the results.
+
+---
+
+## 5.5 Deliverable: The "State of Waste" Report
+At the end of Month 4, the Central Analysis team produces a comprehensive deck.
+
+**Visual 1: The Waterfall Chart**
+*   Start: Ideal Food Cost (29%)
+*   Add: Spoilage (+1.1%)
+*   Add: Over-Prep (+2.0%)
+*   Add: Theft/Unexplained (+0.9%)
+*   End: Actual Food Cost (33%)
+
+**Visual 2: The "Menu Matrix" (Boston Consulting Group Style)**
+*   X-Axis: Waste Frequency (How often we toss it).
+*   Y-Axis: Cost per Incident (How expensive is it).
+*   *Quadrant I (High Cost/High Freq):* **Steaks & Seafood**. (Priority 1: Immediate procedural change).
+*   *Quadrant II (Low Cost/High Freq):* **Fries, Rice, Mash**. (Priority 2: Batch size adjustment).
+
+**The Final Recommendation:**
+> "The data proves that 65% of our waste variance is internal operational behavior (Over-Prep/cooking habits), not supplier quality. We propose immediate adoption of 'Dynamic Par Levels' (Phase 3) focusing on the Top 5 Items: Fries, Slaw, Mash, Burgers, and Bread. This targets an annualized savings of $280,000."
+
+::: tip
+**Technical Note on Phase 2 Tools**
+While SQL is powerful, Phase 2 relies heavily on **Power Query in Excel** as the user interface for the Analysts. We use Excel to *render* the data from the SQL backend because the Business Stakeholders are comfortable with PivotTables. We are building a "Hybrid" model: SQL for storage/logic, Excel for presentation. This bridges the gap before the Phase 4 Power BI rollout.
+:::
 
 ## **6. Phase 3: Operational Solutions & Pilot Redistribution (Months 5-8)**
 
