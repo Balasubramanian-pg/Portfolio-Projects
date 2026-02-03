@@ -26,7 +26,6 @@
 22. Appendix C: Glossary
 23. Next Steps
 
----
 
 ## 1. Executive Summary
 
@@ -573,7 +572,6 @@ A separate API contract file should be maintained and version controlled. Wirefr
 * Begin connector sprint with one bank aggregator and one major streaming service
 * Build a small labeled dataset for subscriptions to seed ML models
 
----
 
 # Notes
 
