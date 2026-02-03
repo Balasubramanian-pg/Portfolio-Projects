@@ -3,7 +3,6 @@
 #### **Objective**  
 To aggregate, clean, and structure raw data from multiple sources into a unified dataset with high accuracy and completeness.  
 
----
 
 #### **Data Sources & Issues**  
 | **Source**              | **Format** | **Key Columns**                              | **Issues Identified** |
@@ -12,7 +11,6 @@ To aggregate, clean, and structure raw data from multiple sources into a unified
 | **Loyalty Program Data** | SQL       | `User_ID, Age, Gender, Purchase_History`   | Some users lack purchase history (5%) |
 | **Third-Party Surveys** | Excel     | `User_ID, Hangover_Frequency, Top_Purchase` | Self-reported bias, inconsistent categorizations |
 
----
 
 #### **Key Tasks & Methodology**  
 
@@ -43,7 +41,6 @@ transactions = transactions.drop_duplicates()
 transactions = transactions.dropna(subset=['Product_ID'])  
 ```
 
----
 
 ##### **2. Data Merging & Transformation**
 - **SQL Joins**: Combine transaction logs, loyalty data, and survey responses.  
@@ -57,13 +54,11 @@ LEFT JOIN loyalty_data l ON t.User_ID = l.User_ID
 LEFT JOIN survey_data s ON l.User_ID = s.User_ID;
 ```
 
----
 
 #### **Deliverables**  
 ✅ **Cleaned dataset** with at least **95% completeness**.  
 ✅ **Data dictionary** defining key variables and transformations.  
 ✅ **Exploratory summary** (missing data report, key statistics).  
 
----
 
 This phase ensures that the data is structured, consistent, and ready for trend analysis in **Phase 2**. Let me know if you need refinements!
