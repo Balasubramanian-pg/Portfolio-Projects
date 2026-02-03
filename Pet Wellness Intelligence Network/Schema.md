@@ -2,7 +2,6 @@
 
 Below is a comprehensive, operational, enterprise-ready design built from the core entities you provided. It covers logical model, physical schema (Snowflake-oriented DDL), ingestion patterns, storage and retention strategy, SCD handling, feature store and ML-serving patterns, data governance, monitoring, and operational runbooks. The goal is to move from a loose model to a production implementation that supports analytics, ML, realtime alerts, and Power BI consumption at scale.
 
----
 
 ## 1. Architecture overview (high level)
 
@@ -17,7 +16,6 @@ Below is a comprehensive, operational, enterprise-ready design built from the co
 
 Rationale: separate raw/staging/curated layers enables traceability, replay, simple rollback, auditability, and fits CI/CD for data code.
 
----
 
 ## 2. Logical data model (expanded)
 
@@ -45,7 +43,6 @@ Core entities (summary with explanation)
 * `visit_documents` - pointer to raw PDFs/images, OCR outputs and confidence.
 * `computed_features` - engineered features for ML and reporting: activity deltas, sleep metrics, lick rates, weight_trend, etc.
 
----
 
 ## 3. Physical schema and Snowflake DDL (recommended)
 
@@ -169,7 +166,6 @@ GROUP BY pet_id, day_date;
 
 Caveat: materialized views cost compute to maintain. If telemetry is high velocity, use scheduled aggregated tables with dbt and incremental loads.
 
----
 
 ## 4. Ingestion patterns and recommended pipeline
 
@@ -198,7 +194,6 @@ Advantages:
 
 Use dbt for transformations and to implement idempotent incremental models.
 
----
 
 ## 5. SCD patterns and example (owners and pets)
 
@@ -223,7 +218,6 @@ WHEN NOT MATCHED THEN
   INSERT (... columns ..., is_current, valid_from, record_md5) VALUES (..., TRUE, src.ingested_at, src.record_md5);
 ```
 
----
 
 ## 6. Telemetry storage strategy and retention
 
@@ -235,7 +229,6 @@ Telemetry is high-volume. Design a tiered storage policy:
 
 Retention rules reduce compute and storage cost while keeping forensic capability.
 
----
 
 ## 7. Computed features and Feature Store patterns
 
@@ -265,7 +258,6 @@ Feature freshness SLOs:
 * Near-real-time features: latency < 5 minutes from ingestion to feature availability.
 * Batch features: daily refresh. Choose SLA per use-case.
 
----
 
 ## 8. ML model lifecycle integration
 
@@ -277,7 +269,6 @@ Model explainability:
 
 * Persist SHAP or explanation outputs in `anl.model_explanations` for vet review.
 
----
 
 ## 9. Data governance, security, and privacy
 
@@ -311,7 +302,6 @@ ALTER TABLE cur.owners MODIFY COLUMN contact_phone SET MASKING POLICY mask_conta
 
 * Enforce opt-out at ingestion time. If `consent_flags.push = false`, filter device-to-owner linking for push notifications. Keep telemetry for analytics only if consent allows.
 
----
 
 ## 10. Data quality, testing, and monitoring
 
@@ -336,7 +326,6 @@ Implement via:
 
 Set SLOs and SLI alerts in Grafana or a cloud monitoring service.
 
----
 
 ## 11. Power BI and analytics considerations
 
@@ -373,7 +362,6 @@ Power BI tips:
 * Avoid live direct queries on massive telemetry tables. Use aggregated views.
 * Keep data refresh cadence sensible for dashboards: near-real-time dashboards can rely on incremental refresh and scheduled queries.
 
----
 
 ## 12. Operational runbook excerpts
 
@@ -391,7 +379,6 @@ Power BI tips:
 
 * Auto-route documents below confidence threshold to human validators. Provide a small web UI to review parsed fields and correct values. Keep validation audit with `validator_id` and `validated_at`.
 
----
 
 ## 13. Sample analytic queries (practical)
 
@@ -433,7 +420,6 @@ WHERE visit_date >= DATEADD(day, -90, CURRENT_DATE())
 GROUP BY clinic_id;
 ```
 
----
 
 ## 14. Cost and capacity planning heuristics
 
@@ -443,7 +429,6 @@ GROUP BY clinic_id;
 
 Recommendation: prototype with realistic data sample to measure actual ingestion and compute cost, then refine retention and aggregation.
 
----
 
 ## 15. Deliverables and implementation plan (concrete)
 
@@ -470,7 +455,6 @@ Phase 3 - weeks 9-12
 * Deploy Power BI datasets and vet dashboard templates.
 * Deliver ops runbook, monitoring dashboards, and knowledge transfer.
 
----
 
 ## 16. Points that require verification or are uncertain
 
@@ -483,7 +467,6 @@ Phase 3 - weeks 9-12
 
 Label these points as blockers to finalize retention, cost, and architecture choices.
 
----
 
 ## 17. Next steps and immediate actions I can produce now
 
