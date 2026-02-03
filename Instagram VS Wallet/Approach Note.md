@@ -8,7 +8,6 @@ To integrate and clean TikTok trend data with purchase and return logs, creating
 2. **Data Quality**: Missing return reasons (~15%) and inconsistent timestamps need imputation.
 3. **Trend Alignment**: Purchases must be mapped to trend lifecycles (Peak, Decline, Death).
 
----
 
 ## **Approach**
 
@@ -46,7 +45,6 @@ To integrate and clean TikTok trend data with purchase and return logs, creating
   SET price_drop_percent = ((original_price - resale_price) / original_price) * 100;
   ```
 
----
 
 ### **Step 2: Data Merging & Feature Engineering**
 
@@ -94,14 +92,12 @@ To integrate and clean TikTok trend data with purchase and return logs, creating
   SET price_drop_percent = ((original_price - resale_price) / original_price) * 100;
   ```
 
----
 
 ## **Deliverables**
 - **Final Dataset** (500K+ rows): Integrated purchase, return, and trend data.
 - **Data Dictionary**: Trend lifecycle definitions, engineered features.
 - **SQL Scripts**: Extraction, cleaning, and merging processes.
 
----
 
 ## **Next Steps**
 Proceed to **Phase 2: Exploratory Analysis** to identify key regret drivers.
@@ -111,7 +107,6 @@ Proceed to **Phase 2: Exploratory Analysis** to identify key regret drivers.
 ## **Objective**
 To analyze purchase behavior and regret drivers, identifying key trends and insights using SQL-based exploratory analysis.
 
----
 
 ## **Approach**
 
@@ -159,7 +154,6 @@ To analyze purchase behavior and regret drivers, identifying key trends and insi
   GROUP BY product_id;
   ```
 
----
 
 ### **Step 2: Sentiment & Quality Analysis**
 
@@ -204,7 +198,6 @@ To analyze purchase behavior and regret drivers, identifying key trends and insi
   GROUP BY product_id;
   ```
 
----
 
 ### **Step 3: Visualizing Insights**
 
@@ -252,13 +245,11 @@ To analyze purchase behavior and regret drivers, identifying key trends and insi
   GROUP BY customer_age_group;
   ```
 
----
 
 ## **Deliverables**
 - **SQL Queries**: Trend longevity and sentiment analysis.
 - **Executive Summary**: Regret trends and actionable insights.
 
----
 
 ## **Next Steps**
 Proceed to **Phase 3: Predictive Modeling** to develop a predictive model for identifying high-regret products.
@@ -268,7 +259,6 @@ Proceed to **Phase 3: Predictive Modeling** to develop a predictive model for id
 ## **Objective**
 To develop a predictive model for identifying high-regret products using machine learning techniques.
 
----
 
 ## **Approach**
 
@@ -308,7 +298,6 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ```
 
----
 
 ### **Step 2: Model Training**
 
@@ -336,7 +325,6 @@ model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 ```
 
----
 
 ### **Step 3: Model Evaluation**
 
@@ -372,7 +360,6 @@ print(f'Recall: {recall:.2f}')
 print(f'F1-Score: {f1:.2f}')
 ```
 
----
 
 ### **Step 4: Model Interpretation**
 
@@ -403,14 +390,12 @@ plt.show()
 - **Action**: Analyze the feature importances and evaluation metrics to understand the model's behavior.
 - **Result**: Insights into the model's strengths and weaknesses, and areas for improvement.
 
----
 
 ## **Deliverables**
 - **Trained Model**: A predictive model for identifying high-regret products.
 - **Evaluation Metrics**: Performance metrics for the trained model.
 - **Feature Importances**: Insights into the most impactful features.
 
----
 
 ## **Next Steps**
 - **Model Deployment**: Deploy the trained model for real-time predictions.
