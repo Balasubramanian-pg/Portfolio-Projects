@@ -6,7 +6,6 @@
 **Primary Tool:** Physical Logging (Clipboard) $\rightarrow$ Digital Aggregation (Excel)
 **Duration:** Weeks 1-8 (Month 1-2)
 
----
 
 ### **1.0 Strategic Intent & Psychology**
 We are initiating Phase 1 not to reduce waste immediately, but to **expose** it. Currently, SavoryBites suffers from "Waste Blindness." Staff sweep trim into the bin without thought, and burnt food is hidden to avoid reprimand.
@@ -19,7 +18,6 @@ To construct a statistically significant "Zero-Day" Baseline of waste volume, va
 
 During Phase 1, we declare **Total Amnesty**. No staff member will be written up, reprimanded, or coached on *volume* of waste. The only disciplinary offense in Phase 1 is **failure to log**. This psychological safety is the only way to get accurate data rather than fabricated "safe" numbers.
 
----
 
 ### **2.0 The Operational Toolset**
 
@@ -42,7 +40,6 @@ The digital record lives on the Store Manager's PC.
     *   **Tab 2: `Master_Price_List` (Hidden/Locked):** A protected sheet containing current SYSCO/Vendor pricing per unit.
     *   **Tab 3: `Dash_View`:** A simple PivotTable showing the manager their current week's total (Immediate feedback).
 
----
 
 ### **3.0 Data Elements & Taxonomy**
 
@@ -69,7 +66,6 @@ To avoid mathematical chaos, Excel validation restricts UOM selection:
 *   **EA (Each):** Used for distinct unit items (Burger Patty, Bun, Chicken Breast).
 *   **PORT (Portion):** Used for completed dishes (e.g., A full "Cobb Salad" returned).
 
----
 
 ### **4.0 The "Life of a Waste Event" (Workflow)**
 
@@ -94,7 +90,6 @@ To avoid mathematical chaos, Excel validation restricts UOM selection:
 *   *Automation:* Manager types "RIBS". The Sheet VLOOKUPs the `Master_Price_List` and auto-populates "Cost: $6.50".
 *   *Completion:* File is saved to the **Cloud OneDrive/SharePoint Folder** (Automated sync).
 
----
 
 ### **5.0 Implementation Roadmap**
 
@@ -118,7 +113,6 @@ To avoid mathematical chaos, Excel validation restricts UOM selection:
     *   *Store B* logs 2lbs of waste/day.
     *   *Conclusion:* Store B is lying. RD visits Store B for a "Trash Can Audit" (Physically comparing the trash bag weight to the log).
 
----
 
 ### **6.0 Managing Resistance (Troubleshooting)**
 
@@ -128,7 +122,6 @@ To avoid mathematical chaos, Excel validation restricts UOM selection:
 | **"The scale is broken / Battery dead."** | Operational friction. | Supply a backup Mechanical Analog Scale (Spring loaded). It never runs out of batteries. |
 | **"This makes us look bad."** | Fear of management retribution. | **The Accuracy Incentive.** The store with the *most detailed* logs (regardless of waste amount) wins a Pizza Party. Rewarding *truth* creates psychological safety. |
 
----
 
 ### **7.0 Deliverables & Exit Criteria**
 
