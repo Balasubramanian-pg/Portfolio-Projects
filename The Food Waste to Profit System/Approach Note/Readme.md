@@ -5,7 +5,6 @@
 - **Monetize:** Validate at least one revenue stream or cost-saving partnership derived from waste products.
 - **Standardize:** Create a replicable, data-driven operational model for kitchen efficiency and waste management.
 
----
 
 ### **3. FOUR-PHASE MATURITY MODEL**
 
@@ -62,7 +61,6 @@
   - IoT integration (smart bins with computer vision) to automate data capture.
   - Dynamic production planning systems that adjust prep levels based on predictive waste analytics.
 
----
 
 ### **4. KEY STAKEHOLDERS & CHANGE MANAGEMENT**
 
@@ -73,7 +71,6 @@
 | **General Managers**    | Elena (Store GM)        | Administrative burden, fear of blame         | Streamline inventory processes and frame tools as efficiency enhancers.                   |
 | **Kitchen Staff**       | Line Cooks / Prep       | Perceived slowdown, fear of punishment       | Simplify logging workflows, offer amnesty, and incentivize via gamification and recognition. |
 
----
 
 ### **5. ARCHITECTURE & DATA STRATEGY OVERVIEW**
 
@@ -86,7 +83,6 @@ The technical architecture follows a **crawl-walk-run-fly** maturity model, ensu
 
 **Core Data Model:** Centered around `FACT_WASTE_TRANSACTION`, linked to dimensions for Date, Time, Store, Item, and Reason. This ensures historical comparability and robust financial attribution.
 
----
 
 ### **6. RISK MANAGEMENT**
 
@@ -97,7 +93,6 @@ The technical architecture follows a **crawl-walk-run-fly** maturity model, ensu
 | **Partner Reliance** | Farm pickup failures or supply chain pushback | Establish backup disposal plans and coalition-based negotiation tactics.                 |
 | **Financial**        | Savings obscured by ingredient price volatility | Track waste volume (KG) as primary KPI, with cost as a secondary metric.                 |
 
----
 
 ### **7. FINANCIAL IMPACT & SUCCESS METRICS**
 
@@ -106,7 +101,6 @@ The technical architecture follows a **crawl-walk-run-fly** maturity model, ensu
 - **Valuation Uplift:** At an 8x EBITDA multiple, Project Phoenix adds **$4.3M to enterprise value**.
 - **Additional Benefits:** Reduced disposal fees, labor efficiency gains, and enhanced brand equity.
 
----
 
 ### **8. CONCLUSION**
 
@@ -114,7 +108,6 @@ Project Phoenix represents a fundamental shift in operational philosophy—from 
 
 The initiative requires committed leadership, cross-functional collaboration, and a focus on long-term cultural change. Success will be measured not only in dollars saved but in the establishment of a resilient, data-driven operating model capable of sustaining competitive advantage in the evolving casual dining landscape.
 
----
 **APPROVED FOR EXECUTION**
 
 *Document Version Control: This document is the source of truth for Project Phoenix. Any deviations from defined processes or data standards must be approved by the Project Lead.*
