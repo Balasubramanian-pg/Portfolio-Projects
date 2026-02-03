@@ -2,7 +2,6 @@
 **Project**: The Transit Gap - Between-Stops Economy Analyzer  
 **Objective**: Develop an interactive Decision Support System (DSS) to visualize transit gaps, economic potential, and optimize transit expansion strategies.  
 
----
 
 ## **Scope of Work**  
 Phase 3 focuses on **building an interactive, data-driven platform** that enables policymakers, urban planners, and transit authorities to make informed decisions. The key components include:  
@@ -11,7 +10,6 @@ Phase 3 focuses on **building an interactive, data-driven platform** that enable
 3. **Scenario Analysis & Business Case Estimation**  
 4. **User Interface & Reporting System**  
 
----
 
 ## **Key Deliverables & Implementation**  
 
@@ -39,7 +37,6 @@ TEIS Score =
 ```  
 - **Deliverable**: A **live dashboard** for real-time transit gap analysis.  
 
----
 
 ### **2. Predictive Transit Expansion Model**  
 - **Objective**: Forecast the impact of adding transit stops based on demand, economic activity, and transit patterns.  
@@ -67,7 +64,6 @@ new_stops['predicted_ridership'] = model.predict(new_stops[['foot_traffic', 'bus
 ```  
 - **Deliverable**: **Predicted ridership & economic impact for proposed stops**.  
 
----
 
 ### **3. Scenario Analysis & Business Case Estimation**  
 - **Objective**: Evaluate different transit expansion scenarios to maximize economic impact.  
@@ -95,7 +91,6 @@ ci_lower, ci_upper = np.percentile(simulation_results, [5, 95])
 ```  
 - **Deliverable**: **Dynamic scenario reports with cost-benefit insights**.  
 
----
 
 ### **4. User Interface & Reporting System**  
 - **Objective**: Build an intuitive interface for policymakers to explore insights and make data-backed decisions.  
@@ -115,13 +110,11 @@ ci_lower, ci_upper = np.percentile(simulation_results, [5, 95])
 
 - **Deliverable**: **Automated decision support system for transit authorities**.  
 
----
 
 ## **Final Outcome & Impact**  
 **The Transit Gap Analyzer will provide a comprehensive, data-driven strategy to optimize transit expansion, improve accessibility, and unlock economic potential.**  
 
 Next steps: Deployment, stakeholder workshops, and iterative refinements.  
 
----
 
 Would you like any adjustments or additional details?
