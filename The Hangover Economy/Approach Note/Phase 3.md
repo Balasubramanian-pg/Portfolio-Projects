@@ -3,7 +3,6 @@
 #### **Objective**  
 To translate insights from Phase 2 into actionable strategies and automate reporting for continuous monitoring and improvement.  
 
----
 
 ### **Key Focus Areas & Implementation Plan**  
 
@@ -14,7 +13,6 @@ To translate insights from Phase 2 into actionable strategies and automate repor
 | **Operational Efficiency** | Reduce stockouts, optimize supplier management | Inventory tracking & automated alerts in Power BI |
 | **Data Governance**     | Standardize reporting metrics, ensure accuracy     | Implement a central data repository & automated data pipelines |
 
----
 
 ### **1. Sales Performance Optimization**  
 - **Strategy**: Implement dynamic pricing based on demand patterns and competitor analysis.  
@@ -36,7 +34,6 @@ GROUP BY Product_ID;
 ```
 - **Outcome**: Maximized revenue with real-time price adjustments.  
 
----
 
 ### **2. Customer Engagement & Retention**  
 - **Strategy**: Automate personalized email and SMS campaigns based on customer behavior.  
@@ -49,7 +46,6 @@ GROUP BY Product_ID;
   - **Follow-up**: SMS reminder if no response in 7 days.  
 - **Outcome**: Higher repeat purchase rates and improved CLV.  
 
----
 
 ### **3. Operational Efficiency – Inventory & Supply Chain Automation**  
 - **Strategy**: Implement real-time inventory monitoring and automated restocking.  
@@ -64,7 +60,6 @@ WHERE Stock_Level < Reorder_Threshold;
 ```
 - **Outcome**: Fewer stockouts, improved supply chain efficiency.  
 
----
 
 ### **4. Data Governance & Automated Reporting**  
 - **Strategy**: Standardize KPIs, automate report generation, and ensure data accuracy.  
@@ -76,7 +71,6 @@ WHERE Stock_Level < Reorder_Threshold;
   - Set up **scheduled refresh** & email delivery of insights.  
 - **Outcome**: Reliable, consistent decision-making with minimal manual effort.  
 
----
 
 ### **Deliverables**  
 ✅ **Power BI Dashboards** with automated reports & real-time insights.  
@@ -84,7 +78,6 @@ WHERE Stock_Level < Reorder_Threshold;
 ✅ **Predictive Pricing & Inventory Alerts** to optimize sales & supply chain.  
 ✅ **Standardized KPI Framework** for consistent reporting.  
 
----
 
 ### **Next Steps**  
 🔹 Monitor performance metrics & refine strategies.  
