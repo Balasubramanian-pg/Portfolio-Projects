@@ -7,7 +7,6 @@
 **Scope:** Data ingestion and cleansing, exploratory analysis, customer segmentation, promotion design and simulation, A/B testing, dashboarding, inventory and store playbooks, privacy and compliance.
 **Primary deliverables:** Cleaned dataset, analytics notebooks, Power BI dashboard, Excel financial models, 10-slide stakeholder deck, rollout plan, playbook for store managers.
 
----
 
 ## Table of Contents
 
@@ -29,7 +28,6 @@
 16. Appendix: Code snippets, SQL, checks, and calculations
 17. Points that require verification or are uncertain
 
----
 
 ## 1. Goals, Success Criteria, and KPIs
 
@@ -67,7 +65,6 @@
 * Stockout rate for target SKUs during prime windows
 * Incremental store-level profit contribution
 
----
 
 ## 2. Project Organization and Roles
 
@@ -89,7 +86,6 @@
 * Consulted: Store operations, Marketing, Legal
 * Informed: Regional managers, Store managers
 
----
 
 ## 3. Data Sources and Ingestion Plan
 
@@ -121,7 +117,6 @@
 * Daily sync of loyalty DB (delta).
 * Weekly ingest of survey snapshots and static catalogs.
 
----
 
 ## 4. Data Model and Schema
 
@@ -160,7 +155,6 @@
 * `fact_baskets`: aggregated items per transaction for market basket analysis
 * `promo_simulations`: store-week level simulated vs actual
 
----
 
 ## 5. Data Cleaning and Quality Rules
 
@@ -181,7 +175,6 @@
 * Timestamp format inconsistencies must be less than 0.5 percent.
 * If daily ingestion error rate exceeds 1 percent, trigger incident response.
 
----
 
 ## 6. Exploratory Analysis Plan and Methods
 
@@ -205,7 +198,6 @@
 * Use `mlxtend.frequent_patterns.apriori` with min_support = 0.05 to get frequent itemsets.
 * Extract `association_rules` to get lift and confidence for pairs.
 
----
 
 ## 7. Segmentation and Modeling Approach
 
@@ -233,7 +225,6 @@
 * Wellness Rehabilitators: 7–9 AM, purchase electrolytes and pain relief.
 * Convenience Commuters: small baskets, high coffee purchases on weekday mornings.
 
----
 
 ## 8. Promotion Design and Simulation
 
@@ -288,7 +279,6 @@ Corrected typical formula example for positive lift:
 
 * Incremental units sold, incremental margin per unit, promo cost, cannibalization factor, redemption cost, and incremental store labor cost.
 
----
 
 ## 9. Experimentation and Measurement Framework
 
@@ -308,7 +298,6 @@ Corrected typical formula example for positive lift:
 * Attribution window: same-day for immediate purchases; 7-day for cross-day effects.
 * Correct for seasonality and local events using calendar controls.
 
----
 
 ## 10. Dashboard and Visualization Spec (Power BI)
 
@@ -343,7 +332,6 @@ Corrected typical formula example for positive lift:
 * Use small multiples for region comparisons.
 * Provide exportable CSV for the finance team.
 
----
 
 ## 11. Operational Playbooks and Store Rollout
 
@@ -364,7 +352,6 @@ Corrected typical formula example for positive lift:
 * Iteration: adjust based on pilot results and then scale to 50 percent of network.
 * Full roll: broad roll after validations and supply chain readiness.
 
----
 
 ## 12. Privacy, Compliance, and Security
 
@@ -381,7 +368,6 @@ Corrected typical formula example for positive lift:
 
 * For European customers, ensure GDPR compliance for personal data. For India-based operations, review local privacy laws. Document retention policy.
 
----
 
 ## 13. Risks, Assumptions, and Mitigations
 
@@ -403,7 +389,6 @@ Corrected typical formula example for positive lift:
 * ASSUMPTION 2: Price elasticity estimates derived from historical promotions are transferable to post-party promo windows. Necessary to run initial simulations.
 * ASSUMPTION 3: Store hours and local event calendars are accurate in the store master. Necessary to define post-party windows.
 
----
 
 ## 14. Implementation Timeline and Milestones (High Level)
 
@@ -418,7 +403,6 @@ Corrected typical formula example for positive lift:
 * Week 7–8: Pilot execution and evaluation, iterate dashboard and playbook
 * Post-week 8: Scale rollout, ongoing measurement
 
----
 
 ## 15. Cost and ROI Template (Example)
 
@@ -435,7 +419,6 @@ Corrected typical formula example for positive lift:
 * Net incremental contribution = 105,000 − 30,000 = $75,000 monthly
 * Payback and break-even to be computed in Excel with week-level inputs.
 
----
 
 ## 16. Appendix: Code snippets, SQL, checks, and calculations
 
@@ -482,7 +465,6 @@ GROUP BY 1
 HAVING COUNT(*) > 1;
 ```
 
----
 
 ## 17. Points that require verification or are uncertain
 
@@ -492,7 +474,6 @@ HAVING COUNT(*) > 1;
 * **Survey sample representativeness.** Survey respondents skew may bias personas. Verify demographic overlap with loyalty base.
 * **Weather and local-event influence on demand.** If using event or weather signals, verify access to reliable event calendars and weather APIs.
 
----
 
 ## Reasoning Summary
 
@@ -501,7 +482,6 @@ HAVING COUNT(*) > 1;
 * Modeled promotions using simple elasticity-driven simulations and flagged the key assumptions that influence outputs.
 * Emphasized operational readiness: inventory, training, and manager buy-in.
 
----
 
 ## What I delivered in this response
 
