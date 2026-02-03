@@ -8,7 +8,6 @@ This section replaces the previous Phase 4 entry. It upgrades the section from a
 **Primary Tool:** Power BI Service (Enterprise) & Corporate Tax Strategy
 **Objective:** Institutionalize the new operational model and monetize the circular economy channels.
 
----
 
 ### **1.0 Strategic Intent: The "Lock-In"**
 
@@ -18,7 +17,6 @@ Pilot programs often succeed because of "Hawthorne Effects"—people perform bet
 
 Simultaneously, we elevate the "Redistribution" stream from a logistical cost-saver to a **Brand Asset**, finalizing the high-end circular partnerships.
 
----
 
 ### **2.0 The Technology Architecture: The "Phoenix Dashboard"**
 
@@ -53,7 +51,6 @@ The dashboard is split into three distinct "Products":
     *   Gross Margin Improvement attributed to Project Phoenix.
     *   **Circular Economy Financials:** Saved Tipping Fees + Tax Credits.
 
----
 
 ### **3.0 Scaling Operations: The "Train-the-Trainer" Rollout**
 
@@ -76,7 +73,6 @@ A store is not considered "Live" until it passes the **"Waste Audit Certificatio
 2.  Physical inspection of Line (Par Charts posted).
 3.  Data Integrity Check (3 consecutive days of clean logs).
 
----
 
 ### **4.0 The Innovation Track: Premium Redistribution**
 
@@ -97,7 +93,6 @@ We move beyond the "Pig Farmer" (Cost Savings) to "Brand Value."
     *   *Margin:* We buy this gin back at cost. We sell it at a premium price point ($14/cocktail).
     *   *Result:* Waste becomes the highest margin item on the drink menu.
 
----
 
 ### **5.0 Roadmap to Automation (Year 2)**
 
@@ -107,7 +102,6 @@ Phase 4 concludes with the business case for technology.
 *   **The Funding:** We use the savings from Year 1 to finance the tech for Year 2.
     *   *Math:* Project Phoenix saved $200k in Year 1. Smart Scales cost $50k/year. The project pays for its own evolution.
 
----
 
 ### **6.0 Success Metrics & Final Deliverables**
 
@@ -118,7 +112,6 @@ Project Phoenix is officially closed and transferred to "Operations" when:
 3.  **Environmental:** We divert >50 Tons of organic matter from landfills annually (Certified by Hauler Reports).
 4.  **Cultural:** "Sustainability" is added as a core value in new-hire onboarding materials.
 
----
 
 >[!tip]
 >**Analyst Note: The "Ratchet" Effect**
