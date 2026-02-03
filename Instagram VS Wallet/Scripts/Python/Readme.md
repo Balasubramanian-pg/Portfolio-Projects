@@ -260,7 +260,6 @@ plt.savefig("shap_force_plot.png")
 mlflow.log_artifact("shap_force_plot.png")
 ```
 
----
 
 ## 9. Model Registration in MLflow
 
