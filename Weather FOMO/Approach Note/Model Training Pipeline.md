@@ -6,7 +6,6 @@ This is a production-grade, end-to-end notebook conceptualization. It is written
 
 This is not toy code. This is portfolio-ready.
 
----
 
 ## 1. Notebook purpose and scope
 
@@ -29,7 +28,6 @@ This is not toy code. This is portfolio-ready.
 * Engineering partners
 * Non-technical stakeholders reviewing methodology
 
----
 
 ## 2. Notebook structure (top to bottom)
 
@@ -50,7 +48,6 @@ This is not toy code. This is portfolio-ready.
 9. Export artifacts for BI and alerting
 10. Risks, assumptions, and next steps
 
----
 
 ## 3. Environment setup and configuration
 
@@ -80,7 +77,6 @@ CANCELLATION_THRESHOLD = 0.60
 **Reasoning summary:**
 All parameters are centralized so the notebook behaves deterministically and is easy to tune during pilot iterations.
 
----
 
 ## 4. Data loading and joins
 
@@ -102,7 +98,6 @@ ancillary = pd.read_csv("ancillary_daily_summary.csv")
 * Aggregate hourly weather to check-in-day features
 * Preserve booking-level grain
 
----
 
 ## 5. Exploratory data analysis (EDA)
 
@@ -125,7 +120,6 @@ df.groupby(pd.cut(df["precip_mm"], bins=[0,5,10,20,50]))["cancelled_flag"].mean(
 **Business insight example:**
 Bookings with check-in precipitation above 12.7 mm show cancellation rates 2.3x higher than baseline.
 
----
 
 ## 6. Feature engineering
 
@@ -152,7 +146,6 @@ df["dow"] = pd.to_datetime(df["check_in_date"]).dt.weekday
 y = df["cancelled_flag"]
 ```
 
----
 
 ## 7. Cancellation risk model training
 
@@ -205,7 +198,6 @@ model_gb.fit(X, y)
 **ASSUMPTION:**
 Hyperparameters are chosen based on typical tabular classification behavior. Final tuning requires pilot data.
 
----
 
 ## 8. Time-aware validation
 
@@ -234,7 +226,6 @@ for train_idx, test_idx in tscv.split(X):
 * Mean AUC: 0.87 to 0.90
 * Precision at 60% threshold: ~0.72
 
----
 
 ## 9. Demand and upsell opportunity model
 
@@ -273,7 +264,6 @@ rev_model = GradientBoostingRegressor(
 rev_model.fit(X_rev, y_revenue)
 ```
 
----
 
 ## 10. Business calibration layer
 
@@ -298,7 +288,6 @@ df["risk_band"] = pd.cut(
 
   * Trigger upsell playbook
 
----
 
 ## 11. Output tables for downstream systems
 
@@ -322,7 +311,6 @@ df_out = df[[
 df_out.to_csv("booking_risk_scores.csv", index=False)
 ```
 
----
 
 ## 12. Model governance and monitoring hooks
 
@@ -339,7 +327,6 @@ df_out.to_csv("booking_risk_scores.csv", index=False)
 * Weather forecast error inflation
 * Manager override rates
 
----
 
 ## 13. Assumptions and limitations
 
@@ -355,7 +342,6 @@ df_out.to_csv("booking_risk_scores.csv", index=False)
 * Family resorts react differently than adult-only resorts
 * Long-term climate shifts require retraining cadence
 
----
 
 ## 14. What this notebook proves in interviews
 
@@ -364,7 +350,6 @@ df_out.to_csv("booking_risk_scores.csv", index=False)
 * You design for **deployment, not Kaggle**
 * You anticipate **stakeholder friction and data issues**
 
----
 
 ## 15. Next artifacts ready to generate
 
