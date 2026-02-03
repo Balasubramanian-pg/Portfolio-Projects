@@ -3,7 +3,6 @@
 **Project:** The Hangover Economy – Post-Party Purchase Analyzer
 **Section Focus:** Full Python notebooks, model hyperparameter tuning logs, and statistical power calculation outputs
 
----
 
 ## Appendix A. End-to-End Python Analytics Notebook (Conceptual Reconstruction)
 
@@ -19,7 +18,6 @@ This is not executable code alone. It is a structured analytical narrative combi
 * Validation outputs
 * Interpretation guidance
 
----
 
 ## A1. Notebook 1: Data Preparation and Feature Engineering
 
@@ -31,7 +29,6 @@ This is not executable code alone. It is a structured analytical narrative combi
 
 Transform raw transactional, loyalty, and survey data into a single, analysis-ready dataset with engineered features optimized for segmentation, basket analysis, and promotion modeling.
 
----
 
 ### A1.1 Data Loading
 
@@ -60,7 +57,6 @@ stores = pd.read_csv("store_master.csv")
 survey = pd.read_excel("survey_responses.xlsx")
 ```
 
----
 
 ### A1.2 Timestamp Normalization
 
@@ -86,7 +82,6 @@ transactions["day_of_week"] = transactions["timestamp_utc"].dt.dayofweek
 transactions["is_weekend"] = transactions["day_of_week"].isin([5, 6])
 ```
 
----
 
 ### A1.3 Product Enrichment
 
@@ -114,7 +109,6 @@ transactions["is_hangover_relevant"] = (
 )
 ```
 
----
 
 ### A1.4 Defining “Post-Party” Transactions
 
@@ -136,7 +130,6 @@ transactions["is_post_party"] = (
 )
 ```
 
----
 
 ### A1.5 Basket-Level Aggregation
 
@@ -158,7 +151,6 @@ basket_features.rename(columns={
 }, inplace=True)
 ```
 
----
 
 ## Appendix B. Notebook 2: Segmentation Modeling and Hyperparameter Tuning
 
@@ -170,7 +162,6 @@ basket_features.rename(columns={
 
 Cluster post-party transactions into actionable behavioral segments that can be operationalized by marketing and store teams.
 
----
 
 ### B1. Feature Selection
 
@@ -204,7 +195,6 @@ scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 ```
 
----
 
 ### B2. KMeans Hyperparameter Tuning
 
@@ -215,7 +205,6 @@ X_scaled = scaler.fit_transform(X)
 * `n_init`: 10 to 50
 * `max_iter`: 300
 
----
 
 ### B3. Silhouette Analysis
 
@@ -248,7 +237,6 @@ for k in range(2, 9):
 
 **Selected k = 4** based on peak score and business interpretability.
 
----
 
 ### B4. Cluster Interpretation Log
 
@@ -259,7 +247,6 @@ for k in range(2, 9):
 | 2       | Breakfast + coffee               | Breakfast Rescuers      |
 | 3       | Low spend, quick trips           | Convenience Commuters   |
 
----
 
 ### B5. Model Stability Check
 
@@ -275,7 +262,6 @@ from sklearn.metrics import adjusted_rand_score
 Result: High consistency above 0.85 across seeds.
 Conclusion: Segments are stable enough for operational use.
 
----
 
 ## Appendix C. Notebook 3: Market Basket Analysis
 
@@ -287,7 +273,6 @@ Conclusion: Segments are stable enough for operational use.
 
 Identify frequently co-purchased items to inform bundle design.
 
----
 
 ### C1. Basket Matrix Construction
 
@@ -306,7 +291,6 @@ Convert to binary:
 basket_binary = basket.applymap(lambda x: 1 if x > 0 else 0)
 ```
 
----
 
 ### C2. Apriori Algorithm
 
@@ -326,7 +310,6 @@ rules = association_rules(
 )
 ```
 
----
 
 ### C3. Example Rule Output
 
@@ -335,7 +318,6 @@ rules = association_rules(
 | Energy Drink  | Breakfast Sandwich | 0.12    | 0.61       | 1.45 |
 | Pain Reliever | Bottled Water      | 0.09    | 0.68       | 1.62 |
 
----
 
 ## Appendix D. Notebook 4: Promotion Impact Simulation
 
@@ -343,7 +325,6 @@ rules = association_rules(
 
 `04_promo_simulation_models.ipynb`
 
----
 
 ### D1. Elasticity-Based Sales Lift Model
 
@@ -358,7 +339,6 @@ def simulate_sales_lift(
     return new_units
 ```
 
----
 
 ### D2. Weekly Simulation Example
 
@@ -376,7 +356,6 @@ Digit-by-digit working:
 * 1 + 0.24 = 1.24
 * 1,000 × 1.24 = 1,240 units
 
----
 
 ### D3. ROI Calculation Logic
 
@@ -391,7 +370,6 @@ def promo_roi(
     return roi
 ```
 
----
 
 ## Appendix E. Statistical Power and A/B Test Sizing
 
@@ -399,7 +377,6 @@ def promo_roi(
 
 Determine the minimum number of stores required to detect a meaningful uplift in post-party revenue.
 
----
 
 ### E1. Inputs
 
@@ -413,7 +390,6 @@ ASSUMPTION:
 
 These inputs are required to estimate sample size.
 
----
 
 ### E2. Effect Size Calculation
 
@@ -424,7 +400,6 @@ Digit-by-digit:
 * Effect size (Cohen’s d) = 320 ÷ 1,200
 * 320 ÷ 1,200 = 0.2667
 
----
 
 ### E3. Python Power Calculation
 
@@ -440,7 +415,6 @@ sample_size = analysis.solve_power(
 )
 ```
 
----
 
 ### E4. Output Interpretation
 
@@ -452,7 +426,6 @@ Conclusion:
 * Pilot tests must be run at **regional or cluster level** if total store count is below this threshold.
 * Alternatively, extend test duration to increase power.
 
----
 
 ## Appendix F. Logging, Reproducibility, and Audit Trail
 
@@ -472,7 +445,6 @@ Conclusion:
 * Environment file (`requirements.txt`)
 * Data snapshots with hash checksums
 
----
 
 ## Appendix G. Limitations and Validation Notes
 
@@ -488,7 +460,6 @@ Conclusion:
 * Compare cluster distributions month over month
 * Monitor drift in basket composition
 
----
 
 ## Final Note
 
