@@ -3,7 +3,6 @@
 #### **Objective**  
 To derive actionable insights by analyzing cleaned data from Phase 1, identifying key trends, customer behaviors, and operational inefficiencies.  
 
----
 
 ### **Key Analytical Focus Areas**  
 
@@ -15,7 +14,6 @@ To derive actionable insights by analyzing cleaned data from Phase 1, identifyin
 | **Pricing Strategy** | Price elasticity analysis, competitor benchmarking | Optimize pricing for maximum revenue and margin |
 | **Loyalty Program Effectiveness** | CLV (Customer Lifetime Value), retention rates | Measure impact of loyalty programs on repeat purchases |
 
----
 
 ### **Analysis Approach & Techniques**  
 
@@ -32,7 +30,6 @@ ORDER BY Month;
 ```
 - **Expected Insight**: Identify sales seasonality and revenue spikes.  
 
----
 
 ##### **2. Customer Segmentation (RFM Analysis)**  
 - **Method**: Categorize customers based on:  
@@ -53,7 +50,6 @@ rfm_df['Segment'] = kmeans.fit_predict(rfm_df)
 ```
 - **Expected Insight**: Identify high-value, loyal, and at-risk customers.  
 
----
 
 ##### **3. Pricing Strategy & Elasticity Analysis**  
 - **Method**: Measure how price changes impact demand.  
@@ -73,7 +69,6 @@ print(model.summary())
 ```
 - **Expected Insight**: Determine optimal pricing strategy.  
 
----
 
 ##### **4. Operational Efficiency – Stockout & Fulfillment Analysis**  
 - **Method**: Identify frequent stockouts and delayed deliveries.  
@@ -88,13 +83,11 @@ ORDER BY Stockout_Count DESC;
 ```
 - **Expected Insight**: Improve supply chain management.  
 
----
 
 ### **Deliverables**  
 ✅ **Executive Summary Report** with key insights and recommendations.  
 ✅ **Power BI Dashboard** visualizing sales, customer segments, and operations.  
 ✅ **Statistical Models & Data-Driven Insights** for decision-making.  
 
----
 
 This phase lays the foundation for **Phase 3: Strategy Implementation & Automation**. Let me know if you'd like any refinements! 🚀
