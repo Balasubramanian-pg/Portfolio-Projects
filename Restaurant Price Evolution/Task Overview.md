@@ -82,7 +82,6 @@
 57. Risks, Failure Modes, and Mitigations
 58. Final Executive Narrative
 
----
 
 ## Part 1: Strategic Context and Problem Framing
 
@@ -202,7 +201,6 @@ This section establishes the **technical backbone** of the Menu Price Evolution 
 
 The intent is not merely to describe tools, but to explain **why specific architectural choices were made**, what alternatives were rejected, and how the system balances accuracy, cost, scalability, and organizational trust.
 
----
 
 ## 9. End-to-End Data Flow Architecture
 
@@ -242,7 +240,6 @@ At a high level, the system follows a layered architecture designed to mirror th
 
 Each layer is deliberately decoupled to allow changes without cascading failures across the system.
 
----
 
 ## 10. Source Systems and Data Ownership
 
@@ -274,7 +271,6 @@ Ownership:
 
 Explicit ownership reduced ambiguity during data disputes and validation escalations.
 
----
 
 ## 11. Menu Artifacts as Semi-Structured Data
 
@@ -298,7 +294,6 @@ Treating menus as either unstructured text or rigid tables proved insufficient. 
 
 This conceptual model informed OCR preprocessing and downstream schema design.
 
----
 
 ## 12. OCR as a Data Engineering Problem
 
@@ -319,7 +314,6 @@ OCR was not treated as a one-time extraction task, but as an **ongoing data engi
 
 These risks shaped the choice of tools and validation strategies.
 
----
 
 ## 13. Cloud Architecture on AWS
 
@@ -355,7 +349,6 @@ AWS was selected due to its flexibility, managed services, and compatibility wit
 
 This hybrid architecture avoided overengineering while preserving extensibility.
 
----
 
 ## 14. Data Storage Strategy and Trade-offs
 
@@ -389,7 +382,6 @@ Advantages:
 
 This separation prevented analytical workloads from being polluted by noisy raw inputs.
 
----
 
 ## 15. Schema Design Principles
 
@@ -429,7 +421,6 @@ The schema was designed around **immutability and traceability**.
 
 This design enabled full historical reconstruction of any menu at any point in time.
 
----
 
 ## 16. Security, Access Control, and Cost Management
 
@@ -449,7 +440,6 @@ Although this was an internship project, security considerations were treated se
 
 These measures ensured the system remained financially justifiable.
 
----
 
 ## 17. Data Quality as a First-Class Concern
 
@@ -472,7 +462,6 @@ Each extracted price carried metadata describing:
 
 This transparency increased stakeholder trust.
 
----
 
 ## 18. Lineage and Auditability
 
@@ -486,7 +475,6 @@ Every analytical insight needed to be defensible.
 
 This was critical when managers questioned recommendations or when finance audited margin claims.
 
----
 
 ## 19. Integration with Analytics and BI Tools
 
@@ -500,7 +488,6 @@ The storage layer was optimized for consumption by Power BI.
 
 This reduced dashboard complexity and improved adoption.
 
----
 
 ## 20. Architectural Constraints and Known Limitations
 
@@ -514,13 +501,11 @@ No system is perfect, and documenting limitations was part of the project discip
 
 Explicitly acknowledging these constraints prevented overconfidence in outputs.
 
----
 
 ## Reasoning Summary
 
 This section was constructed by mapping business needs to technical capabilities, then justifying each architectural choice based on reliability, scalability, and stakeholder trust rather than novelty.
 
----
 
 ## Points Requiring Verification or Monitoring
 
@@ -536,7 +521,6 @@ This section explains how **menu images were transformed into reliable analytica
 
 The goal of this section is to demonstrate that the reported **98 percent accuracy** was not accidental, but the result of deliberate design choices, controlled trade-offs, and continuous validation.
 
----
 
 ## 16. Why OCR Was the Hardest Part of the Project
 
@@ -556,7 +540,6 @@ Unlike invoices or forms, menus lack consistent structure. The system therefore 
 
 This made OCR the highest-risk dependency in the entire project.
 
----
 
 ## 17. OCR as a Probabilistic System, Not a Deterministic One
 
@@ -571,7 +554,6 @@ Every extracted field was modeled as:
 
 This framing enabled downstream systems to reason about uncertainty instead of hiding it.
 
----
 
 ## 18. Taxonomy of OCR Failure Modes
 
@@ -600,7 +582,6 @@ Rather than reacting to errors ad hoc, failures were classified into a formal ta
 
 This taxonomy allowed targeted remediation instead of generic tuning.
 
----
 
 ## 19. Image Quality Challenges in Legacy Menus
 
@@ -616,7 +597,6 @@ The oldest menus presented the greatest difficulty.
 
 These artifacts directly correlated with numeric error rates, particularly for prices.
 
----
 
 ## 20. Image Preprocessing Pipeline Design
 
@@ -642,7 +622,6 @@ Contrast Limited Adaptive Histogram Equalization (CLAHE) was used because:
 
 This directly reduced high-impact numeric errors.
 
----
 
 ## 21. Tesseract vs AWS Textract: A Complementary Strategy
 
@@ -674,7 +653,6 @@ Rather than choosing a single OCR engine, the system used a **tiered approach**.
 
 This hybrid approach balanced cost and accuracy.
 
----
 
 ## 22. Confidence Scoring and Threshold Design
 
@@ -695,7 +673,6 @@ Instead, confidence was **recomputed at the system level** using multiple signal
 
 Only values exceeding defined thresholds were auto-approved.
 
----
 
 ## 23. Human-in-the-Loop Validation Strategy
 
@@ -716,7 +693,6 @@ Human validation was treated as a **scarce and expensive resource**.
 
 This ensured humans fixed the most costly errors first.
 
----
 
 ## 24. Reviewer Interface Design Principles
 
@@ -730,7 +706,6 @@ Reviewers were not shown entire menus. They were shown **just enough context** t
 
 This increased throughput and consistency.
 
----
 
 ## 25. Feedback Loops and Continuous Improvement
 
@@ -745,7 +720,6 @@ Corrections were not terminal events. They were learning signals.
 
 Over time, the proportion of items requiring manual review declined significantly.
 
----
 
 ## 26. Canonical Item Naming and De-duplication
 
@@ -767,7 +741,6 @@ A canonicalization layer was introduced.
 
 Human review was used only for ambiguous clusters.
 
----
 
 ## 27. Accuracy Measurement Methodology
 
@@ -785,7 +758,6 @@ An error on a low-selling side dish mattered less than a burger sold thousands o
 
 Accuracy metrics reflected business risk, not raw counts.
 
----
 
 ## 28. Achieving 98 Percent Accuracy: What That Actually Means
 
@@ -805,7 +777,6 @@ Residual errors existed but were:
 
 This distinction was critical for stakeholder trust.
 
----
 
 ## 29. Data Quality Dimensions and Monitoring
 
@@ -820,7 +791,6 @@ Quality was monitored continuously, not assumed.
 
 Sudden changes triggered investigation.
 
----
 
 ## 30. Data Versioning and Historical Integrity
 
@@ -834,7 +804,6 @@ Menus evolved over time. The system preserved this evolution.
 
 This enabled true time-series analysis instead of overwritten history.
 
----
 
 ## 31. Ethical and Operational Considerations
 
@@ -848,7 +817,6 @@ OCR introduced ethical responsibilities.
 
 These principles prevented analytics from becoming misleading.
 
----
 
 ## 32. Known OCR Limitations and Risk Acceptance
 
@@ -862,13 +830,11 @@ Some limitations were accepted rather than over-engineered.
 
 These decisions were documented and communicated.
 
----
 
 ## Reasoning Summary
 
 This section was built by decomposing OCR into failure modes, then systematically addressing each through preprocessing, hybrid tooling, probabilistic validation, and targeted human intervention.
 
----
 
 ## Points Requiring Monitoring or Re-Verification
 
@@ -876,7 +842,6 @@ This section was built by decomposing OCR into failure modes, then systematicall
 * Reviewer consistency over time
 * Drift in price plausibility thresholds due to inflation
 
----
 ## Part 3: OCR Engineering and Data Quality Framework
 
 ### Purpose of This Section
@@ -885,7 +850,6 @@ This section explains how **menu images were transformed into reliable analytica
 
 The goal of this section is to demonstrate that the reported **98 percent accuracy** was not accidental, but the result of deliberate design choices, controlled trade-offs, and continuous validation.
 
----
 
 ## 16. Why OCR Was the Hardest Part of the Project
 
@@ -905,7 +869,6 @@ Unlike invoices or forms, menus lack consistent structure. The system therefore 
 
 This made OCR the highest-risk dependency in the entire project.
 
----
 
 ## 17. OCR as a Probabilistic System, Not a Deterministic One
 
@@ -920,7 +883,6 @@ Every extracted field was modeled as:
 
 This framing enabled downstream systems to reason about uncertainty instead of hiding it.
 
----
 
 ## 18. Taxonomy of OCR Failure Modes
 
@@ -949,7 +911,6 @@ Rather than reacting to errors ad hoc, failures were classified into a formal ta
 
 This taxonomy allowed targeted remediation instead of generic tuning.
 
----
 
 ## 19. Image Quality Challenges in Legacy Menus
 
@@ -965,7 +926,6 @@ The oldest menus presented the greatest difficulty.
 
 These artifacts directly correlated with numeric error rates, particularly for prices.
 
----
 
 ## 20. Image Preprocessing Pipeline Design
 
@@ -991,7 +951,6 @@ Contrast Limited Adaptive Histogram Equalization (CLAHE) was used because:
 
 This directly reduced high-impact numeric errors.
 
----
 
 ## 21. Tesseract vs AWS Textract: A Complementary Strategy
 
@@ -1023,7 +982,6 @@ Rather than choosing a single OCR engine, the system used a **tiered approach**.
 
 This hybrid approach balanced cost and accuracy.
 
----
 
 ## 22. Confidence Scoring and Threshold Design
 
@@ -1044,7 +1002,6 @@ Instead, confidence was **recomputed at the system level** using multiple signal
 
 Only values exceeding defined thresholds were auto-approved.
 
----
 
 ## 23. Human-in-the-Loop Validation Strategy
 
@@ -1065,7 +1022,6 @@ Human validation was treated as a **scarce and expensive resource**.
 
 This ensured humans fixed the most costly errors first.
 
----
 
 ## 24. Reviewer Interface Design Principles
 
@@ -1079,7 +1035,6 @@ Reviewers were not shown entire menus. They were shown **just enough context** t
 
 This increased throughput and consistency.
 
----
 
 ## 25. Feedback Loops and Continuous Improvement
 
@@ -1094,7 +1049,6 @@ Corrections were not terminal events. They were learning signals.
 
 Over time, the proportion of items requiring manual review declined significantly.
 
----
 
 ## 26. Canonical Item Naming and De-duplication
 
@@ -1116,7 +1070,6 @@ A canonicalization layer was introduced.
 
 Human review was used only for ambiguous clusters.
 
----
 
 ## 27. Accuracy Measurement Methodology
 
@@ -1134,7 +1087,6 @@ An error on a low-selling side dish mattered less than a burger sold thousands o
 
 Accuracy metrics reflected business risk, not raw counts.
 
----
 
 ## 28. Achieving 98 Percent Accuracy: What That Actually Means
 
@@ -1154,7 +1106,6 @@ Residual errors existed but were:
 
 This distinction was critical for stakeholder trust.
 
----
 
 ## 29. Data Quality Dimensions and Monitoring
 
@@ -1169,7 +1120,6 @@ Quality was monitored continuously, not assumed.
 
 Sudden changes triggered investigation.
 
----
 
 ## 30. Data Versioning and Historical Integrity
 
@@ -1183,7 +1133,6 @@ Menus evolved over time. The system preserved this evolution.
 
 This enabled true time-series analysis instead of overwritten history.
 
----
 
 ## 31. Ethical and Operational Considerations
 
@@ -1197,7 +1146,6 @@ OCR introduced ethical responsibilities.
 
 These principles prevented analytics from becoming misleading.
 
----
 
 ## 32. Known OCR Limitations and Risk Acceptance
 
@@ -1211,13 +1159,11 @@ Some limitations were accepted rather than over-engineered.
 
 These decisions were documented and communicated.
 
----
 
 ## Reasoning Summary
 
 This section was built by decomposing OCR into failure modes, then systematically addressing each through preprocessing, hybrid tooling, probabilistic validation, and targeted human intervention.
 
----
 
 ## Points Requiring Monitoring or Re-Verification
 
@@ -1235,7 +1181,6 @@ This section explains how five years of extracted menu prices were converted int
 The guiding principle was simple:
 If a pricing insight cannot be explained to a restaurant manager in plain language, it does not belong in production.
 
----
 
 ## 33. From Clean Data to Analytical Truth
 
@@ -1247,7 +1192,6 @@ Menu prices are time-dependent, location-specific, and cost-constrained. Treatin
 
 The system therefore treated **price as a time series, not a column**.
 
----
 
 ## 34. Core Analytical Questions
 
@@ -1260,7 +1204,6 @@ All modeling decisions were anchored to four business questions:
 
 Every derived metric could be traced back to at least one of these questions.
 
----
 
 ## 35. Time-Series Modeling Philosophy
 
@@ -1274,7 +1217,6 @@ Reasons for this choice:
 
 The objective was not to predict the future perfectly, but to **understand the past accurately**.
 
----
 
 ## 36. Price History as a First-Class Entity
 
@@ -1299,7 +1241,6 @@ This allowed queries such as:
 
 These questions were impossible to answer in the legacy Excel system.
 
----
 
 ## 37. Handling Irregular Price Changes
 
@@ -1315,7 +1256,6 @@ To address this, the system used **event-based time series**, not fixed interval
 
 Prices were forward-filled only for analytical comparison, never stored that way.
 
----
 
 ## 38. Ingredient Cost Normalization
 
@@ -1336,7 +1276,6 @@ Examples:
 ASSUMPTION
 Linear interpolation was used for short gaps where no official data existed. This was necessary to align costs with menu prices. Interpolated values were flagged and excluded from high-stakes decisions.
 
----
 
 ## 39. Item-to-Ingredient Mapping
 
@@ -1357,7 +1296,6 @@ Reasoning:
 
 This simplification was disclosed to stakeholders to prevent overinterpretation.
 
----
 
 ## 40. Wage Inflation as a Cost Driver
 
@@ -1373,7 +1311,6 @@ Wage increases were applied as **step functions**, not gradual trends.
 
 This allowed the system to attribute sudden margin changes correctly.
 
----
 
 ## 41. Cost-to-Price Ratio Modeling
 
@@ -1387,7 +1324,6 @@ These ratios were more informative than absolute values.
 
 A burger priced at $12 and one priced at $18 could both be unhealthy, depending on costs.
 
----
 
 ## 42. Margin Leakage Detection Logic
 
@@ -1403,7 +1339,6 @@ A sustained divergence between cost increases and price adjustments beyond a tol
 
 This avoided flagging temporary anomalies.
 
----
 
 ## 43. Loss Attribution Methodology
 
@@ -1420,7 +1355,6 @@ How much money did we lose because we did not adjust prices in time?
 
 This converted abstract analysis into dollar values executives could act on.
 
----
 
 ## 44. Example: Burger Margin Erosion in New York
 
@@ -1434,7 +1368,6 @@ The system quantified the loss per burger and aggregated it to annual impact.
 
 This shifted conversations from opinion to evidence.
 
----
 
 ## 45. Cross-Location Price Variance Analysis
 
@@ -1448,7 +1381,6 @@ The system computed:
 
 High variance triggered investigation, not automatic correction.
 
----
 
 ## 46. Customer Complaint Correlation
 
@@ -1460,7 +1392,6 @@ Complaints correlated more with **relative pricing** than absolute pricing.
 
 Customers tolerated higher prices when competitors were similarly priced.
 
----
 
 ## 47. Statistical Techniques Used Sparingly
 
@@ -1474,7 +1405,6 @@ Used techniques included:
 
 Advanced models were rejected due to limited interpretability.
 
----
 
 ## 48. Seasonality Handling
 
@@ -1488,7 +1418,6 @@ Mitigations included:
 
 This prevented false alarms.
 
----
 
 ## 49. Data Gaps and Imperfect Information
 
@@ -1502,7 +1431,6 @@ Examples:
 
 These gaps were documented rather than hidden.
 
----
 
 ## 50. Trust Through Transparency
 
@@ -1514,7 +1442,6 @@ Every dashboard metric included:
 
 This transparency increased adoption and reduced resistance.
 
----
 
 ## 51. Performance and Scalability Considerations
 
@@ -1526,7 +1453,6 @@ Time-series queries were optimized via:
 
 This ensured dashboards remained responsive.
 
----
 
 ## 52. Analytical Outputs Produced
 
@@ -1539,13 +1465,11 @@ Key outputs included:
 
 Each output tied directly to a business decision.
 
----
 
 ## Reasoning Summary
 
 This section was built by translating business questions into temporal models, prioritizing interpretability, and converting abstract cost movements into defensible financial impact.
 
----
 
 ## Points Requiring Verification or Ongoing Review
 
@@ -1561,7 +1485,6 @@ This section explains how competitor pricing was captured, validated, and conver
 
 The key challenge was not technical scraping. It was designing a system that produced **credible, defensible competitive insight** while operating under real-world constraints.
 
----
 
 ## 53. Why Competitive Pricing Is Harder Than It Looks
 
@@ -1581,7 +1504,6 @@ Formal competitive intelligence is rare because:
 
 UrbanEats needed a repeatable, ethical alternative.
 
----
 
 ## 54. Constraints That Defined the Solution Space
 
@@ -1607,7 +1529,6 @@ Before designing the system, constraints were explicitly documented.
 
 These constraints ruled out conventional scraping pipelines.
 
----
 
 ## 55. Crowdsourcing as a Strategic Choice
 
@@ -1622,7 +1543,6 @@ Crowdsourcing was not a fallback. It was a deliberate strategy.
 
 The system reframed competitive intelligence as a **mutually beneficial exchange**.
 
----
 
 ## 56. Incentive Design and Behavioral Economics
 
@@ -1642,7 +1562,6 @@ The success of crowdsourcing depended on incentive calibration.
 
 Participation spiked quickly without degrading data quality.
 
----
 
 ## 57. Submission Workflow Design
 
@@ -1658,7 +1577,6 @@ The submission workflow was intentionally simple.
 
 Friction was minimized to encourage casual participation.
 
----
 
 ## 58. Data Captured Per Submission
 
@@ -1672,7 +1590,6 @@ Each submission recorded:
 
 No personal data beyond app identity was stored.
 
----
 
 ## 59. Initial Validation and Filtering
 
@@ -1686,7 +1603,6 @@ Not all submissions were useful.
 
 Submissions failing basic checks were discarded automatically.
 
----
 
 ## 60. OCR and Extraction for Competitor Menus
 
@@ -1700,7 +1616,6 @@ Reasons:
 
 Human validation played a larger role here.
 
----
 
 ## 61. Fraud and Abuse Prevention
 
@@ -1721,7 +1636,6 @@ Crowdsourcing systems attract abuse if unchecked.
 
 These measures kept abuse manageable.
 
----
 
 ## 62. Competitor Canonicalization
 
@@ -1743,7 +1657,6 @@ Canonicalization prevented fragmentation.
 
 This ensured benchmarks aggregated correctly.
 
----
 
 ## 63. Item Comparability Challenges
 
@@ -1759,7 +1672,6 @@ The system avoided false precision.
 
 Instead of exact matching, it used **category-level and anchor-item comparisons**.
 
----
 
 ## 64. Anchor Items and Reference Dishes
 
@@ -1777,7 +1689,6 @@ Examples:
 
 These anchors formed the backbone of competitive comparisons.
 
----
 
 ## 65. Price Normalization and Contextualization
 
@@ -1792,7 +1703,6 @@ Raw prices were normalized using contextual signals.
 ASSUMPTION
 Portion size equivalence was assumed for anchor items unless explicitly stated otherwise. This was necessary due to incomplete data and was disclosed in dashboards.
 
----
 
 ## 66. Confidence Scoring for Competitive Data
 
@@ -1807,7 +1717,6 @@ Each benchmark carried a confidence score based on:
 
 Low-confidence benchmarks were excluded from automated recommendations.
 
----
 
 ## 67. Price Positioning Framework
 
@@ -1821,7 +1730,6 @@ Rather than chasing the lowest price, UrbanEats adopted a **positioning framewor
 
 This prevented a race to the bottom.
 
----
 
 ## 68. Visualizing Competitive Landscapes
 
@@ -1833,7 +1741,6 @@ Competitive data was visualized using:
 
 Managers could see not just who was cheaper, but **who was winning on value**.
 
----
 
 ## 69. Translating Benchmarks into Actionable Signals
 
@@ -1847,7 +1754,6 @@ They were translated into signals such as:
 
 This framing encouraged judgment rather than blind matching.
 
----
 
 ## 70. Integration with Pricing Engine
 
@@ -1860,7 +1766,6 @@ Example:
 
 This balanced competitiveness with margin recovery.
 
----
 
 ## 71. Managing Manager Skepticism
 
@@ -1874,7 +1779,6 @@ Trust was built through:
 
 Seeing real competitor menus changed minds faster than statistics.
 
----
 
 ## 72. Ethical Review and Governance
 
@@ -1888,7 +1792,6 @@ Key conclusions:
 
 This protected UrbanEats from reputational risk.
 
----
 
 ## 73. Known Limitations of Competitive Intelligence
 
@@ -1902,7 +1805,6 @@ Limitations were acknowledged openly.
 
 These were monitored rather than ignored.
 
----
 
 ## 74. Business Value Delivered
 
@@ -1914,13 +1816,11 @@ The competitive system enabled:
 
 It replaced arguments with evidence.
 
----
 
 ## Reasoning Summary
 
 This section was constructed by starting from constraints, then designing a system that turned limitations into strengths through crowdsourcing, confidence scoring, and cautious interpretation.
 
----
 
 ## Points Requiring Ongoing Verification
 
@@ -1941,7 +1841,6 @@ The pricing engine was therefore designed to be:
 * Resistant to extreme or cascading errors
 * Aligned with brand and customer perception constraints
 
----
 
 ## 75. Pricing as a Decision System, Not an Algorithm
 
@@ -1956,7 +1855,6 @@ Reasons included:
 
 The system did not *set* prices autonomously. It **recommended bounded actions** within clearly defined rules.
 
----
 
 ## 76. Pricing Philosophy Adopted
 
@@ -1968,7 +1866,6 @@ UrbanEats pricing decisions were guided by three principles:
 
 These principles shaped every rule and safeguard.
 
----
 
 ## 77. Rule-Based vs Model-Driven Pricing
 
@@ -2003,7 +1900,6 @@ Cons:
 
 Given the organizational context, **rule-based pricing was chosen**.
 
----
 
 ## 78. Structure of the Pricing Rules Engine
 
@@ -2018,7 +1914,6 @@ The rules engine operated as a layered filter.
 
 Rules earlier in the chain could block later ones.
 
----
 
 ## 79. Hard Constraints and Guardrails
 
@@ -2033,7 +1928,6 @@ Examples:
 
 These constraints prevented runaway adjustments.
 
----
 
 ## 80. Cost-Based Adjustment Rules
 
@@ -2047,7 +1941,6 @@ Cost-based rules addressed margin leakage.
 
 This prevented overreaction to short-term volatility.
 
----
 
 ## 81. Competitive Constraint Rules
 
@@ -2061,7 +1954,6 @@ Examples:
 
 Competition was treated as a **context**, not a target.
 
----
 
 ## 82. Customer Sentiment Modifiers
 
@@ -2075,7 +1967,6 @@ Examples:
 
 This ensured pricing did not antagonize loyal customers.
 
----
 
 ## 83. Location-Specific Elasticity Assumptions
 
@@ -2089,7 +1980,6 @@ Elasticity assumptions affected:
 * Size of recommended changes
 * Priority ranking of actions
 
----
 
 ## 84. Simulation and Scenario Testing
 
@@ -2109,7 +1999,6 @@ Before recommendations reached managers, they were simulated.
 
 This turned abstract rules into tangible outcomes.
 
----
 
 ## 85. Risk Scoring and Recommendation Ranking
 
@@ -2124,7 +2013,6 @@ Risk factors included:
 
 Managers saw **ranked recommendations**, not raw rule outputs.
 
----
 
 ## 86. A/B Testing Framework Design
 
@@ -2138,7 +2026,6 @@ A/B testing was introduced cautiously.
 
 This avoided ambiguous results.
 
----
 
 ## 87. Interpreting A/B Test Results
 
@@ -2151,7 +2038,6 @@ Results were evaluated across multiple dimensions:
 
 A strategy was only promoted if it passed all thresholds.
 
----
 
 ## 88. Avoiding Feedback Loops and Oscillation
 
@@ -2165,7 +2051,6 @@ Mitigations included:
 
 This stabilized pricing behavior.
 
----
 
 ## 89. Override Mechanisms and Human Judgment
 
@@ -2179,7 +2064,6 @@ Override reasons were logged, including:
 
 Overrides became learning signals, not failures.
 
----
 
 ## 90. Governance and Accountability
 
@@ -2194,7 +2078,6 @@ Each recommendation stored:
 
 This supported post-mortems and audits.
 
----
 
 ## 91. Integration with Menu Operations
 
@@ -2208,7 +2091,6 @@ Constraints included:
 
 Pricing cycles were aligned with operational windows.
 
----
 
 ## 92. Preventing Brand Fragmentation
 
@@ -2222,7 +2104,6 @@ Rules flagged:
 
 This protected brand coherence.
 
----
 
 ## 93. Failure Modes Considered
 
@@ -2236,7 +2117,6 @@ Examples:
 
 Each had documented mitigation steps.
 
----
 
 ## 94. Measuring Pricing Engine Success
 
@@ -2251,7 +2131,6 @@ Metrics included:
 
 This ensured the system served people, not just numbers.
 
----
 
 ## 95. Cultural Impact of the Pricing Engine
 
@@ -2267,13 +2146,11 @@ They started asking:
 
 This shift mattered as much as financial gains.
 
----
 
 ## Reasoning Summary
 
 This section was developed by treating pricing as a sociotechnical system, combining analytical rigor with behavioral, operational, and brand constraints.
 
----
 
 ## Points Requiring Ongoing Review
 
@@ -2290,7 +2167,6 @@ This section explains how complex analytical outputs were translated into **mana
 
 Visualization and change management were therefore treated as core system components, not presentation polish.
 
----
 
 ## 96. Why Analytics Fail Without Storytelling
 
@@ -2306,7 +2182,6 @@ The project assumed that **every chart must answer a question**, and **every das
 
 Anything else was noise.
 
----
 
 ## 97. Designing for the Real User, Not the Ideal One
 
@@ -2325,7 +2200,6 @@ They were:
 
 This reality shaped every design decision.
 
----
 
 ## 98. Power BI as the Chosen Visualization Layer
 
@@ -2338,7 +2212,6 @@ Power BI was selected because:
 
 The goal was adoption, not novelty.
 
----
 
 ## 99. Semantic Model Design Philosophy
 
@@ -2353,7 +2226,6 @@ The semantic model acted as a translation layer between raw data and business la
 
 This prevented logic duplication and metric drift.
 
----
 
 ## 100. KPI Hierarchy and Information Architecture
 
@@ -2379,7 +2251,6 @@ KPIs were organized hierarchically.
 
 Users were guided from **what is wrong** to **what to do next**.
 
----
 
 ## 101. The Red Zone Concept
 
@@ -2395,7 +2266,6 @@ Red Zone lists were short by design.
 
 Scarcity focused attention.
 
----
 
 ## 102. Visual Encoding Choices
 
@@ -2409,7 +2279,6 @@ Visuals were deliberately conservative.
 
 Flashy visuals were avoided to preserve credibility.
 
----
 
 ## 103. Time-Series Visualization Strategy
 
@@ -2423,7 +2292,6 @@ Rules included:
 
 Unannotated trend lines were considered misleading.
 
----
 
 ## 104. Contextual Annotations and Narrative Layers
 
@@ -2437,7 +2305,6 @@ Examples:
 
 This prevented misattribution and defensiveness.
 
----
 
 ## 105. Drill-Down Without Getting Lost
 
@@ -2453,7 +2320,6 @@ They could not drill endlessly.
 
 This prevented analysis paralysis.
 
----
 
 ## 106. Alerts as Conversation Starters
 
@@ -2470,7 +2336,6 @@ Alerts included:
 * Suggested next step
 * Confidence level
 
----
 
 ## 107. Alert Fatigue Prevention
 
@@ -2482,7 +2347,6 @@ To prevent alert fatigue:
 
 Respecting attention increased trust.
 
----
 
 ## 108. Storytelling for Executives
 
@@ -2497,7 +2361,6 @@ Key features:
 
 Executives wanted decisions, not diagnostics.
 
----
 
 ## 109. Translating Analytics into Manager Language
 
@@ -2517,7 +2380,6 @@ Instead of:
 
 Language alignment mattered.
 
----
 
 ## 110. Training as Enablement, Not Compliance
 
@@ -2535,7 +2397,6 @@ They were not framed as:
 
 This distinction reduced resistance.
 
----
 
 ## 111. Training Program Structure
 
@@ -2559,7 +2420,6 @@ Training was delivered in phases.
 * When to override
 * How to document rationale
 
----
 
 ## 112. Handling Skepticism and Pushback
 
@@ -2579,7 +2439,6 @@ Responses focused on:
 
 Defensiveness was never punished.
 
----
 
 ## 113. Chef and Culinary Team Engagement
 
@@ -2593,7 +2452,6 @@ Key principles:
 
 This avoided cultural backlash.
 
----
 
 ## 114. Change Champions and Early Adopters
 
@@ -2607,7 +2465,6 @@ They were:
 
 Peer validation accelerated adoption.
 
----
 
 ## 115. Measuring Adoption and Behavioral Change
 
@@ -2622,7 +2479,6 @@ Metrics included:
 
 Low adoption triggered redesign, not blame.
 
----
 
 ## 116. Feedback Loops and Iterative Improvement
 
@@ -2642,7 +2498,6 @@ Feedback led to:
 
 The system evolved with its users.
 
----
 
 ## 117. Avoiding the “Black Box” Perception
 
@@ -2656,7 +2511,6 @@ Every recommendation linked to:
 
 Nothing was hidden behind proprietary mystique.
 
----
 
 ## 118. Organizational Impact Beyond Pricing
 
@@ -2670,7 +2524,6 @@ Managers began:
 
 Analytics became a shared language.
 
----
 
 ## 119. What Would Have Failed Without Change Management
 
@@ -2682,13 +2535,11 @@ Without deliberate change management:
 
 Technical success would not have translated into business impact.
 
----
 
 ## Reasoning Summary
 
 This section was developed by treating visualization and change management as behavioral systems, ensuring that analytical insights were not only correct, but usable, trusted, and acted upon.
 
----
 
 ## Points Requiring Ongoing Attention
 
@@ -2696,7 +2547,6 @@ This section was developed by treating visualization and change management as be
 * Metric creep diluting focus
 * Manager turnover affecting training continuity
 
----
 
 The final section will be:
 
@@ -2712,7 +2562,6 @@ This final section synthesizes outcomes, governance structures, and long-term ev
 
 The emphasis is on **defensibility, sustainability, and readiness for growth**, not on celebrating results without scrutiny.
 
----
 
 ## 120. Defining Business Impact Rigorously
 
@@ -2724,7 +2573,6 @@ Business impact was defined using three criteria:
 
 Impact claims were only accepted when they met all three.
 
----
 
 ## 121. Attribution Versus Correlation
 
@@ -2744,7 +2592,6 @@ The system addressed this by:
 
 When attribution was weak, results were labeled as indicative, not definitive.
 
----
 
 ## 122. Financial Impact Measurement Framework
 
@@ -2758,7 +2605,6 @@ Financial impact was measured at the item and location level, then aggregated.
 
 Each component was calculated independently to avoid double counting.
 
----
 
 ## 123. Reported Financial Outcomes
 
@@ -2770,7 +2616,6 @@ Within six months of rollout:
 
 These outcomes were reviewed jointly by finance and operations before being accepted.
 
----
 
 ## 124. Cost of Change Versus Cost of Inaction
 
@@ -2792,7 +2637,6 @@ The project explicitly compared costs.
 
 The avoided costs exceeded incurred costs within the first year.
 
----
 
 ## 125. Customer Impact and Brand Perception
 
@@ -2807,7 +2651,6 @@ Customer outcomes were evaluated cautiously.
 ASSUMPTION
 Customer complaint data was treated as a proxy for sentiment. While imperfect, it was the best available signal and was interpreted conservatively.
 
----
 
 ## 126. Governance Structure Overview
 
@@ -2821,7 +2664,6 @@ Governance ensured that pricing decisions remained consistent, ethical, and acco
 
 Each had distinct responsibilities and escalation paths.
 
----
 
 ## 127. Pricing Review Committee
 
@@ -2835,7 +2677,6 @@ Responsibilities included:
 
 Membership included finance, operations, and culinary representation.
 
----
 
 ## 128. Data Stewardship and Ownership
 
@@ -2850,7 +2691,6 @@ Clear data ownership prevented disputes.
 
 Stewards were accountable for quality and definitions.
 
----
 
 ## 129. Change Control and Versioning
 
@@ -2865,7 +2705,6 @@ Steps included:
 
 This prevented silent logic drift.
 
----
 
 ## 130. Ethical Governance and Transparency
 
@@ -2879,7 +2718,6 @@ Key commitments:
 
 These commitments protected long-term brand trust.
 
----
 
 ## 131. Scaling the System to 100 Plus Locations
 
@@ -2901,7 +2739,6 @@ Scaling was evaluated across three dimensions.
 * Trust must be rebuilt in each new region.
 * Local context must remain respected.
 
----
 
 ## 132. Regionalization and Localization at Scale
 
@@ -2915,7 +2752,6 @@ Scaling strategies included:
 
 Centralization without flexibility was explicitly avoided.
 
----
 
 ## 133. Onboarding New Locations
 
@@ -2930,7 +2766,6 @@ Steps included:
 
 This reduced disruption.
 
----
 
 ## 134. Extending Beyond Pricing
 
@@ -2945,7 +2780,6 @@ The system created optional extension paths.
 
 These were noted but not pursued during the internship scope.
 
----
 
 ## 135. Path Toward Predictive and ML-Based Pricing
 
@@ -2959,7 +2793,6 @@ Prerequisites identified:
 
 Until then, rule-based systems remained appropriate.
 
----
 
 ## 136. Risks of Over-Automation
 
@@ -2973,7 +2806,6 @@ The project documented risks explicitly.
 
 Automation was framed as augmentation, not replacement.
 
----
 
 ## 137. Failure Modes and Contingency Planning
 
@@ -2987,7 +2819,6 @@ Examples:
 
 Each scenario had defined fallback procedures.
 
----
 
 ## 138. Measuring Long-Term Sustainability
 
@@ -3000,7 +2831,6 @@ Sustainability metrics included:
 
 Short-term gains without sustainability were considered failure.
 
----
 
 ## 139. Lessons Learned
 
@@ -3014,7 +2844,6 @@ Key lessons included:
 
 These lessons generalized beyond UrbanEats.
 
----
 
 ## 140. What Made This an Internship-Level Success
 
@@ -3028,7 +2857,6 @@ Despite being an internship project, success came from:
 
 Scope discipline mattered more than tool choice.
 
----
 
 ## 141. Final Executive Narrative
 
@@ -3040,13 +2868,11 @@ Managers became informed decision-makers.
 
 The result was not just improved margins, but a durable capability that aligned finance, operations, and customer experience around a shared understanding of value.
 
----
 
 ## Reasoning Summary
 
 This section was developed by connecting analytical outputs to financial attribution, governance discipline, and scalable design principles, ensuring that reported success was credible, repeatable, and sustainable.
 
----
 
 ## Points Requiring Ongoing Verification
 
@@ -3054,7 +2880,6 @@ This section was developed by connecting analytical outputs to financial attribu
 * Governance effectiveness as leadership changes
 * System performance and cost at larger scale
 
----
 
 ## Completion Note
 
@@ -3069,4 +2894,3 @@ If you would like next steps, I can:
 * Rewrite sections for academic or corporate submission
 
 Tell me how you want to use it next.
-
