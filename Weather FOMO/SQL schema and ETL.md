@@ -2,7 +2,6 @@
 
 Below is a complete, practical blueprint you can hand to engineers and data analysts. It covers the data warehouse schema, raw/staging layers, example SQL for merging bookings with hourly weather, dbt model structure, orchestration (Airflow DAG sketch), operational considerations, monitoring, and a sample API call budget. Where external facts matter I cite authoritative docs.
 
----
 
 ## 1. Overview and objectives
 
@@ -15,7 +14,6 @@ Below is a complete, practical blueprint you can hand to engineers and data anal
   * Lightweight retry and fallback to secondary weather provider when rate limited.
 * Key references: Airflow orchestration best practices, dbt transformation patterns, and weather API options. ([Apache Airflow][1])
 
----
 
 ## 2. Data model (warehouse / star schema)
 
@@ -100,7 +98,6 @@ CREATE TABLE analytics.mart_bookings_weather_hourly (
 );
 ```
 
----
 
 ## 3. ETL / ELT architecture (conceptual)
 
@@ -122,7 +119,6 @@ CREATE TABLE analytics.mart_bookings_weather_hourly (
 
   * Materialized marts feed Power BI and model scoring services.
 
----
 
 ## 4. Example ETL SQL: canonicalize and merge
 
@@ -261,7 +257,6 @@ Notes:
 * The lateral nearest-hour join pattern is presented conceptually; adapt to your SQL dialect.
 * Materialize as a table for fast reads by BI and the model scoring service.
 
----
 
 ## 5. dbt project layout and examples
 
@@ -277,7 +272,6 @@ Notes:
   * not_null tests for `resort_id`, `check_in_utc`
 * Use dbt ephemeral models for complex but small intermediate steps to avoid unnecessary tables. Follow dbt staging patterns to keep transformations modular. ([dbt Labs][3])
 
----
 
 ## 6. Orchestration sketch (Airflow DAG)
 
@@ -320,7 +314,6 @@ with DAG('bookings_weather_pipeline', schedule_interval='@hourly', catchup=False
     extract_bookings >> fetch_weather >> load_raw >> dbt_staging >> dbt_marts >> scoring
 ```
 
----
 
 ## 7. Weather API strategy and fallback
 
@@ -328,7 +321,6 @@ with DAG('bookings_weather_pipeline', schedule_interval='@hourly', catchup=False
 * Fallback: NOAA / NWS datasets for US locations for backfills and redundancy. Note NOAA has rate limits and may not be global or as granular in all regions. ([ncdc.noaa.gov][4])
 * Caching: store fetched hourly records in `raw.weather_hourly_raw` and avoid re-requesting the same hour for 7 days unless your provider indicates an update.
 
----
 
 ## 8. API call budgeting example
 
@@ -360,7 +352,6 @@ If you also fetch hourly observed data once per hour:
 
 Action: pick a subscription tier that covers the monthly call volume or implement batching / bulk history pulls for cost efficiency. Use local caching to reduce repeated calls.
 
----
 
 ## 9. Data quality, testing, and monitoring
 
@@ -376,7 +367,6 @@ Action: pick a subscription tier that covers the monthly call volume or implemen
   * Pipeline health: success rates, lag metrics, and API error rate.
   * Alerting: Slack/Teams for extraction or transformation failures and for concept drift.
 
----
 
 ## 10. Deployment, CI/CD and runbooks
 
@@ -385,7 +375,6 @@ Action: pick a subscription tier that covers the monthly call volume or implemen
 * Runbooks: document steps to reprocess a date range, backfill weather, and rotate API keys.
 * Access controls: restrict write access to `raw.*` and production `analytics.*` to data engineering role.
 
----
 
 ## 11. Security, compliance, and governance
 
@@ -393,7 +382,6 @@ Action: pick a subscription tier that covers the monthly call volume or implemen
 * Logging: keep raw payloads for 90 days in raw layer then move to cold storage for auditability.
 * Data retention: align with company policy and local regulations for guest data.
 
----
 
 ## 12. Cost and operational tradeoffs
 
@@ -401,7 +389,6 @@ Action: pick a subscription tier that covers the monthly call volume or implemen
 * Mitigation: use bulk historical pulls for backfills and cache forecasts; lower granularity for low-impact resorts.
 * Recommendation: pilot with 4 resorts to measure the balance of cost vs value before chainwide rollout.
 
----
 
 ## 13. Short, concise explanation of reasoning steps taken
 
@@ -410,7 +397,6 @@ Action: pick a subscription tier that covers the monthly call volume or implemen
 * I proposed orchestrator and transformation technologies and gave concrete SQL and dbt patterns to make the pipeline reproducible.
 * I included operational considerations: API budgeting, failover, testing, monitoring, and governance.
 
----
 
 ## 14. Items requiring verification or decisions to make
 
@@ -420,7 +406,6 @@ Action: pick a subscription tier that covers the monthly call volume or implemen
 4. Agree retention policy for raw payloads and PII masking rules.
 5. Approve pilot resort list and pilot budget to estimate real costs.
 
----
 
 ## 15. Suggested next artifact I will produce if you say go
 
