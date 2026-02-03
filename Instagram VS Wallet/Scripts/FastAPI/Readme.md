@@ -6,7 +6,6 @@ This section **fully completes** the FastAPI model server requirement. It covers
 
 No conceptual layer is skipped. This is written as if the service will be owned, monitored, audited, and scaled by a real engineering team.
 
----
 
 ## 1. Why a Dedicated Model Server Exists
 
@@ -33,7 +32,6 @@ The FastAPI service is:
   * Model version
   * Top contributing factors (SHAP-derived)
 
----
 
 ## 2. Serving Contract and API Design
 
@@ -84,7 +82,6 @@ The FastAPI service is:
 * Product and CX teams need **human-readable reasons**
 * Auditors need **model version traceability**
 
----
 
 ## 3. Repository Structure
 
@@ -107,7 +104,6 @@ trendbuy-model-server/
 └── README.md
 ```
 
----
 
 ## 4. Application Code
 
@@ -131,7 +127,6 @@ class InferenceResponse(BaseModel):
     top_contributors: List[str]
 ```
 
----
 
 ### 4.2 `settings.py`
 
@@ -150,7 +145,6 @@ RISK_THRESHOLDS = {
 }
 ```
 
----
 
 ### 4.3 `model_loader.py`
 
@@ -169,7 +163,6 @@ def load_model():
     return ModelRegistry.model
 ```
 
----
 
 ### 4.4 `explainability.py`
 
@@ -195,7 +188,6 @@ def map_top_features(feature_importance: dict, top_n: int = 3):
     return reasons
 ```
 
----
 
 ### 4.5 `main.py`
 
@@ -242,7 +234,6 @@ def score(request: InferenceRequest):
         raise HTTPException(status_code=500, detail=str(e))
 ```
 
----
 
 ## 5. Dockerfile
 
@@ -271,7 +262,6 @@ EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
----
 
 ## 6. `requirements.txt`
 
@@ -285,7 +275,6 @@ pandas==2.2.0
 joblib==1.3.2
 ```
 
----
 
 ## 7. Kubernetes Deployment Manifest
 
@@ -347,7 +336,6 @@ spec:
   type: ClusterIP
 ```
 
----
 
 ## 8. Operational Considerations
 
@@ -373,7 +361,6 @@ spec:
 * mTLS or service-to-service auth
 * No PII beyond opaque identifiers
 
----
 
 ## 9. What Requires Verification or Is Uncertain
 
@@ -382,7 +369,6 @@ spec:
 * Kubernetes cluster limits and autoscaling rules depend on platform configuration. I cannot verify this.
 * Authentication and network policy configuration depends on your service mesh or cloud provider.
 
----
 
 ## 10. Completion Status
 
