@@ -4,7 +4,6 @@
 
 This is a **real-world, executive-to-operator grade Power BI wireframe**, mapped one-to-one with the notebook outputs you approved. It is designed so a BI developer can build it without guesswork and a hiring manager can immediately recognize production thinking.
 
----
 
 ## 1. Dashboard purpose and audience
 
@@ -20,7 +19,6 @@ This is a **real-world, executive-to-operator grade Power BI wireframe**, mapped
 * Central Operations
 * Executive leadership (read-only, summarized)
 
----
 
 ## 2. Data model feeding Power BI
 
@@ -40,7 +38,6 @@ This is a **real-world, executive-to-operator grade Power BI wireframe**, mapped
 **Design principle:**
 Executives see aggregates. Managers see bookings. Nobody sees raw model internals.
 
----
 
 ## 3. Dashboard layout (single-page command view)
 
@@ -48,7 +45,6 @@ Executives see aggregates. Managers see bookings. Nobody sees raw model internal
 
 **Weather Revenue Control Tower**
 
----
 
 ## 4. Top banner: Executive snapshot (above the fold)
 
@@ -87,7 +83,6 @@ Executives see aggregates. Managers see bookings. Nobody sees raw model internal
    * Example: `$210K`
    * Confidence band shown in tooltip
 
----
 
 ## 5. Central visual: Risk heatmap (decision driver)
 
@@ -122,7 +117,6 @@ Executives see aggregates. Managers see bookings. Nobody sees raw model internal
 
 **This is the visual managers live on.**
 
----
 
 ## 6. Right panel: Action recommendation engine
 
@@ -144,7 +138,6 @@ Executives see aggregates. Managers see bookings. Nobody sees raw model internal
 * No model jargon
 * Business verbs only
 
----
 
 ## 7. Bottom left: Cancellation drivers explainer
 
@@ -168,7 +161,6 @@ Executives see aggregates. Managers see bookings. Nobody sees raw model internal
 **Purpose:**
 This visual defuses stakeholder pushback by explaining *why* the model flagged risk.
 
----
 
 ## 8. Bottom center: Upsell opportunity analyzer
 
@@ -188,7 +180,6 @@ This visual defuses stakeholder pushback by explaining *why* the model flagged r
 **Insight surfaced visually:**
 “Sunny + event weekends create nonlinear revenue spikes.”
 
----
 
 ## 9. Bottom right: Intervention effectiveness tracker
 
@@ -211,7 +202,6 @@ This visual defuses stakeholder pushback by explaining *why* the model flagged r
 
 **This closes the loop and builds trust.**
 
----
 
 ## 10. Drillthrough page: Booking-level triage
 
@@ -238,7 +228,6 @@ This visual defuses stakeholder pushback by explaining *why* the model flagged r
 **ASSUMPTION:**
 Actual approval actions may live outside Power BI depending on tooling.
 
----
 
 ## 11. Filters and slicers (global)
 
@@ -256,7 +245,6 @@ Actual approval actions may live outside Power BI depending on tooling.
 * Forecast horizon
 * Confidence threshold
 
----
 
 ## 12. Security and row-level access
 
@@ -272,7 +260,6 @@ Actual approval actions may live outside Power BI depending on tooling.
 
   * Aggregated views only, no booking IDs
 
----
 
 ## 13. Refresh and performance strategy
 
@@ -288,7 +275,6 @@ Actual approval actions may live outside Power BI depending on tooling.
 * DirectQuery avoided for booking-level pages
 * Pre-aggregated measures for KPI tiles
 
----
 
 ## 14. What this dashboard demonstrates in interviews
 
@@ -297,7 +283,6 @@ Actual approval actions may live outside Power BI depending on tooling.
 * You bridge **ML → BI → action**
 * You anticipate **trust, governance, and adoption**
 
----
 
 ## 15. Items that require confirmation or verification
 
@@ -307,7 +292,6 @@ Actual approval actions may live outside Power BI depending on tooling.
 4. Final RLS rules based on org structure.
 5. Acceptable refresh frequency given weather API costs.
 
----
 
 ## 16. What I can generate next immediately
 
