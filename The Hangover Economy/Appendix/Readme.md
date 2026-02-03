@@ -3,7 +3,6 @@
 **Project:** The Hangover Economy — Post-Party Purchase Analyzer
 **Deliverable:** Conceptual end-to-end finance model with line-by-line sample calculations for three promo types (Early Bird Bundle, Night Owl Deal, Wellness Kit). This is a parameterized model: every calculation is expressed so you can swap inputs (store count, base sales, discount, costs) to evaluate scenarios. Assumptions are clearly labeled. I show digit-by-digit arithmetic for the worked examples and list verification/uncertainty points at the end.
 
----
 
 # 1. Executive summary
 
@@ -11,7 +10,6 @@
 * Approach: build a per-campaign, per-network finance model that is (a) computed weekly, (b) aggregated across pilot stores, and (c) exposes key levers (uplift, discount, cannibalization, promo cost).
 * Outputs you’ll get from the model: incremental units, incremental revenue, incremental gross profit, campaign costs, net incremental profit, ROI (return on promo spend), break-even units, and 12-week cumulative figures.
 
----
 
 # 2. Model structure, notation, and how to use it
 
@@ -48,7 +46,6 @@
 8. compute net incremental profit and ROI.
 9. aggregate across `T_weeks` for campaign totals.
 
----
 
 # 3. Key assumptions (labelled as ASSUMPTION where needed)
 
@@ -66,7 +63,6 @@ ASSUMPTION A6: All figures are in US dollars for illustrative clarity.
 
 (Every assumption above is modifiable in the spreadsheet or model.)
 
----
 
 # 4. Input parameter table (baseline values used in the worked examples)
 
@@ -113,7 +109,6 @@ Promotion-specific baseline inputs:
 * `kit_unit_cost` = sum of component costs; assume component margins: electrolytes margin 45% (cost = 2.50×0.55=1.375), painkiller margin 50% (cost = 1.50×0.5=0.75), water margin 30% (cost = 1.00×0.7=0.70) → total cost = 1.375 + 0.75 + 0.70 = 2.825 (we will compute precisely below)
 * `incremental_labor_cost_per_unit` = $0.08
 
----
 
 # 5. Early Bird Bundle — detailed line-by-line worked example (network-level, weekly and 12-week totals)
 
@@ -320,7 +315,6 @@ Promotion-specific baseline inputs:
 
 * With these sample numbers (marketing spend $3k, other fixed costs $1.5k, 30% cannibalization), the Early Bird campaign *loses money* across the 12-week pilot. This highlights that either marketing/spend allocation is too high for the expected uplift or assumptions on elasticity / cannibalization need revising.
 
----
 
 # 6. Night Owl Deal — detailed line-by-line worked example
 
@@ -426,7 +420,6 @@ Show digits:
 
 * Under these sample assumptions the promo is loss-making. Achieving positive ROI would require higher uplift (elasticity), lower marketing/fixed costs, or lower cannibalization.
 
----
 
 # 7. Wellness Kit — detailed line-by-line worked example
 
@@ -538,7 +531,6 @@ Show digits:
 
 * Baseline parameterization yields a negative ROI. The main driver is the small incremental volume against relatively fixed marketing and setup costs. To improve economics you need larger uplift, lower fixed marketing spend, or cheaper fulfillment costs.
 
----
 
 # 8. Break-even analysis (example: Early Bird)
 
@@ -586,7 +578,6 @@ Digits:
 
 Break-even insight: either reduce fixed costs from 4,500 to a lower number or increase sales lift (elasticity or discount) to generate ~560 incremental units/week.
 
----
 
 # 9. Sensitivity analysis (summary table concept + two scenarios)
 
@@ -625,7 +616,6 @@ Below I compute two alternative scenarios for Early Bird to show sensitivity.
 
 Interpretation: improving cannibalization and reducing marketing dramatically improves economics. This is common: for bundles with low per-unit margin, fixed marketing costs dominate for small pilots.
 
----
 
 # 10. 12-week campaign cashflow projection template (what to put into your spreadsheet)
 
@@ -649,7 +639,6 @@ Columns (week 1 to week 12), plus totals:
 
 Make sure the spreadsheet calculates totals automatically and shows ROI = Cumulative net incremental profit ÷ (Total promo marketing + Other fixed + incremental labor total).
 
----
 
 # 11. KPIs and dashboards to track during pilot
 
@@ -661,7 +650,6 @@ Make sure the spreadsheet calculates totals automatically and shows ROI = Cumula
 * Incremental margin per unit (realized)
 * Break-even remaining units to cover remaining fixed cost
 
----
 
 # 12. Practical recommendations to improve ROI (operational levers)
 
@@ -672,7 +660,6 @@ Make sure the spreadsheet calculates totals automatically and shows ROI = Cumula
 * Negotiate lower COGS with vendors for pilot period for bundle SKUs.
 * Shorten campaign to high-intensity bursts to test product-market fit before large spend.
 
----
 
 # 13. Short concise reasoning steps I followed
 
@@ -681,7 +668,6 @@ Make sure the spreadsheet calculates totals automatically and shows ROI = Cumula
 * I then computed ROI as net incremental profit divided by total promo cost.
 * I ran break-even math to determine incremental units needed to cover fixed costs and provided sensitivity scenarios to show which levers matter most.
 
----
 
 # 14. Points that require verification or are uncertain (must validate)
 
@@ -696,7 +682,6 @@ Make sure the spreadsheet calculates totals automatically and shows ROI = Cumula
 
 If any of these are uncertain, run a small two-arm pilot in a controlled subset of stores (A/B with holdouts) to estimate real uplift and cannibalization before scaling.
 
----
 
 # 15. Deliverables I can produce next (pick any)
 
