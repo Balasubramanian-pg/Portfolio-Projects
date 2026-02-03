@@ -4,7 +4,6 @@
 **Platform:** Snowflake
 **Purpose:** Production-grade analytical backbone supporting segmentation, promotion optimization, and Power BI consumption
 
----
 
 ## 1. Design Principles and Architectural Goals
 
@@ -24,7 +23,6 @@
 * Design facts at the **lowest useful grain**, aggregate later.
 * Avoid over-normalization in marts intended for Power BI.
 
----
 
 ## 2. Environment and Database Layout
 
@@ -37,7 +35,6 @@
 | `ANALYTICS_DB` | Star schema and business-ready marts     |
 | `UTIL_DB`      | Logging, monitoring, metadata            |
 
----
 
 ### Schemas per Database
 
@@ -66,7 +63,6 @@
 * `METADATA`
 * `LOGS`
 
----
 
 ## 3. RAW Layer Schema Definitions
 
@@ -95,7 +91,6 @@ Rules:
 * Retained for 24 months.
 * Used only for replay or forensic audits.
 
----
 
 ### 3.2 RAW_DB.LOYALTY_RAW.USERS_RAW
 
@@ -109,7 +104,6 @@ CREATE TABLE RAW_DB.LOYALTY_RAW.USERS_RAW (
 );
 ```
 
----
 
 ### 3.3 RAW_DB.SURVEY_RAW.RESPONSES_RAW
 
@@ -124,7 +118,6 @@ CREATE TABLE RAW_DB.SURVEY_RAW.RESPONSES_RAW (
 );
 ```
 
----
 
 ## 4. STAGING Layer Schema Definitions
 
@@ -156,7 +149,6 @@ Cleaning logic:
 * Invalid prices filtered.
 * Product_id standardized.
 
----
 
 ### 4.2 STAGING_DB.DIM_STG.PRODUCTS_CLEAN
 
@@ -174,7 +166,6 @@ CREATE TABLE STAGING_DB.DIM_STG.PRODUCTS_CLEAN (
 );
 ```
 
----
 
 ### 4.3 STAGING_DB.DIM_STG.STORES_CLEAN
 
@@ -192,7 +183,6 @@ CREATE TABLE STAGING_DB.DIM_STG.STORES_CLEAN (
 );
 ```
 
----
 
 ## 5. ANALYTICS Layer Star Schema
 
@@ -215,7 +205,6 @@ CREATE TABLE ANALYTICS_DB.DIMENSIONS.DIM_DATE (
 );
 ```
 
----
 
 #### DIM_PRODUCT
 
@@ -231,7 +220,6 @@ CREATE TABLE ANALYTICS_DB.DIMENSIONS.DIM_PRODUCT (
 );
 ```
 
----
 
 #### DIM_STORE
 
@@ -246,7 +234,6 @@ CREATE TABLE ANALYTICS_DB.DIMENSIONS.DIM_STORE (
 );
 ```
 
----
 
 #### DIM_USER
 
@@ -260,7 +247,6 @@ CREATE TABLE ANALYTICS_DB.DIMENSIONS.DIM_USER (
 );
 ```
 
----
 
 #### DIM_PROMO
 
@@ -275,7 +261,6 @@ CREATE TABLE ANALYTICS_DB.DIMENSIONS.DIM_PROMO (
 );
 ```
 
----
 
 ### 5.2 Fact Tables
 
@@ -299,7 +284,6 @@ CREATE TABLE ANALYTICS_DB.FACTS.FACT_TRANSACTIONS (
 );
 ```
 
----
 
 #### FACT_BASKETS
 
@@ -322,7 +306,6 @@ CREATE TABLE ANALYTICS_DB.FACTS.FACT_BASKETS (
 );
 ```
 
----
 
 #### FACT_PROMO_PERFORMANCE
 
@@ -340,7 +323,6 @@ CREATE TABLE ANALYTICS_DB.FACTS.FACT_PROMO_PERFORMANCE (
 );
 ```
 
----
 
 ## 6. Business Mart Views (Power BI Ready)
 
@@ -363,7 +345,6 @@ WHERE f.is_post_party = TRUE
 GROUP BY 1,2,3;
 ```
 
----
 
 ## 7. Task Orchestration Overview
 
@@ -374,7 +355,6 @@ GROUP BY 1,2,3;
 * **One task per logical step**
 * Downstream tasks depend on upstream completion
 
----
 
 ## 8. Streams Configuration
 
@@ -386,7 +366,6 @@ ON TABLE STAGING_DB.POS_STG.TRANSACTIONS_CLEAN
 APPEND_ONLY = TRUE;
 ```
 
----
 
 ## 9. Task Dependency Graph
 
@@ -399,7 +378,6 @@ APPEND_ONLY = TRUE;
 5. Mart refresh tasks
 6. Logging and monitoring
 
----
 
 ## 10. Task Definitions
 
@@ -428,7 +406,6 @@ FROM RAW_DB.POS_RAW.TRANSACTIONS_RAW
 WHERE transaction_id IS NOT NULL;
 ```
 
----
 
 ### 10.2 Task: Build Fact Transactions Incrementally
 
@@ -465,7 +442,6 @@ LEFT JOIN ANALYTICS_DB.DIMENSIONS.DIM_USER u
     ON t.user_id = u.user_id;
 ```
 
----
 
 ## 11. Error Handling and Monitoring
 
@@ -481,7 +457,6 @@ CREATE TABLE UTIL_DB.LOGS.TASK_FAILURE_LOG (
 
 Use Snowflake task history views to populate this table nightly.
 
----
 
 ## 12. Security and Access Control
 
@@ -497,7 +472,6 @@ Use Snowflake task history views to populate this table nightly.
 * Mask `user_id` using masking policies.
 * Apply RLS in Power BI where required.
 
----
 
 ## 13. Cost Control and Performance Optimization
 
@@ -506,7 +480,6 @@ Use Snowflake task history views to populate this table nightly.
 * Materialize marts only where latency matters.
 * Avoid tasks with schedules under 15 minutes unless justified.
 
----
 
 ## 14. Validation and Reconciliation Checks
 
@@ -516,7 +489,6 @@ Use Snowflake task history views to populate this table nightly.
 * Count of transactions per day must match within 0.5 percent tolerance.
 * Post-party flag logic tested with sampled queries.
 
----
 
 ## 15. What This Enables
 
@@ -525,7 +497,6 @@ Use Snowflake task history views to populate this table nightly.
 * Scalable experimentation framework.
 * Portfolio-grade Snowflake implementation suitable for interviews or production pilots.
 
----
 
 ## Next Possible Expansions
 
