@@ -11,7 +11,6 @@ You have access to:
 * A Snowflake user with permission to create databases, schemas, tables, and warehouses
 * GitHub repository secrets configured for Snowflake credentials
 
----
 
 ## 1. Snowflake Logical Data Model
 
@@ -29,7 +28,6 @@ You have access to:
 * `CURATED` — analytics-ready dimensions and facts
 * `MARTS` — Tableau-optimized tables
 
----
 
 ## 2. Snowflake DDL
 
@@ -50,7 +48,6 @@ AUTO_RESUME = TRUE
 COMMENT = 'Warehouse for Transit Gap analytics';
 ```
 
----
 
 ### 2.2 Schemas
 
@@ -65,7 +62,6 @@ CREATE OR REPLACE SCHEMA CURATED;
 CREATE OR REPLACE SCHEMA MARTS;
 ```
 
----
 
 ### 2.3 RAW Tables (Ingest Layer)
 
@@ -113,7 +109,6 @@ CREATE OR REPLACE TABLE RAW.FOOTFALL (
 );
 ```
 
----
 
 ### 2.4 STAGING Tables (Type-casting and Validation)
 
@@ -165,7 +160,6 @@ SELECT
 FROM RAW.FOOTFALL;
 ```
 
----
 
 ### 2.5 CURATED Tables (Analytics Layer)
 
@@ -209,7 +203,6 @@ SELECT
 FROM STAGING.FOOTFALL;
 ```
 
----
 
 ### 2.6 MARTS Tables (Tableau-Ready)
 
@@ -235,7 +228,6 @@ LEFT JOIN CURATED.DIM_BUSINESS b
 GROUP BY s.stop_id, s.stop_name;
 ```
 
----
 
 ## 3. GitHub Actions CI Workflow
 
@@ -246,7 +238,6 @@ GROUP BY s.stop_id, s.stop_name;
 * Ensure no sensitive data is committed
 * Smoke-test Snowflake connectivity
 
----
 
 ### 3.1 Required GitHub Secrets
 
@@ -259,7 +250,6 @@ Add these in **Repository → Settings → Secrets → Actions**:
 * `SNOWFLAKE_WAREHOUSE`
 * `SNOWFLAKE_DATABASE`
 
----
 
 ### 3.2 Directory Assumption
 
@@ -275,7 +265,6 @@ tests/
  └─ test_data_quality.py
 ```
 
----
 
 ### 3.3 GitHub Actions Workflow YAML
 
@@ -364,7 +353,6 @@ jobs:
           pytest tests/
 ```
 
----
 
 ## 4. CI Data Quality Tests (Minimal Example)
 
@@ -380,7 +368,6 @@ def test_gap_score_non_negative():
     assert sample_gap_score >= 0
 ```
 
----
 
 ## 5. What This CI Guarantees
 
@@ -399,7 +386,6 @@ def test_gap_score_non_negative():
 
 Those require real-world validation.
 
----
 
 ## 6. Next Logical Extensions
 
