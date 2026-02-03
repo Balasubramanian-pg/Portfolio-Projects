@@ -3,7 +3,6 @@
 **Project Bible / README**
 *GitHub-ready, synthetic-data friendly, Python + Snowflake SQL + Tableau*
 
----
 
 ## Table of contents
 
@@ -25,7 +24,6 @@
 16. Appendix: sample SQL, Python snippets, sample Tableau storyboards
 17. Points that require verification or are uncertain
 
----
 
 ## 1. Overview
 
@@ -47,7 +45,6 @@ This repository contains everything needed to run a reproducible proof of concep
 * Tableau workbook and storyboard templates for communicating results
 * A stakeholder playbook with steps required to pilot interventions
 
----
 
 ## 2. Project goals and success criteria
 
@@ -69,7 +66,6 @@ This repository contains everything needed to run a reproducible proof of concep
 * The models use synthetic data for development and will be revalidated on production feeds prior to operational decisions.
 * GTFS feeds are available and match the transit authority's published stops and schedules. For reference, GTFS is the standard used to publish transit schedules. General Transit Feed Specification. ([General Transit Feed Specification][1])
 
----
 
 ## 3. Project scope and constraints
 
@@ -91,7 +87,6 @@ This repository contains everything needed to run a reproducible proof of concep
 * Processing should be runnable on modest cloud compute for development.
 * Code must be modular for unit testing and reproducibility.
 
----
 
 ## 4. Architecture overview
 
@@ -110,7 +105,6 @@ This repository contains everything needed to run a reproducible proof of concep
 4. Spatial analytics either performed in Snowflake (if geospatial features enabled) or executed in Python using GeoPandas and then loaded back into Snowflake.
 5. Resulting marts surfaced to Tableau via direct Snowflake connector.
 
----
 
 ## 5. Data catalogue and synthetic data strategy
 
@@ -134,7 +128,6 @@ This repository contains everything needed to run a reproducible proof of concep
 * Staging table names in Snowflake: `stg_gtfs_stops`, `stg_businesses`, `stg_footfall`.
 * Curated tables: `dim_stop`, `dim_business`, `fact_footfall`, `mart_gap_scores`.
 
----
 
 ## 6. Data engineering: Python + Snowflake patterns
 
@@ -162,7 +155,6 @@ This repository contains everything needed to run a reproducible proof of concep
 
 * Use Python `snowflake-connector-python` to run `PUT` and `COPY INTO` commands, or use Snowpipe for continuous ingest in a production setting.
 
----
 
 ## 7. Spatial analysis and GTFS usage
 
@@ -192,7 +184,6 @@ This repository contains everything needed to run a reproducible proof of concep
 
 * If the Snowflake account includes geospatial support, consider using `GEOGRAPHY` types and functions to accelerate joins and area calculations. Otherwise perform heavy spatial ops in Python and write results back to Snowflake.
 
----
 
 ## 8. Business logic: gap scoring and intervention models
 
@@ -223,7 +214,6 @@ Each of these is normalized to [0,1] and combined via weighted sum to produce a 
 
 Each intervention model is a simple cashflow model with baseline, optimistic, and pessimistic scenarios.
 
----
 
 ## 9. Financial model and example arithmetic
 
@@ -281,7 +271,6 @@ Compute 25,000 ÷ 5,000 step by step:
 
 When running the repo, include functions to compute these examples automatically and expose them to Tableau for scenario exploration.
 
----
 
 ## 10. Analytics and visualization in Tableau
 
@@ -305,7 +294,6 @@ When running the repo, include functions to compute these examples automatically
 * Slide 3: Top 10 gaps with expected ROI and first 90-day checklist.
 * Slide 4: Pilot timeline and KPIs.
 
----
 
 ## 11. GitHub repository structure and CI recommendations
 
@@ -353,7 +341,6 @@ transit-gap/
   * Safety check to ensure no sensitive real data is committed.
 * Optionally build a Docker image for reproducible runs.
 
----
 
 ## 12. Testing, validation, and data quality gates
 
@@ -373,7 +360,6 @@ transit-gap/
 * Business geocoding accuracy threshold (confidence) ≥0.90 for automated inclusion; else flagged for manual review.
 * Footfall volume sanity check: daily totals must be within configured bounds for synthetic tests.
 
----
 
 ## 13. Deployment, operations, and cost considerations
 
@@ -387,7 +373,6 @@ transit-gap/
 * Field validation data collection every two weeks in the pilot area to reconcile mobile counts.
 * Incident response playbook for physical issues such as vandalism.
 
----
 
 ## 14. Ethics, equity, and stakeholder engagement
 
@@ -406,7 +391,6 @@ transit-gap/
 
 * Host pre-pilot listening sessions. Share dashboards openly with community boards and publish non-sensitive aggregated metrics on a public site.
 
----
 
 ## 15. Roadmap and milestones for a 12-week internship project
 
@@ -437,7 +421,6 @@ transit-gap/
 
 * Finalize playbook, present to stakeholders, and prepare transfer documentation.
 
----
 
 ## 16. Appendix: sample SQL, Python snippets, and Tableau storyboards
 
@@ -498,7 +481,6 @@ def generate_footfall(stops_df, days=30):
 * Scenario builder: sliders for weights, revenue per footfall, and operating cost.
 * Equity checks: coverage maps and bias correction indicators.
 
----
 
 ## 17. Points that require verification or are uncertain
 
@@ -528,7 +510,6 @@ The following items are flagged as requiring real data validation or external co
 
    * Uncertainty: revenue per captured footfall and vendor operating cost estimates are project assumptions. These must be validated with merchant interviews and local market research.
 
----
 
 ## How to get started locally (quickstart)
 
@@ -546,7 +527,6 @@ The following items are flagged as requiring real data validation or external co
 4. Execute Python spatial analytics: `python src/python/spatial_tools.py`.
 5. Open `tableau/workbook.twbx` and connect to Snowflake to build visualizations.
 
----
 
 ## Final notes and next steps
 
@@ -560,7 +540,6 @@ If you want, I will:
 
 Tell me which of these you want me to do next and I will produce the code, SQL, and Tableau workbook artifacts for the first milestone.
 
----
 
 ### Citations (key references used in this README)
 
