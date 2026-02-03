@@ -6,7 +6,6 @@
 **Primary Tool:** Power Query (ETL) $\rightarrow$ SQL Express (Storage) $\rightarrow$ Excel/Power BI (Visualization)
 **Objective:** Variance Decomposition and Root Cause Identification
 
----
 
 ### **1.0 Strategic Intent: The Move to Intelligence**
 In Phase 1, we successfully compelled 150 kitchen staff to generate data. However, 15 isolated spreadsheets on a SharePoint drive do not constitute an "Enterprise Asset"—they constitute **Administrative Noise**.
@@ -18,7 +17,6 @@ In Phase 1, we successfully compelled 150 kitchen staff to generate data. Howeve
 
 > **The output of Phase 2 is not a "Dashboard." It is a "Verdict." We are determining exactly which processes will be culled or modified in Phase 3.**
 
----
 
 ### **2.0 The Data Engineering Architecture (Crawl/Walk Stage)**
 
@@ -67,7 +65,6 @@ CREATE TABLE waste_log (
 );
 ```
 
----
 
 ### **3.0 Analytical Framework: The Three Pillars**
 
@@ -100,7 +97,6 @@ We will run three specific forensic analyses to identify the "Pareto Principles"
     *   **Metric 2:** `Waste per Cover` = `Total_Waste_KG` / `Guest_Count`.
 *   **Output:** A "League Table" ranking the 15 stores from Best to Worst Efficiency. This creates the psychological leverage for Phase 3 gamification.
 
----
 
 ### **4.0 Data Quality Assurance (The "Sniff Test")**
 
@@ -113,7 +109,6 @@ WHERE quantity_input IN (1.00, 2.00, 5.00, 10.00);
 ```
 *   *Logic:* Real measurements are messy (e.g., `1.24 lbs`, `4.85 lbs`). If a store's data is 90% perfect integers (`5.00 lbs`), they are not weighing food—they are guessing. We mark this store's data as **Low Confidence** and exclude it from the regional baseline.
 
----
 
 ### **5.0 Success Metrics & Deliverables**
 
@@ -127,7 +122,6 @@ By the end of Phase 2, we will deliver:
     *   *Example:* "We have identified $22,000/month in actionable over-prep waste. We target capturing 60% of this ($13.2k/month) in Phase 3."
 3.  **The Phase 3 Blueprint:** Specific recommendations (e.g., "Implement Cook-to-Order SOPs for French Fries between 2 PM and 5 PM").
 
----
 
 > [!Tip]
 > **Technical Note for Analysts**
