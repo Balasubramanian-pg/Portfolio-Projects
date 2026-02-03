@@ -2,7 +2,6 @@
 **Project**: The Transit Gap - Between-Stops Economy Analyzer  
 **Objective**: Establish a clean, structured dataset integrating transit, business, and foot traffic data to identify high-potential transit gaps.  
 
----
 
 ## **Scope of Work**  
 Phase 1 focuses on collecting, cleaning, and integrating diverse data sources to form a reliable foundation for spatial and economic analysis. The primary tasks include:  
@@ -11,7 +10,6 @@ Phase 1 focuses on collecting, cleaning, and integrating diverse data sources to
 - **Processing Foot Traffic Heatmaps**  
 - **Building a Centralized Data Repository**  
 
----
 
 ## **Key Challenges & Mitigation Strategies**  
 
@@ -37,7 +35,6 @@ def geocode_stops(df):
 ```  
 - **Deliverable**: A transit dataset with **98%+ geolocation accuracy**.  
 
----
 
 ### **2. Inaccurate Business Addresses (20% Geocode Failure Rate)**  
 - **Challenge**: Business registry data has inconsistencies, causing location mismatches.  
@@ -56,7 +53,6 @@ WHERE NAICS_Code IS NULL;
 ```  
 - **Deliverable**: A cleaned business registry dataset, mapped to correct geographic zones.  
 
----
 
 ### **3. Integrating Foot Traffic Heatmaps (JSON Format)**  
 - **Challenge**: Mobile location data is noisy and requires filtering.  
@@ -77,7 +73,6 @@ def parse_foot_traffic(file):
 ```  
 - **Deliverable**: A structured foot traffic dataset aligned with transit locations.  
 
----
 
 ### **4. Creating a Unified Data Repository**  
 - **Challenge**: Multiple datasets in different formats (CSV, JSON, SQL).  
@@ -89,11 +84,9 @@ def parse_foot_traffic(file):
 ✅ Cleaned and integrated transit, business, and foot traffic datasets.  
 ✅ A **data dictionary** documenting transformations and assumptions.  
 
----
 
 ## **Next Steps**  
 🚀 Once Phase 1 is complete, we will move to **Phase 2: Spatial Gap Analysis**, where we identify high-potential transit gaps based on foot traffic and commercial density.  
 
----
 
 Would you like any refinements or additional details?
