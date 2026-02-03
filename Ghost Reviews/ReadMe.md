@@ -12,7 +12,6 @@
 
 **Purpose:** A comprehensive project bible that documents goals, research questions, data strategy, technical design, analytic approaches, product recommendations, validation plans, stakeholder pathways, ethics and legal considerations, and a reproducible delivery plan for a program that identifies "ghost reviews" and measures their economic impact.
 
----
 
 ## Table of Contents
 
@@ -42,7 +41,6 @@
 24. Appendix C: Glossary
 25. Appendix D: References and Further Reading
 
----
 
 ## 1 Executive Summary
 
@@ -57,7 +55,6 @@ Key takeaways and recommended next steps are:
 
 The Project Bible contains repeatable technical patterns (Snowflake-friendly schema, dbt model skeletons, sample SQL merges), governance templates, and a stakeholder playbook for testing and rolling out the Business Inactivity Tagging feature.
 
----
 
 ## 2 Background and Rationale
 
@@ -71,7 +68,6 @@ Why this matters:
 
 This project is motivated by the intersection of consumer protection, platform quality, and local economic efficiency.
 
----
 
 ## 3 Problem Statement and Research Questions
 
@@ -82,7 +78,6 @@ The program aims to answer the following research questions:
 * Root causes: Are ghost reviews primarily caused by data latency, user mis-clicks, location updates, malicious manipulation, or platform policy gaps?
 * Rectification: What operational changes and UX conventions (for example the Business Inactivity Tagging protocol) are feasible for adoption by platform operators, and what is their likely impact on false positives and user trust?
 
----
 
 ## 4 Objectives, Success Criteria and KPIs
 
@@ -99,7 +94,6 @@ The program aims to answer the following research questions:
 * Platform proposal readiness: A fully-documented specification and demonstration prototype of the tagging UX and rule engine.
 * Adoption potential: A pilot-ready integration package for one platform or for an internal partner within a city government or chamber of commerce.
 
----
 
 ## 5 Scope, Assumptions, and Constraints
 
@@ -120,7 +114,6 @@ The program aims to answer the following research questions:
 * Legal/ToS limitations: Direct scraping of platforms may violate terms of service. Any scraping approach must be reviewed by legal and replaced with platform APIs, partnerships, or synthetic datasets where required.
 * Data latency: Platforms may have variable update latencies which complicate the precise determination of closure_date in certain cases.
 
----
 
 ## 6 High-level Methodology and Phased Roadmap
 
@@ -134,7 +127,6 @@ The program aims to answer the following research questions:
 
 Each phase includes clear acceptance criteria and specific deliverables, described below.
 
----
 
 ## 7 Data Requirements and Data Model
 
@@ -152,7 +144,6 @@ Each phase includes clear acceptance criteria and specific deliverables, describ
 * Record both the platform's provided closure flag and an independently collected closure_date when available.
 * Keep original raw JSON payloads in a raw layer for auditability.
 
----
 
 ## 8 Data Acquisition Strategy and Pipeline Design
 
@@ -178,7 +169,6 @@ Each phase includes clear acceptance criteria and specific deliverables, describ
 * Transformations: dbt for model versioning and testing.
 * Storage: S3 / GCS for raw artifacts.
 
----
 
 ## 9 Ghost Identification Algorithms and Rules
 
@@ -212,7 +202,6 @@ Train with labeled examples; threshold tuning to meet the precision/recall trade
 * For borderline cases and high-impact listings (e.g., large chain locations or high-traffic venues), surface to a moderation queue.
 * Capture moderator decisions as feedback to retrain the classifier.
 
----
 
 ## 10 Sentiment and Qualitative Analysis
 
@@ -236,7 +225,6 @@ After identifying ghost reviews, apply NLP techniques for categorization and ins
 * Distribution of sentiment scores across ghost reviews by category and neighborhood.
 * Flag list of reviews that strongly indicate current presence despite closure (these are high-consumer-harm cases).
 
----
 
 ## 11 Simulation Design for Customer Journeys
 
@@ -264,7 +252,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 
 * Execute thousands to millions of simulated journeys to estimate expected misdirection rate and expected revenue leakage with confidence intervals.
 
----
 
 ## 12 Economic Impact Quantification
 
@@ -279,7 +266,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Use bootstrap resampling across journeys to compute 95% confidence intervals for revenue leakage estimates.
 * Provide sensitivity analysis across transaction values and attractiveness score weights.
 
----
 
 ## 13 Analytics Architecture and Implementation Plan
 
@@ -297,7 +283,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Data retention and GDPR/privacy controls: PII redaction and access controls.
 * Monitoring: Data pipeline instrumentation, anomaly detection for input volumes, and model drift monitoring.
 
----
 
 ## 14 Dashboard and Reporting Specifications (Power BI / Tableau)
 
@@ -316,7 +301,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Provide export options for CSV and PDF for stakeholder review.
 * Embed a "Moderation Action" link next to high-confidence cases for pragmatic partner workflows.
 
----
 
 ## 15 Validation, Testing and Ground Truthing
 
@@ -332,7 +316,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Proprietary datasets from payment processors where the merchant activity has stopped.
 * Direct outreach to a sample of affected businesses and local chambers of commerce for confirmation.
 
----
 
 ## 16 Deployment and Integration Recommendations for Platforms
 
@@ -352,7 +335,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Pilot: work with one city or platform vertical to trial automatic exclusions in search results with opt-back controls for discovery power users.
 * Measurement: track clickthroughs, user complaints, and false positive rates during pilot phase.
 
----
 
 ## 17 Governance, Privacy, and Legal Considerations
 
@@ -361,7 +343,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Defamation risk: Avoid asserting closure without adequate evidence. Use conservative thresholds and human review on high-impact cases.
 * Transparency: Publish an explainable model card and an appeals process for business owners.
 
----
 
 ## 18 Communication Plan and Stakeholder Engagement
 
@@ -378,7 +359,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 2. Co-design pilot metrics and a rollback plan for incorrectly applied tags.
 3. Prepare a public-facing FAQ and an appeals flow for business owners.
 
----
 
 ## 19 Risk Register and Mitigation
 
@@ -387,7 +367,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Model Drift: monitor input distributions and retrain periodically.
 * Data Gaps: fallback to probabilistic models and synthetic data for testing.
 
----
 
 ## 20 Project Timeline, Resourcing and Budget Estimate
 
@@ -414,7 +393,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Infrastructure (Snowflake, S3, Airflow): cloud spend varies by scale but budget for pilot roughly 5k-20k USD depending on contract tiers.
 * Third-party data (foot traffic, transaction benchmarks): estimate 5k-30k depending on licensing.
 
----
 
 ## 21 Deliverables and Handoff Artifacts
 
@@ -425,7 +403,6 @@ Normalization channels all metrics to [0,1]. Tune weights w_rating, w_reviews, w
 * Product proposal deck and implementation playbook.
 * Validation report and model card.
 
----
 
 ## 22 Appendix A: Sample SQL / dbt / Snowflake Patterns
 
@@ -473,7 +450,6 @@ where b.closure_date is not null
 
 Notes: add timezone normalization and null-safe checks in production code.
 
----
 
 ## 23 Appendix B: Simulation Code Sketches and Pseudocode
 
@@ -509,7 +485,6 @@ for i in 1 to N_simulations:
 compute aggregate and CI via bootstrap
 ```
 
----
 
 ## 24 Appendix C: Glossary
 
@@ -518,7 +493,6 @@ compute aggregate and CI via bootstrap
 * Business Inactivity Tagging: A UX and rule engine to label inactive listings and alter their treatment in search results.
 * Attractiveness Score: A combined metric of rating, review count and proximity used to model consumer choice.
 
----
 
 ## 25 Appendix D: References and Further Reading
 
@@ -602,7 +576,6 @@ Key fields:
 
 Ensures review timestamps are timezone-normalized and text is sanitized for NLP.
 
----
 
 ## 27 Closure Resolution & Confidence Scoring
 
@@ -637,7 +610,6 @@ Thresholds:
 {% endmacro %}
 ```
 
----
 
 ## 28 Ghost Review Detection Logic (Production Grade)
 
@@ -658,7 +630,6 @@ If closure_confidence < 0.85 but > 0.6, apply ML classification with features:
 
 Only reviews exceeding a 0.97 probability threshold are flagged automatically.
 
----
 
 ## 29 Model Card: Ghost Review Classifier
 
@@ -682,7 +653,6 @@ Identify post-closure reviews with extremely high precision to minimize reputati
 * Conservative thresholds bias toward false negatives over false positives.
 * Human appeal loop for business owners.
 
----
 
 ## 30 Extended Simulation Framework
 
