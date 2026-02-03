@@ -2,7 +2,6 @@
 **Project**: The Transit Gap - Between-Stops Economy Analyzer  
 **Objective**: Identify high-potential transit gaps using foot traffic, business density, and economic indicators.  
 
----
 
 ## **Scope of Work**  
 Phase 2 focuses on **spatial and economic analysis** to pinpoint areas where transit expansion can create high economic value. The key tasks include:  
@@ -11,7 +10,6 @@ Phase 2 focuses on **spatial and economic analysis** to pinpoint areas where tra
 3. **Clustering High-Potential Transit Gaps**  
 4. **Quantifying Economic Impact & Prioritization**  
 
----
 
 ## **Key Challenges & Mitigation Strategies**  
 
@@ -41,7 +39,6 @@ unserved_traffic["cluster"] = dbscan.labels_
 ```  
 - **Deliverable**: A **heatmap of unserved transit zones** based on pedestrian demand.  
 
----
 
 ### **2. Overlaying Business Density & Economic Activity**  
 - **Challenge**: Need to understand whether transit gaps align with commercial zones.  
@@ -62,7 +59,6 @@ GROUP BY hex_grid.id;
 ```  
 - **Deliverable**: A **business density map**, showing commercial potential in transit-starved areas.  
 
----
 
 ### **3. Clustering High-Potential Transit Gaps**  
 - **Challenge**: Need to prioritize transit gaps based on economic & transit demand factors.  
@@ -86,7 +82,6 @@ unserved_traffic['priority_cluster'] = kmeans.labels_
 ```  
 - **Deliverable**: A **priority ranking of transit expansion areas**.  
 
----
 
 ### **4. Quantifying Economic Impact & Prioritization**  
 - **Challenge**: Need a data-driven way to recommend new transit stops.  
@@ -102,11 +97,9 @@ TEIS = (0.4 \times Foot Traffic Score) + (0.3 \times Business Density Score) + (
 
 - **Deliverable**: A **ranked list of new transit stop recommendations**.  
 
----
 
 ## **Next Steps**  
 🚀 With Phase 2 complete, we proceed to **Phase 3: Decision Support System & Visualization**, building interactive dashboards to help transit planners and policymakers.  
 
----
 
 Would you like any refinements or additional details?
