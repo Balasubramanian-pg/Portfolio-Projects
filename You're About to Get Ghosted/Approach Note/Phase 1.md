@@ -1,6 +1,5 @@
 This **Customer Churn Prediction and Retention System** can be structured into **four key phases**, ensuring a systematic approach from planning to deployment:
 
----
 
 ### **Phase 1: Planning & Data Collection**
 - **Objective:** Understand business needs, define key churn indicators, and gather data.
@@ -13,7 +12,6 @@ This **Customer Churn Prediction and Retention System** can be structured into *
   - Data pipeline and collection framework.
   - Initial insights on customer engagement patterns.
 
----
 
 ### **Phase 2: Model Development & Risk Scoring**
 - **Objective:** Build and test predictive models for churn risk.
@@ -26,7 +24,6 @@ This **Customer Churn Prediction and Retention System** can be structured into *
   - Trained churn prediction model.
   - Churn risk scores assigned to customers.
 
----
 
 ### **Phase 3: Automated Engagement & Retention Strategies**
 - **Objective:** Implement automated actions to retain high-risk customers.
@@ -39,7 +36,6 @@ This **Customer Churn Prediction and Retention System** can be structured into *
   - Automated customer retention framework.
   - Performance tracking of engagement strategies.
 
----
 
 ### **Phase 4: Dashboard Development & Deployment**
 - **Objective:** Provide actionable insights through a user-friendly dashboard.
@@ -52,7 +48,6 @@ This **Customer Churn Prediction and Retention System** can be structured into *
   - Churn risk management dashboard.
   - Deployment of the complete churn prediction and retention system.
 
----
 
 ### **Optional Phase 5: Continuous Monitoring & Optimization**
 - **Objective:** Improve model accuracy and engagement effectiveness over time.
@@ -64,6 +59,5 @@ This **Customer Churn Prediction and Retention System** can be structured into *
   - Improved model performance.
   - Optimized retention strategies.
 
----
 
 This phased approach ensures an **iterative and scalable** implementation of the system while maximizing business impact. 
