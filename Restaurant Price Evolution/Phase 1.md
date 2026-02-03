@@ -3,7 +3,6 @@
 
 This project outlines a comprehensive strategy to transition from static, manual menu pricing to a dynamic, data-driven, and continuously optimized system. Our goal is to unlock significant revenue growth, improve margins, and secure a sustainable competitive advantage.
 
----
 
 ## 📖 Table of Contents
 
@@ -17,13 +16,11 @@ This project outlines a comprehensive strategy to transition from static, manual
 *   [Key Technologies](#-key-technologies)
 *   [Overall Project Goal](#-overall-project-goal)
 
----
 
 ## Project Vision
 
 To revolutionize our menu pricing strategy by systematically building our data foundation, analyzing historical trends, understanding the competitive landscape, leveraging predictive analytics, and ensuring seamless operational integration.
 
----
 
 ## Phases Overview
 
@@ -55,7 +52,6 @@ This project is broken down into five distinct phases, each building upon the la
 
 **  Expected Outcome:** A fully structured and validated menu dataset.
 
----
 
 ### Phase 2: Trend & Cost Analysis 
 
@@ -86,7 +82,6 @@ This project is broken down into five distinct phases, each building upon the la
 
 **Expected Outcome:** Identification of ~$500K in margin leaks, optimized update schedules.
 
----
 
 ### Phase 3: Competitive Benchmarking 
 
@@ -116,7 +111,6 @@ This project is broken down into five distinct phases, each building upon the la
 
 **Expected Outcome:** Identification of 10-15% price misalignment, actionable plan for optimization.
 
----
 
 ### Phase 4: Predictive Pricing 
 
@@ -145,7 +139,6 @@ This project is broken down into five distinct phases, each building upon the la
 
 **Expected Outcome:** Projected revenue uplift of 10-15%, dynamic price adjustments.
 
----
 
 ### Phase 5: Implementation & Continuous Optimization ⚙️
 
@@ -168,7 +161,6 @@ This project is broken down into five distinct phases, each building upon the la
 
 **Expected Outcome:** Seamless AI-driven pricing, sustained revenue growth (10-20%), scalability.
 
----
 
 ##  Key Technologies
 
@@ -179,10 +171,7 @@ This project is broken down into five distinct phases, each building upon the la
 *   **Business Intelligence & Visualization:** Power BI
 *   **External Data APIs:** USDA (ingredients), BLS (wages)
 
----
 
 ## Overall Project Goal
 
 To establish a robust, data-driven, and continuously optimized pricing strategy that drives significant revenue growth, enhances profitability, and secures a lasting competitive advantage in the market. This project aims to transform our operational approach to pricing, making it agile, intelligent, and responsive.
-
----
