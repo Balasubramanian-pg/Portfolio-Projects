@@ -6,7 +6,6 @@ This section **fully completes** the Power BI layer of the TrendBuy system. It c
 
 This is written as a **production BI artifact**, not a demo dashboard.
 
----
 
 ## Short Explanation of Reasoning Steps Taken
 
@@ -16,7 +15,6 @@ This is written as a **production BI artifact**, not a demo dashboard.
 * Define **DAX measures first**, visuals second.
 * Ensure governance, RLS, and refresh strategies are explicitly planned.
 
----
 
 ## BI Layer Objectives
 
@@ -27,7 +25,6 @@ The Power BI layer must answer four executive questions:
 3. Which interventions actually prevent returns and generate ROI?
 4. Is the model still behaving correctly over time?
 
----
 
 ## Tooling Context
 
@@ -37,7 +34,6 @@ The dataset and report are designed for **Power BI** with:
 * Incremental refresh enabled
 * Shared dataset for reuse across reports
 
----
 
 # Part 1: Semantic Dataset Design (Star Schema)
 
@@ -48,7 +44,6 @@ The dataset and report are designed for **Power BI** with:
 * Time intelligence is explicit, not implicit
 * Model supports both **actuals** and **counterfactual estimates**
 
----
 
 ## Fact Tables
 
@@ -76,7 +71,6 @@ Purpose
 * Anchor table for regret prediction
 * Drives most visuals and KPIs
 
----
 
 ### 2. `Fact_Returns`
 
@@ -96,7 +90,6 @@ Purpose
 * Distinguish regret vs non-regret returns
 * Enable timing and root cause analysis
 
----
 
 ### 3. `Fact_Interventions`
 
@@ -118,7 +111,6 @@ Purpose
 * Measure effectiveness of nudges
 * Feed ROI calculations
 
----
 
 ### 4. `Fact_Model_Snapshots`
 
@@ -137,7 +129,6 @@ Purpose
 * Model governance and trust
 * Drift and decay detection
 
----
 
 ## Dimension Tables
 
@@ -151,7 +142,6 @@ Purpose
 | Prior_Return_Rate_90d | Feature         |
 | Lifetime_Value        | Business metric |
 
----
 
 ### `Dim_Product`
 
@@ -163,7 +153,6 @@ Purpose
 | Launch_Date         | Lifecycle       |
 | Season              | Trend relevance |
 
----
 
 ### `Dim_Trend`
 
@@ -175,7 +164,6 @@ Purpose
 | Trend_Peak_Date | Lifecycle      |
 | Sentiment_Score | Aggregate      |
 
----
 
 ### `Dim_Creator`
 
@@ -186,7 +174,6 @@ Purpose
 | Creator_Reliability | Derived     |
 | Avg_Return_Rate     | Historical  |
 
----
 
 ### `Dim_Date`
 
@@ -196,7 +183,6 @@ Standard date dimension with:
 * Day, Week, Month, Quarter
 * Fiscal attributes if applicable
 
----
 
 ## Relationship Diagram (Textual)
 
@@ -210,7 +196,6 @@ Standard date dimension with:
 
 All relationships single-direction, star schema, no bi-directional filters.
 
----
 
 # Part 2: Core DAX Measures (Canonical Set)
 
@@ -229,7 +214,6 @@ DIVIDE(
 )
 ```
 
----
 
 ### Return Reduction Percentage
 
@@ -244,7 +228,6 @@ RETURN
 DIVIDE(Baseline - [Regret Return Rate], Baseline)
 ```
 
----
 
 ## Model Effectiveness
 
@@ -264,7 +247,6 @@ DIVIDE(
 )
 ```
 
----
 
 ## Intervention Metrics
 
@@ -281,7 +263,6 @@ DIVIDE(
 )
 ```
 
----
 
 ### Estimated Prevented Returns
 
@@ -290,7 +271,6 @@ Prevented Returns :=
 SUM(Fact_Interventions[Estimated_Prevented_Return])
 ```
 
----
 
 ## Financial Impact
 
@@ -305,7 +285,6 @@ SUMX(
 )
 ```
 
----
 
 ### ROI
 
@@ -317,13 +296,11 @@ DIVIDE(
 )
 ```
 
----
 
 # Part 3: Starter PBIX Wireframe (Page-by-Page)
 
 This is the **exact layout** your first PBIX should implement.
 
----
 
 ## Page 1: Executive Overview
 
@@ -350,7 +327,6 @@ Instant health check for leadership.
   * Channel Source
   * Model Version
 
----
 
 ## Page 2: Regret Risk Landscape
 
@@ -373,7 +349,6 @@ Understand where regret originates.
 
   * Risk Score vs Time Since Trend Peak
 
----
 
 ## Page 3: Intervention Performance
 
@@ -395,7 +370,6 @@ Evaluate nudges, not just predictions.
 
   * Returns With vs Without Intervention
 
----
 
 ## Page 4: Creator and Trend Risk
 
@@ -414,7 +388,6 @@ Expose systemic over-promise patterns.
 
   * Velocity decay vs return spike
 
----
 
 ## Page 5: Model Monitoring and Governance
 
@@ -436,7 +409,6 @@ Build trust and detect failure early.
 
   * Days Since Last Retrain
 
----
 
 # Part 4: Row-Level Security (RLS)
 
@@ -448,7 +420,6 @@ Build trust and detect failure early.
 
 Or map user emails to regions via `Dim_User_Access`.
 
----
 
 ## Data Access Layers
 
@@ -457,7 +428,6 @@ Or map user emails to regions via `Dim_User_Access`.
 * CX Teams: Customer-level with masking
 * Data Science: Full historical access
 
----
 
 # Part 5: Refresh and Performance Strategy
 
@@ -472,7 +442,6 @@ Or map user emails to regions via `Dim_User_Access`.
 * Store RangeStart and RangeEnd parameters
 * Partition Fact_Purchases by Purchase_Timestamp
 
----
 
 ## Performance Optimizations
 
@@ -481,7 +450,6 @@ Or map user emails to regions via `Dim_User_Access`.
 * Avoid bi-directional relationships
 * Pre-aggregate where possible
 
----
 
 # Part 6: Governance and Versioning
 
