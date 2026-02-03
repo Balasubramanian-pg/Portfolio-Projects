@@ -6,7 +6,6 @@ SunnyDays Resorts, a 15-property beachfront chain, loses roughly 12 percent of a
 
 **ASSUMPTION:** numeric figures below are simulated for planning and decision making. I cannot verify these simulated numbers against SunnyDays internal systems without access to their data.
 
----
 
 ## Goals and key performance indicators
 
@@ -23,7 +22,6 @@ SunnyDays Resorts, a 15-property beachfront chain, loses roughly 12 percent of a
 * Ancillary revenue uplift, baseline $1,200,000 per month, target $1,600,000 per month in 6 months for chainwide rollout scenarios.
 * Manager action rate on alerts, target 70 percent within 24 hours.
 
----
 
 ## Problem framing and assumptions
 
@@ -40,7 +38,6 @@ Last-minute weather events trigger cancellations and reduce onsite spend. Manual
 
 **Note:** Where an assumption is material to a decision, it is labeled ASSUMPTION and listed later for verification.
 
----
 
 ## Data inventory and quality issues
 
@@ -57,7 +54,6 @@ Last-minute weather events trigger cancellations and reduce onsite spend. Manual
 * Inconsistent date formats across systems. Remediation: canonicalize to UTC and local resort timezones at ETL ingestion.
 * Rate-limit gaps from weather API. Remediation: implement provider caching and a secondary fallback provider.
 
----
 
 ## Data model and ETL design
 
@@ -75,7 +71,6 @@ Last-minute weather events trigger cancellations and reduce onsite spend. Manual
 * Enrichment: attach 72, 48, and 24 hour forecast slices to bookings keyed by check-in datetime and resort.
 * Imputation script for missing cancellation reasons using rule-based and ML techniques with human validation sampling.
 
----
 
 ## Analytical approach and models
 
@@ -101,7 +96,6 @@ Last-minute weather events trigger cancellations and reduce onsite spend. Manual
 * Performance metrics: AUC-ROC for cancellation model, precision@k for high-risk booking classification, mean absolute percentage error for demand forecasting.
 * Target: AUC-ROC >= 0.85 for cancellation risk, precision > 0.7 at top 10 percent flagged bookings.
 
----
 
 ## Real-time alerting and dashboard design
 
@@ -128,7 +122,6 @@ Last-minute weather events trigger cancellations and reduce onsite spend. Manual
 * Recommended playbooks with estimated cost and expected revenue impact.
 * Model performance monitoring and concept drift alerts.
 
----
 
 ## Mitigation playbooks (actionable by managers)
 
@@ -162,7 +155,6 @@ Last-minute weather events trigger cancellations and reduce onsite spend. Manual
   * Increase upgrade availability for poolside cabanas and premium breakfast add-ons with tiered pricing.
 * Expected result: 15 percent incremental ancillaries on top of baseline for those weekends.
 
----
 
 ## Pilot design and sampling
 
@@ -176,7 +168,6 @@ Last-minute weather events trigger cancellations and reduce onsite spend. Manual
 * Randomized A/B testing by booking cohort or by time-block for specific playbooks.
 * Key metrics: cancellation rate, revenue retained per flagged booking, ancillary revenue per occupied room, guest satisfaction.
 
----
 
 ## Financial model and example calculations
 
@@ -257,7 +248,6 @@ Result: simulated ancillary revenue increase equals $4,800,000 per year if uplif
 
 **ASSUMPTION:** the revenue impact values above are simulated pilot outcomes and must be validated.
 
----
 
 ## Risks, mitigations, and governance
 
@@ -278,7 +268,6 @@ Result: simulated ancillary revenue increase equals $4,800,000 per year if uplif
 * Data retention and privacy audits for guest PII.
 * Clear logging of automated offers and manager overrides for auditability.
 
----
 
 ## Implementation roadmap (12 month view, high level)
 
@@ -302,7 +291,6 @@ Result: simulated ancillary revenue increase equals $4,800,000 per year if uplif
 * Chainwide rollout based on pilot results, scale infrastructure, embed monitoring.
 * Deliverable: SOPs, training materials, and executive summary of ROI.
 
----
 
 ## Deliverables and handoffs
 
@@ -310,7 +298,6 @@ Result: simulated ancillary revenue increase equals $4,800,000 per year if uplif
 * Business: Power BI dashboard templates, manager playbooks with step-by-step actions, training video and FAQ, executive one-page ROI summary.
 * Change management: manager training sessions and playbook acceptance sign-offs.
 
----
 
 ## Concise explanation of reasoning steps taken
 
@@ -319,7 +306,6 @@ Result: simulated ancillary revenue increase equals $4,800,000 per year if uplif
 * I applied common hospitality industry logic to design playbooks that are feasible and measurable in a pilot.
 * Wherever results are simulated, I labeled them ASSUMPTION and marked them for verification.
 
----
 
 ## Items that require verification or are uncertain
 
@@ -331,7 +317,6 @@ Result: simulated ancillary revenue increase equals $4,800,000 per year if uplif
 6. Any regional regulatory constraints for dynamic pricing or marketing messages.
 7. Pilot budget approvals for per-resort experiments and costs used in ROI calculations.
 
----
 
 ## Next steps (practical, immediate)
 
@@ -339,7 +324,6 @@ Result: simulated ancillary revenue increase equals $4,800,000 per year if uplif
 * Approve pilot resort selection and pilot budget for the 4-resort experiment.
 * Execute a rapid data readiness sprint to produce the merged bookings-weather dataset for pilot resorts.
 
----
 
 If you want, I will now:
 
