@@ -6,7 +6,6 @@
 **Scope:** Conceptual, Logical, and Physical Data Models for Power BI & SQL
 **Status:** **Approved for Engineering**
 
----
 
 ### 7.0 Critique of the Draft Model
 The draft model provided above is a strong "V1" (Standard Star Schema), but based on the complexity revealed in Phases 2 and 3—specifically the **Unit of Measure (UOM) conflicts**, the **Time-of-Day operations**, and the **Yield Logic**—it requires hardening.
@@ -19,7 +18,6 @@ The draft model provided above is a strong "V1" (Standard Star Schema), but base
 
 Below is the **Production-Grade Schema** designed to survive scaling.
 
----
 
 ### 7.1 The Extended Star Schema Architecture
 
@@ -66,7 +64,6 @@ Below is the **Production-Grade Schema** designed to survive scaling.
 | `Weight_Lbs` | DECIMAL(10,2)| Farm pickup weight (via Scale Ticket). |
 | `Tipping_Fee_Saved` | DECIMAL(10,2)| **KPI:** Weight * $0.08 (Avg cost of dumpster disposal). |
 
----
 
 ### 7.2 Dimension Tables (Enriched)
 
@@ -104,7 +101,6 @@ Below is the **Production-Grade Schema** designed to survive scaling.
 | `Reason_Description`| Varchar | Full text. |
 | **`Is_Controllable`** | Bit | **Critical for Bonuses:** <br>1 (Over Prep, Cook Error) = Affects Manager Bonus. <br>0 (Plate Waste, Natural Trim) = Excluded from Bonus. |
 
----
 
 ### 7.3 Logical Relationship Diagram (Mermaid)
 
@@ -174,7 +170,6 @@ erDiagram
     FACT_REDISTRIBUTION }o--|| DIM_PARTNER : "To"
 ```
 
----
 
 ### 7.4 Calculation Logic (DAX Examples for Power BI)
 
@@ -209,7 +204,6 @@ SUM(FACT_REDISTRIBUTION[Tipping_Fee_Saved]) +
 [Estimated Tax Deduction Value]
 ```
 
----
 
 ### **Conclusion on Data Modeling**
 By adding `DimTime` and `Is_Controllable`, we transform the dashboard from a passive report ("We wasted $50") to an active management tool ("Store #4 broke SOP at 2:00 PM and wasted $50 of preventable Fries"). This model explicitly supports the Phase 3 operational interventions.
