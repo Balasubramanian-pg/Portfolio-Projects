@@ -8,7 +8,6 @@ This section replaces the previous Phase 3 entry. It elevates the content from a
 **Primary Tool:** Physical SOP Change, Partner Logistics, Behavioral Modification
 **Objective:** Operationalize the "Stop-Loss" protocols and activate the Circular Economy.
 
----
 
 ### **1.0 Strategic Intent: Surgery on the Operations**
 
@@ -22,7 +21,6 @@ This phase moves the project from "Information" to "Action." It is the most vola
 1.  **Track A (Internal):** "Stop-Loss" Protocols to prevent waste creation.
 2.  **Track B (External):** "Diversion" Logistics to capture value from inevitable waste.
 
----
 
 ### **2.0 Track A: Internal Process Optimization**
 
@@ -56,7 +54,6 @@ Our MOQ (Minimum Order Quantity) forces us to buy more than we sell. We move fro
     *   *Lock:* 54 Buns go **immediately** to the Freezer with a "frozen_on" date label.
 *   **The Benefit:** We stop "hoping" we sell them. We "bank" the value immediately. This allows us to carry over the inventory to next week without quality loss, effectively breaking the vendor's case size ourselves.
 
----
 
 ### **3.0 Track B: External Redistribution Pilots**
 
@@ -99,7 +96,6 @@ We acknowledge that some waste is inevitable (e.g., eggshells, trimmings). Sendi
     *   Stored in "Donation Shelf" in cooler.
 3.  **Hand-off:** Verified Partner (e.g., "City Harvest") driver collects M/W/F.
 
----
 
 ### **4.0 The "Circular" Revenue Micro-Pilot**
 *Objective: Prove waste can generate revenue.*
@@ -111,7 +107,6 @@ We acknowledge that some waste is inevitable (e.g., eggshells, trimmings). Sendi
 *   **The Trade:** We provide 20lbs of washed, organic Lemon Peels weekly (Gin botanical). They provide a modest credit or "House Gin" discount.
 *   **Status:** Proof of Concept at Store SB-05 only.
 
----
 
 ### **5.0 Change Management & Friction**
 
@@ -121,7 +116,6 @@ We acknowledge that some waste is inevitable (e.g., eggshells, trimmings). Sendi
 | **"The Green Buckets smell."** | **Cold Storage Protocol.** Buckets are never left on the dock. They are refrigerated. If a bucket smells, the "Washer" SOP failed. |
 | **"Farmer didn't show up."** | **The Ejection Button.** If a farmer misses 2 pickups, the pilot at that location is suspended. We revert to trash immediately. Do not hoard waste. |
 
----
 
 ### **6.0 Success Metrics (Exit Criteria for Phase 3)**
 
@@ -131,7 +125,6 @@ We proceed to Phase 4 (Full Scaling & Automation) only when:
 3.  **Diversion:** We successfully divert >500lbs of material without a pest/sanitation incident.
 4.  **Financial:** Waste Cost % drops from Baseline (4.5%) to Interim Target (3.5%).
 
----
 
 >[!tip]
 >**Operational Note: The "Waste Captain"**
