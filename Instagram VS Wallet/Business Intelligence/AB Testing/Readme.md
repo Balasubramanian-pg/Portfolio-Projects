@@ -6,7 +6,6 @@ This section **fully completes** the CX messaging and experimentation layer. It 
 
 Nothing is assumed implicitly. Every decision, constraint, and measurement is explicitly defined.
 
----
 
 ## Short Explanation of Reasoning Steps Taken
 
@@ -16,7 +15,6 @@ Nothing is assumed implicitly. Every decision, constraint, and measurement is ex
 * Build an experimentation framework that isolates **causal impact**, not vanity metrics.
 * Ensure legal, ethical, and brand-safety constraints are respected by design.
 
----
 
 # PART 1: CX INTERVENTION PHILOSOPHY
 
@@ -36,7 +34,6 @@ Nothing is assumed implicitly. Every decision, constraint, and measurement is ex
 * Fear-based or manipulative language
 * One-size-fits-all notifications
 
----
 
 ## Behavioral Principles Applied
 
@@ -48,7 +45,6 @@ Nothing is assumed implicitly. Every decision, constraint, and measurement is ex
 | Trust Preservation  | Transparency about options and reversibility          |
 | Timing Sensitivity  | Intervene before return intent forms                  |
 
----
 
 # PART 2: INTERVENTION SEGMENTATION LOGIC
 
@@ -63,7 +59,6 @@ Nothing is assumed implicitly. Every decision, constraint, and measurement is ex
 
 Only **High-Risk** and **Medium-Risk** segments receive interventions.
 
----
 
 ## Timing Windows
 
@@ -76,13 +71,11 @@ Only **High-Risk** and **Medium-Risk** segments receive interventions.
 
 No interventions are sent after a return is completed.
 
----
 
 # PART 3: MESSAGE TEMPLATES (READY FOR CX REVIEW)
 
 All templates below are **final-form** and legally safe. Variable placeholders are explicitly marked.
 
----
 
 ## A. PRE-PURCHASE (CHECKOUT MODAL)
 
@@ -112,7 +105,6 @@ All templates below are **final-form** and legally safe. Variable placeholders a
 * Preserves autonomy
 * Adds friction only when necessary
 
----
 
 ## B. POST-PURCHASE (0–6 HOURS)
 
@@ -148,7 +140,6 @@ All templates below are **final-form** and legally safe. Variable placeholders a
 
 > You can still return the item as usual. This option is entirely up to you.
 
----
 
 ## C. POST-PURCHASE (24–48 HOURS)
 
@@ -177,7 +168,6 @@ All templates below are **final-form** and legally safe. Variable placeholders a
 * Reduces expectation mismatch
 * Reframes ownership positively
 
----
 
 ## D. RETURN INITIATED (PRE-REFUND)
 
@@ -206,7 +196,6 @@ All templates below are **final-form** and legally safe. Variable placeholders a
 * Refund remains one click away
 * No dark patterns
 
----
 
 # PART 4: MESSAGE GOVERNANCE RULES
 
@@ -227,7 +216,6 @@ All templates below are **final-form** and legally safe. Variable placeholders a
 * Urgency phrases like “Last chance”
 * Any implication that return rights are limited
 
----
 
 # PART 5: A/B TESTING PLAN (EXPERIMENTATION DESIGN)
 
@@ -235,7 +223,6 @@ All templates below are **final-form** and legally safe. Variable placeholders a
 
 Measure **causal reduction in regret-driven returns** attributable to CX interventions.
 
----
 
 ## Experiment Design Overview
 
@@ -248,7 +235,6 @@ Measure **causal reduction in regret-driven returns** attributable to CX interve
 | Duration              | 6–8 weeks                          |
 | Success Metric        | Regret return rate                 |
 
----
 
 ## Test Arms
 
@@ -267,7 +253,6 @@ Measure **causal reduction in regret-driven returns** attributable to CX interve
 * Guidance framing
 * Focus on sizing, styling, reassurance
 
----
 
 ## Randomization Logic
 
@@ -275,7 +260,6 @@ Measure **causal reduction in regret-driven returns** attributable to CX interve
 * Sticky assignment across sessions
 * Exclude customers already in other experiments
 
----
 
 ## Primary Metrics
 
@@ -286,7 +270,6 @@ Measure **causal reduction in regret-driven returns** attributable to CX interve
 | Exchange Conversion    | Accepted exchange ÷ offered |
 | Net Revenue Retained   | Prevented returns × AOV     |
 
----
 
 ## Secondary Metrics
 
@@ -294,7 +277,6 @@ Measure **causal reduction in regret-driven returns** attributable to CX interve
 * Repeat purchase rate within 30 days
 * CX contact volume
 
----
 
 ## Guardrail Metrics
 
@@ -304,7 +286,6 @@ Measure **causal reduction in regret-driven returns** attributable to CX interve
 
 If guardrails degrade beyond tolerance, pause experiment.
 
----
 
 ## Statistical Considerations
 
@@ -317,7 +298,6 @@ ASSUMPTION: Baseline regret return rate ≈ 18–22 percent.
 Exact sample size must be calculated using real baseline data.
 I cannot verify required sample sizes without that data.
 
----
 
 # PART 6: ANALYSIS AND DECISION FRAMEWORK
 
@@ -327,7 +307,6 @@ I cannot verify required sample sizes without that data.
 * If both outperform control, select lower-cost or higher-trust option.
 * If neither beats control, revisit messaging tone or timing, not the model.
 
----
 
 ## Attribution Logic
 
@@ -338,7 +317,6 @@ I cannot verify required sample sizes without that data.
   * Intervention delivered
   * No return observed within return window
 
----
 
 # PART 7: HANDOFF CHECKLIST FOR CX & PRODUCT
 
@@ -351,7 +329,6 @@ Before launch, confirm:
 * Experiment tracking IDs implemented
 * Dashboard metrics wired
 
----
 
 # WHAT REQUIRES VERIFICATION OR IS UNCERTAIN
 
@@ -360,7 +337,6 @@ Before launch, confirm:
 * Baseline regret return rate and variance for power calculation. I cannot verify this.
 * Whether push notifications are enabled for all users. Requires app configuration check.
 
----
 
 ## COMPLETION STATUS
 
