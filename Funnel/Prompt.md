@@ -261,14 +261,3 @@ For reusable enterprise visuals:
 4. Maintain consistent coordinate systems.
 
 This turns SVG DAX into a reusable visualization framework rather than one-off code.
-
-## Optional Upgrade
-
-If you want, I can also create:
-
-* Enterprise SVG Visual Prompt v2 used by BI teams
-* Universal SVG Framework where you only pass a table of stages
-* Auto-generated multi-stage funnel engine
-* Metadata-driven SVG generator (extremely powerful for interviews and portfolios)
-
-Say which level you want next.
