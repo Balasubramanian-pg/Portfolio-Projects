@@ -1,8 +1,4 @@
-Let’s strip away the technical armor and talk about this like we’re describing a real city full of businesses, customers, and messy systems.
-
 You built a dataset. These 47 guardrails turn it into something that *feels lived in*.
-
----
 
 # Big Picture
 
