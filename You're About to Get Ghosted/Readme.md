@@ -21,13 +21,14 @@ This project proposes an enterprise-grade Customer Churn Prediction and Retentio
 
 From a management perspective, this system enables leaders to answer four previously opaque questions with precision:
 
+<img width="1332" height="749" alt="image" src="https://github.com/user-attachments/assets/f9593b83-16c7-4be2-9bf1-645469b73349" />
+
 * Which customers are likely to churn in the near future?
 * Why are they at risk, based on observable behavior and experience signals?
 * Which retention actions are likely to change their outcome rather than merely subsidize inevitable churn?
 * What is the financial return on each retention dollar spent?
 
-The outcome is not simply lower churn. It is a disciplined retention operating model that reallocates effort and incentives toward customers where intervention creates measurable enterprise value.
-
+The expected outcome here will not be just lower churn but a disciplined retention operating model that reallocates effort and incentives toward customers where intervention creates measurable enterprise value.
 
 ## 2. Strategic Business Context
 
