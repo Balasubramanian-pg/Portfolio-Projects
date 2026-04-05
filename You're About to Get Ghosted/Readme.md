@@ -132,6 +132,8 @@ The initiative should be sponsored by a senior revenue owner such as the Chief R
 
 ### 5.3 Technical ownership
 
+<img width="1170" height="780" alt="image" src="https://github.com/user-attachments/assets/646cf8f9-f3e8-4271-89e5-c53921eba904" />
+
 * Data Engineering owns ingestion and feature pipelines.
 * Analytics and Data Science own modeling and evaluation.
 * Platform teams own orchestration and integrations.
