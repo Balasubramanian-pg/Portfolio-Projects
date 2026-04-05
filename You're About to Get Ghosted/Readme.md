@@ -117,6 +117,8 @@ Secondary KPIs
 
 ## 5. Stakeholder Model and Operating Ownership
 
+<img width="735" height="430" alt="image" src="https://github.com/user-attachments/assets/cabb8647-d456-4dcc-ba3a-7719fb0ef88d" />
+
 ### 5.1 Executive sponsorship
 
 The initiative should be sponsored by a senior revenue owner such as the Chief Revenue Officer or Chief Customer Officer. This ensures authority over pricing concessions, support prioritization, and marketing activation.
