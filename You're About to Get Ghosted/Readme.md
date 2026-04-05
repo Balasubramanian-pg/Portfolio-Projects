@@ -292,6 +292,7 @@ Actions are assigned based on:
 * Customer lifetime value.
 * Cost constraints.
 
+<img width="675" height="1044" alt="image" src="https://github.com/user-attachments/assets/72713900-45bd-4974-806d-737837d0ea90" />
 
 ## 12. Automation and Orchestration
 
