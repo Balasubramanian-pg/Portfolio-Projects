@@ -63,6 +63,8 @@ In most enterprises, these signals are not integrated into a unified decision sy
 
 ## 3. Refined Problem Definition
 
+<img width="735" height="490" alt="image" src="https://github.com/user-attachments/assets/59c0d17c-d059-4847-9f0c-687857c2ff99" />
+
 ### 3.1 Core problem
 
 How can the organization systematically detect customers at elevated risk of churn early enough to intervene, determine which interventions are economically justified, execute them at scale, and continuously learn which actions deliver measurable incremental retention?
