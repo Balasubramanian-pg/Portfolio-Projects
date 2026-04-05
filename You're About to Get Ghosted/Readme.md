@@ -138,6 +138,7 @@ The initiative should be sponsored by a senior revenue owner such as the Chief R
 * Analytics and Data Science own modeling and evaluation.
 * Platform teams own orchestration and integrations.
 
+<img width="1074" height="806" alt="image" src="https://github.com/user-attachments/assets/0c4d93d7-d89f-4cf2-a005-a230c68c43b6" />
 
 ## 6. Customer Churn Conceptual Framework
 
