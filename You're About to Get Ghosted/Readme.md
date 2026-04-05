@@ -308,6 +308,7 @@ A rules and scoring engine determines:
 
 High-value accounts trigger human review before execution.
 
+<img width="1199" height="936" alt="image" src="https://github.com/user-attachments/assets/d49f69a0-f2b1-4e88-8d3d-b6adaa4bfdbc" />
 
 ## 13. Dashboard and Insight Layer
 
