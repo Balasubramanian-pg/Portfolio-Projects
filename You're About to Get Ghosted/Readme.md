@@ -209,6 +209,7 @@ Billing and payments
 * Daily batch ingestion for CRM and billing systems.
 * Unified customer identifier resolution.
 
+<img width="600" height="401" alt="image" src="https://github.com/user-attachments/assets/249d71cc-1a70-407c-9efc-fc49896d914e" />
 
 ## 8. Feature Engineering Strategy
 
