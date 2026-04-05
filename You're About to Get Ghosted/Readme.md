@@ -86,6 +86,8 @@ How can the organization systematically detect customers at elevated risk of chu
 
 ## 4. Business Objectives and Success Criteria
 
+<img width="736" height="736" alt="image" src="https://github.com/user-attachments/assets/11097601-944e-491d-a02c-71ac14306610" />
+
 ### 4.1 Primary objectives
 
 * Reduce voluntary churn by a targeted number of basis points within 12 months.
