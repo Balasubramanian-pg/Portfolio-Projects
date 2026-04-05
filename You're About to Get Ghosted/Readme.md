@@ -4,6 +4,8 @@
 
 ### Strategy, Analytics, and Execution Blueprint
 
+<img width="736" height="1312" alt="image" src="https://github.com/user-attachments/assets/7eb3c7bf-d51b-4903-a1d1-662c690f6647" />
+
 
 ## 1. Executive Summary
 
