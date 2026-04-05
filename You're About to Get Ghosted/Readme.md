@@ -7,7 +7,10 @@
 
 ## 1. Executive Summary
 
-Customer churn is not merely a customer success problem. It is a structural revenue leakage issue that compounds silently across cohorts, pricing tiers, and time. In many organizations, churn is discussed retrospectively through lagging indicators such as monthly attrition rates or renewal losses. By the time these metrics surface in leadership reviews, the underlying customer behavior has already concluded.
+>[!Tip]
+>Customer churn is not merely a customer success problem. It is a structural revenue leakage issue that compounds silently across cohorts, pricing tiers, and time. 
+
+In many organizations, churn is discussed retrospectively through lagging indicators such as monthly attrition rates or renewal losses. By the time these metrics surface in leadership reviews, the underlying customer behavior has already concluded.
 
 This project proposes an enterprise-grade Customer Churn Prediction and Retention System that shifts the organization from reactive churn reporting to proactive churn prevention. The system integrates behavioral signals, transactional history, sentiment indicators, and predictive analytics to identify customers at risk early, determine which interventions are economically rational, and trigger automated retention actions. It closes the loop by measuring incremental impact and continuously learning which strategies work, for which customers, and under what conditions.
 
