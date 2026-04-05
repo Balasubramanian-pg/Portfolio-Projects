@@ -46,6 +46,8 @@ Industry benchmarks show that even mature subscription businesses experience mat
 
 Numerous industry analyses demonstrate that acquiring a new customer is significantly more expensive than retaining an existing one, particularly in competitive digital markets. However, indiscriminate retention spending can destroy value if incentives are offered to customers who would have stayed anyway. The economic objective is therefore not churn minimization, but **profit-maximizing retention**.
 
+<img width="735" height="490" alt="image" src="https://github.com/user-attachments/assets/90a6738f-6091-41e7-b8c6-a7beb2f2f8de" />
+
 ### 2.3 Organizational fragmentation as a root cause
 
 Churn signals typically exist across multiple systems:
