@@ -235,6 +235,7 @@ Billing and payments
 
 Features are constructed in time-aware windows to prevent label leakage and ensure causal validity.
 
+<img width="600" height="400" alt="image" src="https://github.com/user-attachments/assets/94b5d5ef-05c4-47a4-945b-43a509b16bd1" />
 
 ## 9. Modeling Philosophy
 
