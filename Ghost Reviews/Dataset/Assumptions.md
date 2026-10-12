@@ -1,8 +1,6 @@
-Creating synthetic data for a project like this is an exercise in "controlled storytelling." You must make specific assumptions to build in the patterns you intend to discover. Without these assumptions, the data would be random noise, and your analysis would find nothing.
+## Assumptions for Dataset 1: `businesses.csv`
+<img width="554" height="554" alt="image" src="https://github.com/user-attachments/assets/4547ae78-f60f-43b0-8cb5-1dda0752f061" />
 
-Here are the key assumptions I would make for each of the three datasets, along with the rationale for why each assumption is critical to the project's success.
-
-### Assumptions for Dataset 1: `businesses.csv`
 
 This dataset sets the stage for our entire simulated world.
 
