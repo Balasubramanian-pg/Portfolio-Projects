@@ -33,6 +33,8 @@ This dataset contains the primary evidence for your analysis.
     *   **Rationale:** This adds a layer of realism and reinforces the problem. The most attractive (and therefore most misleading) closed businesses will have a larger digital footprint, amplifying their negative impact.
 
 ### Assumptions for Dataset 3: `customer_journeys.csv`
+<img width="597" height="513" alt="image" src="https://github.com/user-attachments/assets/059dc53e-ca5d-4124-8cfb-6790ce687cf9" />
+
 
 This dataset is a simulation layer used to measure the final business impact.
 
