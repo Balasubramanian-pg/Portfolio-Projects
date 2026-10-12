@@ -16,7 +16,7 @@ This dataset sets the stage for our entire simulated world.
     *   **The Assumption:** The businesses that are now closed were, on average, successful and well-regarded when they were open. We will assign them a slightly higher average historical rating than the currently open businesses.
     *   **Rationale:** This is the core reason the problem exists. A customer is only misled if the closed business looks attractive. If all closed businesses had a 1-star rating, nobody would ever choose them. This assumption creates the "bait" for the trap.
 
-### Assumptions for Dataset 2: `reviews.csv`
+## Assumptions for Dataset 2: `reviews.csv`
 
 This dataset contains the primary evidence for your analysis.
 
